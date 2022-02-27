@@ -65,6 +65,18 @@ $team = 'blue';
         }
     }
 
+    const deletePawn = (x, y, pawn, team) => {
+        id = getPawnId(x, y, pawn, team);
+        if(id != null){
+            pawns.splice(id, 1);
+            placePawns();
+            return true;
+        }else{
+            console.log("pawn does not exist.");
+            return false;
+        }
+    }
+
     const getPawnId = (x, y, pawn, team) => {
         found = false;
         // Loop through all pawns
