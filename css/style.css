@@ -1,0 +1,53 @@
+html,
+body {
+    height:100%;
+}
+
+#fullboard {
+    width: 100%;
+    height: 100%;
+    background-color: lightgreen;
+    padding: 0;
+    margin: 0;
+}
+
+#board {
+    margin: 0 auto;
+    padding: 0;
+    width: 45%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 1px;
+}
+
+#board div {
+    background-color: rgba(255,255,255,0.4);
+    opacity: 0.5;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+#board div img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: 1s;
+}
+
+#board div:hover {
+    opacity: 1;
+}
+
+#board div.unusable {
+    background-color: rgba(0,0,0,0);
+    visibility: hidden;
+    opacity: 0;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
