@@ -53,6 +53,18 @@ $team = 'blue';
         [2, 2, 2, 0]
     ];
 
+    const addPawn = (x, y, pawn, team) => {
+        id = getPawnId(x, y, pawn);
+        if(id == null){
+            pawns.push([x, y, pawn, team]);
+            placePawns();
+            return true;
+        }else{
+            console.log("pawn already exists!");
+            return false;
+        }
+    }
+
     const getPawnId = (x, y, pawn, team) => {
         found = false;
         // Loop through all pawns
