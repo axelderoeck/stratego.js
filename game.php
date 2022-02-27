@@ -53,6 +53,22 @@ $team = 'blue';
         [2, 2, 2, 0]
     ];
 
+    const fightPawn = (attacker, defender) => {
+        if (attacker < defender){
+            if(defender != 1 && attacker == 0) {
+                console.log("attacker lose");
+            }else if(defender == 8 && attacker == 10){
+                console.log("bomb defused");
+            }else{
+                console.log("attacker win");
+            }
+        }else if(attacker == defender){
+            console.log("both lose");
+        }else{
+            console.log("attacker lose")
+        }
+    }
+
     const addPawn = (x, y, pawn, team) => {
         id = getPawnId(x, y, pawn, team);
         if(id == null){
