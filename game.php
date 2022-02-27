@@ -77,6 +77,23 @@ $team = 'blue';
         }
     }
 
+    const getPawnByCoordinate = (x, y) => {
+        found = false;
+        for (var i = 0; i < pawns.length; i++) {
+            if (pawns[i][0] == x && pawns[i][1] == y){
+                found = true;
+                break;
+            }
+        }
+
+        if(found){
+            // Return pawn array
+            return pawns[i];
+        }else{
+            return null;
+        }
+    }
+
     const getPawnId = (x, y, pawn, team) => {
         found = false;
         // Loop through all pawns
