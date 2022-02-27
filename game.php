@@ -54,7 +54,7 @@ $team = 'blue';
     ];
 
     const addPawn = (x, y, pawn, team) => {
-        id = getPawnId(x, y, pawn);
+        id = getPawnId(x, y, pawn, team);
         if(id == null){
             pawns.push([x, y, pawn, team]);
             placePawns();
