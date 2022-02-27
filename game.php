@@ -53,11 +53,11 @@ $team = 'blue';
         [2, 2, 2, 0]
     ];
 
-    const getPawnId = (x, y, pawn) => {
+    const getPawnId = (x, y, pawn, team) => {
         found = false;
         // Loop through all pawns
         for (var i = 0; i < pawns.length; i++) {
-            if (pawns[i][0] == x && pawns[i][1] == y && pawns[i][2] == pawn){
+            if (pawns[i][0] == x && pawns[i][1] == y && pawns[i][2] == pawn && pawns[i][3] == team){
                 found = true;
                 break;
             }
@@ -82,12 +82,12 @@ $team = 'blue';
             $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
                 .prepend('<img src="./themes/<?=$theme?>/' + pawn[3] + '/' + pawn[2] + '.svg" />')
                 .click(function() {
-                    movePawn(pawn[0], pawn[1], pawn[2]);
+                    movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
                 });
         })
     }
 
-    const movePawn = (old_x, old_y, pawn) => {
+    const movePawn = (old_x, old_y, pawn, team) => {
         // Add event listener to all tiles
         $('#board div').on("click", function(){
             // Remove event listener click from all tiles
@@ -128,7 +128,7 @@ $team = 'blue';
                 }
 
                 // Get pawn ID from array
-                pawnId = getPawnId(old_x, old_y, pawn);
+                pawnId = getPawnId(old_x, old_y, pawn, team);
                 // Set new coordinate values to pawn
                 pawns[pawnId][0] = new_x;
                 pawns[pawnId][1] = new_y;
@@ -141,7 +141,7 @@ $team = 'blue';
                 pawns.forEach(pawn => {
                     $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
                     .click(function() {
-                        movePawn(pawn[0], pawn[1], pawn[2]);
+                        movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
                     });
                 })
             }
