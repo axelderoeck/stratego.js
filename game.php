@@ -53,6 +53,24 @@ $team = 'blue';
         [2, 2, 2, 0]
     ];
 
+    const getPawnId = (x, y, pawn) => {
+        found = false;
+        // Loop through all pawns
+        for (var i = 0; i < pawns.length; i++) {
+            if (pawns[i][0] == x && pawns[i][1] == y && pawns[i][2] == pawn){
+                found = true;
+                break;
+            }
+        }
+
+        if(found){
+            // Return pawn ID
+            return i;
+        }else{
+            return null;
+        }
+    }
+
     const placePawns = () => {
         // Delete old images
         $("#board div")
@@ -63,7 +81,71 @@ $team = 'blue';
         pawns.forEach(pawn => {
             $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
                 .prepend('<img src="./themes/<?=$theme?>/' + pawn[3] + '/' + pawn[2] + '.svg" />')
+                .click(function() {
+                    movePawn(pawn[0], pawn[1], pawn[2]);
+                });
         })
+    }
+
+    const movePawn = (old_x, old_y, pawn) => {
+        // Add event listener to all tiles
+        $('#board div').on("click", function(){
+            // Remove event listener click from all tiles
+            $('#board div').off('click');
+
+            // Set defaults
+            legalMove = false;
+            contact = false;
+
+            // Get selected tile
+            selectedTile = $(this);
+            // Get values from selected tile
+            new_x = selectedTile.data("x");
+            new_y = selectedTile.data("y");
+
+            // Check for legal move
+            if(pawn >= 10){
+                legalMove = false;
+            }else if(pawn == 9){
+                if(new_x != old_x && new_y == old_y){
+                    legalMove = true;
+                }else if(new_y != old_y && new_x == old_x){
+                    legalMove = true;
+                }
+            }else{
+                if((new_x == old_x + 1 || new_x == old_x - 1) && new_y == old_y){
+                    legalMove = true;
+                }else if((new_y == old_y + 1 || new_y == old_y - 1) && new_x == old_x){
+                    legalMove = true;
+                }
+            }
+
+            // Move the pawn
+            if(legalMove){
+                console.log("Moved pawn");
+                if(contact){
+                    console.log("fight");
+                }
+
+                // Get pawn ID from array
+                pawnId = getPawnId(old_x, old_y, pawn);
+                // Set new coordinate values to pawn
+                pawns[pawnId][0] = new_x;
+                pawns[pawnId][1] = new_y;
+
+                // Place pawns
+                placePawns();
+            }else{
+                console.log("Illegal move");
+                // Re attach click event
+                pawns.forEach(pawn => {
+                    $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
+                    .click(function() {
+                        movePawn(pawn[0], pawn[1], pawn[2]);
+                    });
+                })
+            }
+        });
     }
 
     placePawns();
