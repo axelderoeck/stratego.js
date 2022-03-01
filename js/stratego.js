@@ -153,12 +153,19 @@ const deletePawn = (x, y, pawn, team) => {
     id = getPawnId(x, y, pawn, team);
     if(id != null){
         pawns.splice(id, 1);
+        cemetery.push([pawn, team]);
         placePawns();
         return true;
     }else{
         console.log("pawn does not exist.");
         return false;
     }
+}
+
+const endGame = () => {
+    // Remove event listener click from all tiles
+    $('#board div').off('click');
+    console.log("The game has ended.");
 }
 
 const getPawnByCoordinate = (x, y) => {
@@ -264,7 +271,6 @@ const movePawn = (old_x, old_y, pawn, team) => {
                     case true:
                         console.log("won fight");
                         // Delete/kill the defending pawn
-                        cemetery.push([defendingPawn[2], defendingPawn[3]]);
                         deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
                         // Set new coordinate values to pawn
                         pawns[pawnId][0] = new_x;
@@ -274,22 +280,19 @@ const movePawn = (old_x, old_y, pawn, team) => {
                     case false:
                         console.log("lost fight");
                         // Delete/kill the attacking pawn
-                        cemetery.push([pawn, team]);
                         deletePawn(old_x, old_y, pawn, team);
 
                         break;
                     case "stalemate":
                         console.log("both lose");
                         // Delete/kill both pawns
-                        cemetery.push([pawn, team]);
                         deletePawn(old_x, old_y, pawn, team);
-                        cemetery.push([defendingPawn[2], defendingPawn[3]]);
                         deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
 
                         break;
                     case "win":
                         console.log("won game");
-                        // TODO: end & freeze game function
+                        endGame();
 
                         break;
                 }
