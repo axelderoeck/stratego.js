@@ -40,13 +40,13 @@ $team = 'blue';
     *
     * @param pawns[ID][0] = X (1-10)
     * @param pawns[ID][1] = Y (1-10)
-    * @param pawns[ID][2] = Pawn (0-11) // Spy = 0, Bomb = 10, Flag = 11
+    * @param pawns[ID][2] = Pawn (0-11) // Flag = 0, Spy = 1, Bomb = 11
     * @param pawns[ID][3] = Team (0/1) // Blue = 0, Red = 1
     * 
     **/
-   
+
     let pawns = [
-        [10, 10, 11, 0],
+        [10, 10, 0, 0],
         [10, 9, 10, 0],
         [9, 10, 10, 0],
         [10, 7, 9, 0],
@@ -205,6 +205,28 @@ $team = 'blue';
         });
     }
 
+    const addRandomPawns = () => {
+        // In order: 0 (=flag), 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 (=bomb)
+        let amount_pawns = [1, 1, 8, 5, 4, 4, 4, 3, 2, 1, 1, 6];
+        test = 0;
+        /* 
+        * i = pawn number
+        * j = counter pawns
+        **/
+        for (i = 0; i < amount_pawns.length; i++){
+            for(j = 0; j <= amount_pawns[i]; j++){
+                randomX = Math.floor(Math.random() * 10) + 1;
+                randomY = Math.floor(Math.random() * 10) + 7;
+
+                while (addPawn(randomX, randomY, i, 0) == false) {
+                    randomX = Math.floor(Math.random() * 10) + 1;
+                    randomY = Math.floor(Math.random() * 10) + 7;
+                }
+            }
+        }
+    }
+
+    //addRandomPawns();
     placePawns();
 
 </script>
