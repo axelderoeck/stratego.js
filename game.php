@@ -144,6 +144,26 @@ $team = 'blue';
         })
     }
 
+    const isLegalMove = (old_x, old_y, new_x, new_y, pawn) => {
+        if(pawn == 0 || pawn == 11){ // Check for static pawns
+            return false;
+        }else if(pawn == 2){ // Check for scout pawn
+            // New X or Y can be any value except the old while the other axis has to stay the same (avoid diagonal walking)
+            if(new_x != old_x && new_y == old_y || new_y != old_y && new_x == old_x){
+                return true;
+            }else{
+                return false;
+            }
+        }else{ // Any other pawn
+            // New X or Y has to be +1 or -1 while the other coordinate axis has to stay the same (avoid diagonal walking)
+            if((new_x == old_x + 1 || new_x == old_x - 1) && new_y == old_y || (new_y == old_y + 1 || new_y == old_y - 1) && new_x == old_x){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
     const movePawn = (old_x, old_y, pawn, team) => {
         // Add event listener to all tiles
         $('#board div').on("click", function(){
@@ -160,25 +180,8 @@ $team = 'blue';
             new_x = selectedTile.data("x");
             new_y = selectedTile.data("y");
 
-            // Check for legal move
-            if(pawn >= 10){
-                legalMove = false;
-            }else if(pawn == 9){
-                if(new_x != old_x && new_y == old_y){
-                    legalMove = true;
-                }else if(new_y != old_y && new_x == old_x){
-                    legalMove = true;
-                }
-            }else{
-                if((new_x == old_x + 1 || new_x == old_x - 1) && new_y == old_y){
-                    legalMove = true;
-                }else if((new_y == old_y + 1 || new_y == old_y - 1) && new_x == old_x){
-                    legalMove = true;
-                }
-            }
-
             // Move the pawn
-            if(legalMove){
+            if(isLegalMove(old_x, old_y, new_x, new_y, pawn)){
                 console.log("Moved pawn");
                 if(contact){
                     console.log("fight");
