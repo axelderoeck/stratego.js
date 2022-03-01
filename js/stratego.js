@@ -246,17 +246,46 @@ const movePawn = (old_x, old_y, pawn, team) => {
 
         // Move the pawn
         if(isLegalMove(old_x, old_y, new_x, new_y, pawn, team)){
-            if (checkForEnemyContact(new_x, new_y, team)){
-                console.log("Fight");
-            }
-
-            console.log("Moved pawn: " + pawn);
-
             // Get pawn ID from array
             pawnId = getPawnId(old_x, old_y, pawn, team);
-            // Set new coordinate values to pawn
-            pawns[pawnId][0] = new_x;
-            pawns[pawnId][1] = new_y;
+
+            if (checkForEnemyContact(new_x, new_y, team)){
+                defendingPawn = getPawnByCoordinate(new_x, new_y);
+                switch (fight(pawn, defendingPawn[2])){
+                    case true:
+                        console.log("won fight");
+                        // Delete the defending pawn
+                        deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
+                        // Set new coordinate values to pawn
+                        pawns[pawnId][0] = new_x;
+                        pawns[pawnId][1] = new_y;
+
+                        break;
+                    case false:
+                        console.log("lost fight");
+                        // Delete the attacking pawn
+                        deletePawn(old_x, old_y, pawn, team);
+
+                        break;
+                    case "stalemate":
+                        console.log("both lose");
+                        // Delete both pawns
+                        deletePawn(old_x, old_y, pawn, team);
+                        deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
+
+                        break;
+                    case "win":
+                        console.log("won game");
+                        // TODO: end & freeze game function
+
+                        break;
+                }
+            }else{
+                console.log("Moved pawn: " + pawn);
+                // Set new coordinate values to pawn
+                pawns[pawnId][0] = new_x;
+                pawns[pawnId][1] = new_y;
+            }
 
             // Place pawns
             placePawns();
