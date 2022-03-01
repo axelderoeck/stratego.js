@@ -15,6 +15,16 @@ const DISABLED_TILES = [
     [8, 6]
 ]
 
+const isTileDisabled = (x, y) => {
+    // Check if tile is disabled
+    for (var i = 0; i < DISABLED_TILES.length; i++) {
+        if (DISABLED_TILES[i][0] == x && DISABLED_TILES[i][1] == y){
+            return true;
+        }
+    }
+    return false;
+}
+
 const initBoard = () => {
     for(y = 1; y <= BOARD_SIZE; y++){
         for(x = 1; x <= BOARD_SIZE; x++){
@@ -24,12 +34,9 @@ const initBoard = () => {
                 .attr('data-x', x)
                 .attr('data-y', y);
 
-            // Check if tile is disabled
-            for (var i = 0; i < DISABLED_TILES.length; i++) {
-                if (DISABLED_TILES[i][0] == x && DISABLED_TILES[i][1] == y){
-                    // Add disabled class to tile
-                    tile.addClass('disabled');
-                }
+            // Add class if tile is disabled
+            if(isTileDisabled(x, y)){
+                tile.addClass('disabled');
             }
         }
     } 
