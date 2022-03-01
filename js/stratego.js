@@ -107,10 +107,14 @@ const mirrorNumber = (n) => {
     return BOARD_SIZE - (n - 1);
 }
 
-const mirrorBoard = () => {
-    for (var i = 0; i < pawns.length; i++) {
-        pawns[i][0] = mirrorNumber(pawns[i][0]);
-        pawns[i][1] = mirrorNumber(pawns[i][1]);
+const mirrorBoard = (mirror) => {
+    // true or false
+    if(mirror){
+        $("#board").addClass("mirror");
+        $("#board div").addClass("mirror");
+    }else{
+        $("#board").removeClass("mirror");
+        $("#board div").removeClass("mirror");
     }
 }
 
