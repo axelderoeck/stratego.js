@@ -163,26 +163,32 @@ const getPawnId = (x, y, pawn, team) => {
 }
 
 const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
-    // Get existing pawn
-    existingPawn = getPawnByCoordinate(new_x, new_y);
-    // If pawn does not exist or is not part of team ->
-    if(existingPawn == null || existingPawn[3] != team){
-        if(pawn == 0 || pawn == 11){ // Check for static pawns
+    // Get pawn info from new tile
+    tilePawn = getPawnByCoordinate(new_x, new_y);
+
+    // Check if tile is disabled
+    if(!isTileDisabled(new_x, new_y)){
+        // If pawn does not exist or is not part of team ->
+        if(tilePawn == null || tilePawn[3] != team){
+            if(pawn == 0 || pawn == 11){ // Check for static pawns
+                return false;
+            }else if(pawn == 2){ // Check for scout pawn
+                // New X or Y can be any value except the old while the other axis has to stay the same (avoid diagonal walking)
+                if(new_x != old_x && new_y == old_y || new_y != old_y && new_x == old_x){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{ // Any other pawn
+                // New X or Y has to be +1 or -1 while the other coordinate axis has to stay the same (avoid diagonal walking)
+                if((new_x == old_x + 1 || new_x == old_x - 1) && new_y == old_y || (new_y == old_y + 1 || new_y == old_y - 1) && new_x == old_x){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }else{
             return false;
-        }else if(pawn == 2){ // Check for scout pawn
-            // New X or Y can be any value except the old while the other axis has to stay the same (avoid diagonal walking)
-            if(new_x != old_x && new_y == old_y || new_y != old_y && new_x == old_x){
-                return true;
-            }else{
-                return false;
-            }
-        }else{ // Any other pawn
-            // New X or Y has to be +1 or -1 while the other coordinate axis has to stay the same (avoid diagonal walking)
-            if((new_x == old_x + 1 || new_x == old_x - 1) && new_y == old_y || (new_y == old_y + 1 || new_y == old_y - 1) && new_x == old_x){
-                return true;
-            }else{
-                return false;
-            }
         }
     }else{
         return false;
