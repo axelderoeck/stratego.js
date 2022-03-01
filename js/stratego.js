@@ -103,6 +103,10 @@ const fightPawn = (attackingPawn, defendingPawn) => {
     // }
 }
 
+const mirrorNumber = (n) => {
+    return BOARD_SIZE - (n - 1);
+}
+
 const addPawn = (x, y, pawn, team) => {
     id = getPawnId(x, y, pawn, team);
     if(id == null){
