@@ -107,6 +107,13 @@ const mirrorNumber = (n) => {
     return BOARD_SIZE - (n - 1);
 }
 
+const mirrorBoard = () => {
+    for (var i = 0; i < pawns.length; i++) {
+        pawns[i][0] = mirrorNumber(pawns[i][0]);
+        pawns[i][1] = mirrorNumber(pawns[i][1]);
+    }
+}
+
 const addPawn = (x, y, pawn, team) => {
     id = getPawnId(x, y, pawn, team);
     if(id == null){
