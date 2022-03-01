@@ -80,27 +80,37 @@ let pawns = [
     [2, 2, 11, 1]
 ];
 
-const fightPawn = (attackingPawn, defendingPawn) => {
-    if(attackingPawn < defendingPawn){
-        console.log("attacker lose");
+const fight = (attackingPawn, defendingPawn) => {
+
+    /* This function is written in favor of the attacker.
+    *
+    * true = attacker wins.
+    * 
+    **/
+
+    // If the defending pawn is the flag
+    if(defendingPawn == 0){
+        return "win";
+    }else if(attackingPawn < defendingPawn){
+        // If the defending pawn is a marshal (10) and the attacking pawn is a spy (1)
+        if(defendingPawn == 10 && attackingPawn == 1){
+            return true;
+        }
+        // If the defending pawn is a bomb (11) and the attacking pawn is a miner (3)
+        if(defendingPawn == 11 && attackingPawn == 3){
+            return true;
+        }
+        return false;
     }else if(attackingPawn == defendingPawn){
-        console.log("both lose");
+        return "stalemate";
     }else{
-        console.log("defender lose");
+        // If the attacking pawn is a marshal (10) and the defending pawn is a spy (1)
+        // NOTE: official rules state that the spy HAS to be the attacking pawn to win (ignoring atm).
+        if(attackingPawn == 10 && defendingPawn == 1){
+            return false;
+        }
+        return true;
     }
-    // if (attackingPawn < defendingPawn){
-    //     if(defender != 1 && attacker == 0) {
-    //         console.log("attacker lose");
-    //     }else if(defender == 8 && attacker == 10){
-    //         console.log("bomb defused");
-    //     }else{
-    //         console.log("attacker win");
-    //     }
-    // }else if(attacker == defender){
-    //     console.log("both lose");
-    // }else{
-    //     console.log("attacker lose")
-    // }
 }
 
 const mirrorNumber = (n) => {
