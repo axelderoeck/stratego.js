@@ -171,19 +171,15 @@ $team = 'blue';
         }
     }
 
-    const checkForContact = () => {
-        // Check for existing pawn
-        existingPawn = getPawnByCoordinate(new_x, new_y);
+    const checkForEnemyContact = (new_x, new_y, team) => {
+        // Get pawn by coordinate
+        pawn = getPawnByCoordinate(new_x, new_y);
 
-        if(existingPawn == null){
+        // Check if pawn exists and is not on same team
+        if (pawn != null && pawn[3] != team) {
             return true;
         }else{
-            if(existingPawn[3] == team){
-                return false;
-            }else{
-                console.log("fight");
-                return true;
-            }
+            return false;
         }
     }
 
@@ -193,10 +189,6 @@ $team = 'blue';
             // Remove event listener click from all tiles
             $('#board div').off('click');
 
-            // Set defaults
-            legalMove = false;
-            contact = false;
-
             // Get selected tile
             selectedTile = $(this);
             // Get values from selected tile
@@ -205,10 +197,11 @@ $team = 'blue';
 
             // Move the pawn
             if(isLegalMove(old_x, old_y, new_x, new_y, pawn, team)){
-                console.log("Moved pawn");
-                if(contact){
-                    console.log("fight");
+                if (checkForEnemyContact(new_x, new_y, team)){
+                    console.log("Fight");
                 }
+
+                console.log("Moved pawn: " + pawn);
 
                 // Get pawn ID from array
                 pawnId = getPawnId(old_x, old_y, pawn, team);
