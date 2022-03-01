@@ -50,7 +50,7 @@ $team = 'blue';
         [10, 9, 10, 0],
         [9, 10, 10, 0],
         [10, 7, 9, 0],
-        [2, 2, 2, 0]
+        [2, 2, 2, 1]
     ];
 
     const fightPawn = (attacker, defender) => {
@@ -144,22 +144,45 @@ $team = 'blue';
         })
     }
 
-    const isLegalMove = (old_x, old_y, new_x, new_y, pawn) => {
-        if(pawn == 0 || pawn == 11){ // Check for static pawns
-            return false;
-        }else if(pawn == 2){ // Check for scout pawn
-            // New X or Y can be any value except the old while the other axis has to stay the same (avoid diagonal walking)
-            if(new_x != old_x && new_y == old_y || new_y != old_y && new_x == old_x){
-                return true;
-            }else{
+    const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
+        // Get existing pawn
+        existingPawn = getPawnByCoordinate(new_x, new_y);
+        // If pawn does not exist or is not part of team ->
+        if(existingPawn == null || existingPawn[3] != team){
+            if(pawn == 0 || pawn == 11){ // Check for static pawns
                 return false;
+            }else if(pawn == 2){ // Check for scout pawn
+                // New X or Y can be any value except the old while the other axis has to stay the same (avoid diagonal walking)
+                if(new_x != old_x && new_y == old_y || new_y != old_y && new_x == old_x){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{ // Any other pawn
+                // New X or Y has to be +1 or -1 while the other coordinate axis has to stay the same (avoid diagonal walking)
+                if((new_x == old_x + 1 || new_x == old_x - 1) && new_y == old_y || (new_y == old_y + 1 || new_y == old_y - 1) && new_x == old_x){
+                    return true;
+                }else{
+                    return false;
+                }
             }
-        }else{ // Any other pawn
-            // New X or Y has to be +1 or -1 while the other coordinate axis has to stay the same (avoid diagonal walking)
-            if((new_x == old_x + 1 || new_x == old_x - 1) && new_y == old_y || (new_y == old_y + 1 || new_y == old_y - 1) && new_x == old_x){
-                return true;
-            }else{
+        }else{
+            return false;
+        }
+    }
+
+    const checkForContact = () => {
+        // Check for existing pawn
+        existingPawn = getPawnByCoordinate(new_x, new_y);
+
+        if(existingPawn == null){
+            return true;
+        }else{
+            if(existingPawn[3] == team){
                 return false;
+            }else{
+                console.log("fight");
+                return true;
             }
         }
     }
@@ -181,7 +204,7 @@ $team = 'blue';
             new_y = selectedTile.data("y");
 
             // Move the pawn
-            if(isLegalMove(old_x, old_y, new_x, new_y, pawn)){
+            if(isLegalMove(old_x, old_y, new_x, new_y, pawn, team)){
                 console.log("Moved pawn");
                 if(contact){
                     console.log("fight");
