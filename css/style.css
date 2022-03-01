@@ -9,7 +9,27 @@ body {
     background-color: lightgreen;
     padding: 0;
     margin: 0;
+    position: relative;
 }
+
+#fullboard span.log {
+    color: rgba(204, 28, 28, 1);
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    animation: slideOut 5s both ease-out;
+}
+
+@keyframes slideOut {
+    0% {
+      transform: translateY(-100%);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+  }
 
 #board {
     margin: 0 auto;

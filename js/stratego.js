@@ -122,6 +122,16 @@ const fight = (attackingPawn, defendingPawn) => {
     }
 }
 
+const log = (message) => {
+    let log = $('<span>' + message + '</span>')
+        .appendTo('#fullboard')
+        .addClass('log');
+
+    setTimeout(function(){
+        log.remove();
+    }, 6000);
+}
+
 const mirrorNumber = (n) => {
     return BOARD_SIZE - (n - 1);
 }
@@ -327,6 +337,7 @@ const movePawn = (old_x, old_y, pawn, team) => {
             // Place pawns
             placePawns();
         }else{
+            log("Illegal move.");
             console.log("Illegal move");
             // Re attach click event
             pawns.forEach(pawn => {
