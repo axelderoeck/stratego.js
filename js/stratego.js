@@ -80,6 +80,15 @@ let pawns = [
     [2, 2, 11, 1]
 ];
 
+/* Cemetery 2D array = [[Pawn, Team], ...]
+*
+* @param pawns[ID][0] = Pawn (0-11) // Flag = 0, Spy = 1, Bomb = 11
+* @param pawns[ID][1] = Team (0/1) // Blue = 0, Red = 1
+* 
+**/
+
+let cemetery = [];
+
 const fight = (attackingPawn, defendingPawn) => {
 
     /* This function is written in favor of the attacker.
@@ -254,7 +263,8 @@ const movePawn = (old_x, old_y, pawn, team) => {
                 switch (fight(pawn, defendingPawn[2])){
                     case true:
                         console.log("won fight");
-                        // Delete the defending pawn
+                        // Delete/kill the defending pawn
+                        cemetery.push([defendingPawn[2], defendingPawn[3]]);
                         deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
                         // Set new coordinate values to pawn
                         pawns[pawnId][0] = new_x;
@@ -263,14 +273,17 @@ const movePawn = (old_x, old_y, pawn, team) => {
                         break;
                     case false:
                         console.log("lost fight");
-                        // Delete the attacking pawn
+                        // Delete/kill the attacking pawn
+                        cemetery.push([pawn, team]);
                         deletePawn(old_x, old_y, pawn, team);
 
                         break;
                     case "stalemate":
                         console.log("both lose");
-                        // Delete both pawns
+                        // Delete/kill both pawns
+                        cemetery.push([pawn, team]);
                         deletePawn(old_x, old_y, pawn, team);
+                        cemetery.push([defendingPawn[2], defendingPawn[3]]);
                         deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
 
                         break;
