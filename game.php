@@ -47,26 +47,52 @@ $team = 'blue';
 
     let pawns = [
         [10, 10, 0, 0],
+        [9, 10, 1, 0],
+        [8, 10, 2, 0],
+        [7, 10, 3, 0],
+        [6, 10, 4, 0],
+        [5, 10, 5, 0],
+        [4, 10, 6, 0],
+        [3, 10, 7, 0],
+        [2, 10, 8, 0],
+        [1, 10, 9, 0],
         [10, 9, 10, 0],
-        [9, 10, 10, 0],
-        [10, 7, 9, 0],
-        [2, 2, 2, 1]
+        [9, 9, 11, 0],
+        [1, 1, 0, 1],
+        [2, 1, 1, 1],
+        [3, 1, 2, 1],
+        [4, 1, 3, 1],
+        [5, 1, 4, 1],
+        [6, 1, 5, 1],
+        [7, 1, 6, 1],
+        [8, 1, 7, 1],
+        [9, 1, 8, 1],
+        [10, 1, 9, 1],
+        [1, 2, 10, 1],
+        [2, 2, 11, 1]
     ];
 
-    const fightPawn = (attacker, defender) => {
-        if (attacker < defender){
-            if(defender != 1 && attacker == 0) {
-                console.log("attacker lose");
-            }else if(defender == 8 && attacker == 10){
-                console.log("bomb defused");
-            }else{
-                console.log("attacker win");
-            }
-        }else if(attacker == defender){
+    const fightPawn = (attackingPawn, defendingPawn) => {
+        if(attackingPawn < defendingPawn){
+            console.log("attacker lose");
+        }else if(attackingPawn == defendingPawn){
             console.log("both lose");
         }else{
-            console.log("attacker lose")
+            console.log("defender lose");
         }
+        // if (attackingPawn < defendingPawn){
+        //     if(defender != 1 && attacker == 0) {
+        //         console.log("attacker lose");
+        //     }else if(defender == 8 && attacker == 10){
+        //         console.log("bomb defused");
+        //     }else{
+        //         console.log("attacker win");
+        //     }
+        // }else if(attacker == defender){
+        //     console.log("both lose");
+        // }else{
+        //     console.log("attacker lose")
+        // }
     }
 
     const addPawn = (x, y, pawn, team) => {
