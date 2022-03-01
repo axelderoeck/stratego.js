@@ -44,7 +44,7 @@ $team = 'blue';
     * @param pawns[ID][3] = Team (0/1) // Blue = 0, Red = 1
     * 
     **/
-
+   
     let pawns = [
         [10, 10, 11, 0],
         [10, 9, 10, 0],
@@ -137,7 +137,7 @@ $team = 'blue';
         // Place pawns
         pawns.forEach(pawn => {
             $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
-                .prepend('<img src="./themes/<?=$theme?>/' + pawn[3] + '/' + pawn[2] + '.svg" />')
+                .prepend('<img src="./themes/<?=$theme?>/' + pawn[3] + '/' + pawn[2] + '.png" />')
                 .click(function() {
                     movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
                 });
