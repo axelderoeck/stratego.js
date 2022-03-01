@@ -216,6 +216,27 @@ const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
             }else if(pawn == 2){ // Check for scout pawn
                 // New X or Y can be any value except the old while the other axis has to stay the same (avoid diagonal walking)
                 if(new_x != old_x && new_y == old_y || new_y != old_y && new_x == old_x){
+                    //
+                    // if(old_x == new_x){
+                    //     if(old_y < new_y){
+                    //         for(i = old_y; i <= new_y; i++){
+                    //             if(isTileDisabled(new_x, i)){
+                    //                 return false;
+                    //             }
+                    //         }
+                    //     }else{
+                    //         for(i = new_y; i >= old_y; i--){
+                    //             if(isTileDisabled(new_x, i)){
+                    //                 return false;
+                    //             }
+                    //         }
+                    //     }
+                    // }
+                    // for(i = 0; i < BOARD_SIZE; i++){
+                    //     if(isTileDisabled(new_x, i) || isTileDisabled(i, new_y)){
+                    //         return false;
+                    //     }
+                    // }
                     return true;
                 }else{
                     return false;
