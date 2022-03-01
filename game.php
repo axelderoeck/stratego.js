@@ -16,21 +16,7 @@ $team = 'blue';
 </head>
 <body id="fullboard">
 
-    <div id="board">
-        <?php
-        $tile = 1;
-        for($y = 1; $y <= 10; $y++){
-            for($x = 1; $x <= 10; $x++){
-                if (in_array($tile, $unusable_tiles)){
-                    echo "<div class='unusable' data-x=$x data-y=$y data-tile=$tile></div>";
-                }else{
-                    echo "<div data-x=$x data-y=$y data-tile=$tile></div>";
-                }
-                $tile++;
-            }
-        } 
-        ?>
-    </div>
+    <div id="board"></div>
 
 <p>Current theme: <?=$theme?></p>
 

@@ -1,4 +1,41 @@
+// Size of both sides of the board, size 10 = 100 tiles
+const BOARD_SIZE = 10;
+// Coordinates of disabled tiles
+const DISABLED_TILES = [
+    // X, Y
+    // Left square
+    [3, 5],
+    [4, 5],
+    [3, 6],
+    [4, 6],
+    // Right square
+    [7, 5],
+    [8, 5],
+    [7, 6],
+    [8, 6]
+]
 
+const initBoard = () => {
+    for(y = 1; y <= BOARD_SIZE; y++){
+        for(x = 1; x <= BOARD_SIZE; x++){
+            // Create tile
+            let tile = $('<div></div>')
+                .appendTo('#board')
+                .attr('data-x', x)
+                .attr('data-y', y);
+
+            // Check if tile is disabled
+            for (var i = 0; i < DISABLED_TILES.length; i++) {
+                if (DISABLED_TILES[i][0] == x && DISABLED_TILES[i][1] == y){
+                    // Add disabled class to tile
+                    tile.addClass('disabled');
+                }
+            }
+        }
+    } 
+}
+
+initBoard();
 
 /* Pawns 2D array = [[X, Y, Pawn, Team], ...]
 *

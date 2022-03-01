@@ -41,7 +41,7 @@ body {
     opacity: 1;
 }
 
-#board div.unusable {
+#board div.disabled {
     background-color: rgba(0,0,0,0);
     visibility: hidden;
     opacity: 0;
