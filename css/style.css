@@ -48,6 +48,22 @@ body {
     height: 100%;
     width: 100%;
     overflow: hidden;
+    position: relative;
+}
+
+#board div span{
+    top: 0;
+    left: 0;
+    position: absolute;
+    font-size: 12px;
+}
+
+#board div span[data-team='0']{
+    color: blue;
+}
+
+#board div span[data-team='1']{
+    color: red;
 }
 
 #board div img {

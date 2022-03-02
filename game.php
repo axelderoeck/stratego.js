@@ -31,6 +31,7 @@ $team = 'blue';
             pawns.forEach(pawn => {
                 $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
                     .prepend('<img src="./themes/<?=$theme?>/' + pawn[3] + '/' + pawn[2] + '.png" />')
+                    .prepend('<span data-team=' + pawn[3] + '>' + pawn[2] + '</span>')
                     .click(function() {
                         movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
                     });
