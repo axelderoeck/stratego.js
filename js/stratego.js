@@ -89,13 +89,13 @@ let pawns = [
 
 let cemetery = [];
 
-const fight = (attackingPawn, defendingPawn) => {
+/* This function is written in favor of the attacker.
+*
+* true = attacker wins.
+* 
+**/
 
-    /* This function is written in favor of the attacker.
-    *
-    * true = attacker wins.
-    * 
-    **/
+const fight = (attackingPawn, defendingPawn) => {
 
     // If the defending pawn is the flag
     if(defendingPawn == 0){
