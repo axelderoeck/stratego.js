@@ -18,26 +18,26 @@ $team = 'blue';
 
     <div id="board"></div>
 
-<p>Current theme: <?=$theme?></p>
+    <p>Current theme: <?=$theme?></p>
 
-<script>
-    const placePawns = () => {
-        // Delete old images
-        $("#board div")
-            .children()
-            .remove();
-        
-        // Place pawns
-        pawns.forEach(pawn => {
-            $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
-                .prepend('<img src="./themes/<?=$theme?>/' + pawn[3] + '/' + pawn[2] + '.png" />')
-                .click(function() {
-                    movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
-                });
-        })
-    }
-</script>
-<script src="js/stratego.js"></script>
+    <script>
+        const placePawns = () => {
+            // Delete old images
+            $("#board div")
+                .children()
+                .remove();
+            
+            // Place pawns
+            pawns.forEach(pawn => {
+                $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
+                    .prepend('<img src="./themes/<?=$theme?>/' + pawn[3] + '/' + pawn[2] + '.png" />')
+                    .click(function() {
+                        movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
+                    });
+            })
+        }
+    </script>
+    <script src="js/stratego.js"></script>
     
 </body>
 </html>
