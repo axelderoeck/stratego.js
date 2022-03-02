@@ -20,6 +20,7 @@ $team = 'blue';
 
     <p>Current theme: <?=$theme?></p>
 
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
     <script>
         const placePawns = () => {
             // Delete old images
