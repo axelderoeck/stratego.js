@@ -22,27 +22,17 @@ const ROOMCODE_LENGTH = 6;
 
 let player;
 
-// Get the url parameters and put them in an object
-var params = {};
-window.location.search
-  .replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str,key,value) {
-    params[key] = value;
-  }
-);
+let roomCode;
 
-const generateString = (length) => {
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+const updatePawns = (array) => {
+    pawns = array;
+    return pawns;
 }
 
 socket.on('connect', () => {
     // If room parameter does not exist -> create room
     if (params.room){
+        roomCode = params.room
         socket.emit('joinGame', params.room);
     }else{
         socket.emit('createGame', generateString(ROOMCODE_LENGTH));
@@ -56,8 +46,14 @@ socket.on('init', (player) => {
 });
 
 socket.on('createInvite', (room) => {
+    roomCode = room;
     console.log('Invite link: http://localhost:3000/game.html?room=' + room);
 });
+
+socket.on('updatePawns', (array) => {
+    pawns = updatePawns(array);
+    placePawns(pawns);
+})
 
 const isTileDisabled = (x, y) => {
     // Check if tile is disabled
@@ -195,7 +191,7 @@ const addPawn = (x, y, pawn, team) => {
     id = getPawnId(x, y, pawn, team);
     if(id == null){
         pawns.push([x, y, pawn, team]);
-        placePawns();
+        placePawns(pawns);
         return true;
     }else{
         console.log("pawn already exists!");
@@ -208,7 +204,7 @@ const deletePawn = (x, y, pawn, team) => {
     if(id != null){
         pawns.splice(id, 1);
         cemetery.push([pawn, team]);
-        placePawns();
+        placePawns(pawns);
         return true;
     }else{
         console.log("pawn does not exist.");
@@ -378,8 +374,10 @@ const movePawn = (old_x, old_y, pawn, team) => {
                 pawns[pawnId][1] = new_y;
             }
 
+            socket.emit('updateBoard', roomCode, pawns);
+
             // Place pawns
-            placePawns();
+            placePawns(pawns);
         }else{
             log("Illegal move.");
             console.log("Illegal move");
@@ -416,4 +414,6 @@ const addRandomPawns = () => {
 }
 
 //addRandomPawns();
-placePawns();
+placePawns(pawns);
+
+//socket.emit('updateBoard', pawns);
