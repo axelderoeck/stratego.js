@@ -1,5 +1,3 @@
-let socket = io();
-
 // Size of both sides of the board, size 10 = 100 tiles
 const BOARD_SIZE = 10;
 // Coordinates of disabled tiles
@@ -16,6 +14,19 @@ const DISABLED_TILES = [
     [7, 6],
     [8, 6]
 ]
+
+let socket = io();
+
+let startButton = document.querySelector('#startButton');
+
+startButton.addEventListener('click', () => {
+    socket.emit('startGame');
+});
+
+socket.on('startGame', () => {
+    //hideStartButton();
+    console.log('started');
+});
 
 const isTileDisabled = (x, y) => {
     // Check if tile is disabled
