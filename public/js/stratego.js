@@ -1,3 +1,6 @@
+// Connect to socket
+let socket = io();
+
 // Size of both sides of the board, size 10 = 100 tiles
 const BOARD_SIZE = 10;
 // Coordinates of disabled tiles
@@ -15,17 +18,45 @@ const DISABLED_TILES = [
     [8, 6]
 ]
 
-let socket = io();
+const ROOMCODE_LENGTH = 6;
 
-let startButton = document.querySelector('#startButton');
+let player;
 
-startButton.addEventListener('click', () => {
-    socket.emit('startGame');
+// Get the url parameters and put them in an object
+var params = {};
+window.location.search
+  .replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str,key,value) {
+    params[key] = value;
+  }
+);
+
+const generateString = (length) => {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
+socket.on('connect', () => {
+    // If room parameter does not exist -> create room
+    if (params.room){
+        socket.emit('joinGame', params.room);
+    }else{
+        socket.emit('createGame', generateString(ROOMCODE_LENGTH));
+    }
+})
+
+socket.on('init', (player) => {
+    if (player == 1){
+        mirrorBoard(true);
+    }
 });
 
-socket.on('startGame', () => {
-    //hideStartButton();
-    console.log('started');
+socket.on('createInvite', (room) => {
+    console.log('Invite link: http://localhost:3000/game.html?room=' + room);
 });
 
 const isTileDisabled = (x, y) => {
