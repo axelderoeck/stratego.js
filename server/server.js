@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 const { connect } = require('http2');
+const { all } = require('proxy-addr');
 
 const publicPath = path.join(__dirname, '/../public');
 const port = process.env.PORT || 3000;
@@ -14,7 +15,7 @@ let io = socketIO(server);
 app.use(express.static(publicPath));
 
 server.listen(port, ()=> {
-    console.log(`Server is up on port ${port}.`)
+    console.log("[stratego] server is running on port " + port + ".");
 });
 
 // "\x1b[31m%s\x1b[0m" = red
@@ -25,20 +26,25 @@ server.listen(port, ()=> {
 // Rooms array
 let clientRooms = [];
 io.on('connection', (socket) => {
-    console.log('A user just connected.');
+    // Log info: new connection
+    console.log("\x1b[36m%s\x1b[0m", "[stratego] user `" + socket.id + "` connected.");
+
     socket.on('connect', () => { 
+        //
     });
 
     socket.on('createGame', (roomCode) => {
+        // Join room
         socket.join(roomCode);
+
         // Assign room to socket id
         clientRooms[socket.id] = roomCode;
 
         // Assign player number to socket
         socket.player = 0;
 
-        // Log action
-        console.log("\x1b[32m%s\x1b[0m", "[stratego] id `" + socket.id + "` successfully created room `" + roomCode + "` as player " + socket.player + ".");
+        // Log success
+        console.log("\x1b[32m%s\x1b[0m", "[stratego] user `" + socket.id + "` successfully created room `" + roomCode + "` as player " + parseInt(socket.player + 1) + ".");
 
         // Return room code to create invite
         io.emit('createInvite', roomCode);
@@ -48,57 +54,49 @@ io.on('connection', (socket) => {
 
     socket.on('joinGame', (roomCode) => {
         // Get the room by code
-        const room = io.sockets.adapter.rooms[roomCode];
+        const room = io.sockets.adapter.rooms.get(roomCode);
+
+        // Set defaults
+        let players = 0;
 
         // If room exists -> add users to variable
-        let allUsers;
         if(room){
-            // something is wrong here
-            allUsers = room.sockets;
+            players = room.size;
         }
 
-        let numClients = 0;
-        if(allUsers){
-            numClients = Object.keys(allUsers).length;
-        }
-
-        if (numClients === 0) {
+        if (players === 0) {
             //client.emit('gameNotFound');
-            console.log("\x1b[33m%s\x1b[0m", "[stratego] id `" + socket.id + "` tried to connect to room `" + roomCode + "` but the room does not exist.");
+            // Log warning
+            console.log("\x1b[33m%s\x1b[0m", "[stratego] user `" + socket.id + "` tried to connect to room `" + roomCode + "` but the room does not exist.");
             return;
-        }else if (numClients > 1){
+        }else if (players > 1){
             //client.emit('gameFull');
-            console.log("\x1b[33m%s\x1b[0m", "[stratego] id `" + socket.id + "` tried to connect to room `" + roomCode + "` but the room is full.");
+            // Log warning
+            console.log("\x1b[33m%s\x1b[0m", "[stratego] user `" + socket.id + "` tried to connect to room `" + roomCode + "` but the room is full.");
             return;
         }
 
+        // Join room
         socket.join(roomCode);
+
         // Assign room to socket id
         clientRooms[socket.id] = roomCode;
 
         // Assign player number to socket
         socket.player = 1;
 
-        // Log action
-        console.log("\x1b[32m%s\x1b[0m", "[stratego] id `" + socket.id + "` successfully joined room `" + roomCode + "` as player " + socket.player + ".");
+        // Log success
+        console.log("\x1b[32m%s\x1b[0m", "[stratego] user `" + socket.id + "` successfully joined room `" + roomCode + "` as player " + parseInt(socket.player + 1) + ".");
 
         io.emit('init', socket.player);
     });
 
     socket.on('disconnect', () => {
-        console.log('A user has disconnected.');
-        console.log('connections to server: ' + io.engine.clientsCount);
+        console.log("\x1b[36m%s\x1b[0m", "[stratego] user `" + socket.id + "` disconnected.");
+        console.log('[stratego] server connections: ' + io.engine.clientsCount);
     });
 
     socket.on('startGame', () => {
         io.emit('startGame');
     });
-
-    const newGame = () => {
-        let room = createRoom(6);
-        clientRooms[client.id] = room;
-        client.emit('gameCode', room);
-
-        client.join();
-    }
 });
