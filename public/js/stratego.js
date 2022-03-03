@@ -1,3 +1,5 @@
+let socket = io();
+
 // Size of both sides of the board, size 10 = 100 tiles
 const BOARD_SIZE = 10;
 // Coordinates of disabled tiles
