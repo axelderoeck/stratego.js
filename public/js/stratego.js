@@ -29,6 +29,19 @@ const updatePawns = (array) => {
     return pawns;
 }
 
+//let pawns = [];
+
+const init = () => {
+    initBoard();
+    placePawns(pawns);
+}
+
+const initPlayer = (team) => {
+    if(team == 1){
+        mirrorBoard();
+    }
+}
+
 socket.on('connect', () => {
     // If room parameter does not exist -> create room
     if (params.room){
@@ -39,11 +52,13 @@ socket.on('connect', () => {
     }
 })
 
-socket.on('init', (player) => {
-    if (player == 1){
-        mirrorBoard(true);
-    }
+socket.on('init', () => {
+    init();
 });
+
+socket.on('initPlayer', (player) => {
+    initPlayer(player);
+})
 
 socket.on('createInvite', (room) => {
     roomCode = room;
@@ -82,7 +97,7 @@ const initBoard = () => {
     } 
 }
 
-initBoard();
+//initBoard();
 
 /* Pawns 2D array = [[X, Y, Pawn, Team], ...]
 *
@@ -172,19 +187,9 @@ const log = (message) => {
     }, 6000);
 }
 
-const mirrorNumber = (n) => {
-    return BOARD_SIZE - (n - 1);
-}
-
-const mirrorBoard = (mirror) => {
-    // true or false
-    if(mirror){
-        $("#board").addClass("mirror");
-        $("#board div").addClass("mirror");
-    }else{
-        $("#board").removeClass("mirror");
-        $("#board div").removeClass("mirror");
-    }
+const mirrorBoard = () => {
+    $("#board").addClass("mirror");
+    $("#board div").addClass("mirror");
 }
 
 const addPawn = (x, y, pawn, team) => {
@@ -413,6 +418,7 @@ const addRandomPawns = () => {
     }
 }
 
+init();
 //addRandomPawns();
 placePawns(pawns);
 

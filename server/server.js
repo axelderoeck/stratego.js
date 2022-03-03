@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
         // Return room code to create invite
         io.emit('createInvite', roomCode);
 
-        io.emit('init', socket.player);
+        io.emit('initPlayer', socket.player);
     });
 
     socket.on('joinGame', (roomCode) => {
@@ -88,7 +88,11 @@ io.on('connection', (socket) => {
         // Log success
         console.log("\x1b[32m%s\x1b[0m", "[stratego] user `" + socket.id + "` successfully joined room `" + roomCode + "` as player " + parseInt(socket.player + 1) + ".");
 
-        io.emit('init', socket.player);
+        io.emit('initPlayer', socket.player);
+    });
+
+    socket.on('updateBoard', (roomCode, pawns) => {
+        io.sockets.in(roomCode).emit('updatePawns', pawns);
     });
 
     socket.on('disconnect', () => {
@@ -100,3 +104,7 @@ io.on('connection', (socket) => {
         io.emit('startGame');
     });
 });
+
+const updateBoard = (roomCode, pawns) => {
+    io.sockets.in(roomCode).emit('updateBoard', pawns);
+}
