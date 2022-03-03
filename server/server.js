@@ -94,7 +94,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('updateBoard', (roomCode, pawns) => {
-        io.sockets.in(roomCode).emit('updatePawns', pawns);
+        socket.in(roomCode).emit('updatePawns', pawns);
     });
 
     socket.on('disconnect', () => {

@@ -20,9 +20,11 @@ const DISABLED_TILES = [
 
 const ROOMCODE_LENGTH = 6;
 
-let player;
-
+let player = {
+    team: 0
+};
 let roomCode;
+let team;
 
 const updatePawns = (array) => {
     pawns = array;
@@ -36,10 +38,38 @@ const init = () => {
     placePawns(pawns);
 }
 
-const initPlayer = (team) => {
-    if(team == 1){
+const initPlayer = (teamNumber) => {
+    player.team = teamNumber;
+    if(player.team == 1){
         mirrorBoard();
     }
+    socket.emit('updatePawns', pawns);
+}
+
+const placePawns = (pawns) => {
+    theme = 'classic';
+
+    // Delete old images
+    $("#board div")
+        .children()
+        .remove();
+    
+    // Place pawns
+    pawns.forEach(pawn => {
+        // Create pawn
+        let tile = $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
+        // Special pawn settings based on team
+        if(pawn[3] != player.team){
+            tile.prepend('<img src="./themes/' + theme + '/' + pawn[3] + '/unknown.png" />')
+        }else{
+            tile.prepend('<img src="./themes/' + theme + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
+                .prepend('<span data-team=' + pawn[3] + '>' + pawn[2] + '</span>')
+        }
+        // Add event listener
+        tile.click(function() {
+            movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
+        });
+    })
 }
 
 socket.on('connect', () => {

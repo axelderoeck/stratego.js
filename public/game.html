@@ -15,26 +15,6 @@
 
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
-    <script>
-        const placePawns = (pawns) => {
-            theme = 'classic';
-
-            // Delete old images
-            $("#board div")
-                .children()
-                .remove();
-            
-            // Place pawns
-            pawns.forEach(pawn => {
-                $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
-                    .prepend('<img src="./themes/' + theme + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
-                    .prepend('<span data-team=' + pawn[3] + '>' + pawn[2] + '</span>')
-                    .click(function() {
-                        movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
-                    });
-            })
-        }
-    </script>
     <script src="js/stratego.js"></script>
     
 </body>
