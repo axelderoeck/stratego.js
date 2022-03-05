@@ -18,12 +18,15 @@ const updatePawns = (array) => {
 //let pawns = [];
 
 const init = (teamNumber) => {
+    // Create the board
+    initBoard();
     // Assign team number
     player.team = teamNumber;
     // Mirror the board if it's player 2
     if(player.team == 1){
         mirrorBoard();
     }
+    
     console.log('You are player '+ parseInt(player.team + 1));
     socket.emit('updatePawns', pawns);
     placePawns(pawns);
@@ -108,7 +111,7 @@ const initBoard = () => {
     } 
 }
 
-initBoard();
+//initBoard();
 
 /* Pawns 2D array = [[X, Y, Pawn, Team], ...]
 *
