@@ -18,11 +18,6 @@ server.listen(port, ()=> {
     console.log("[stratego] server is running on port " + port + ".");
 });
 
-// "\x1b[31m%s\x1b[0m" = red
-// "\x1b[33m%s\x1b[0m" = yellow
-// "\x1b[32m%s\x1b[0m" = green
-// "\x1b[36m%s\x1b[0m" = cyan
-
 // Rooms array
 let clientRooms = [];
 io.on('connection', (socket) => {
