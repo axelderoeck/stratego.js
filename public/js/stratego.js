@@ -17,18 +17,16 @@ const updatePawns = (array) => {
 
 //let pawns = [];
 
-const init = () => {
-    //initBoard();
-    placePawns(pawns);
-}
-
-const initPlayer = (teamNumber) => {
+const init = (teamNumber) => {
+    // Assign team number
     player.team = teamNumber;
+    // Mirror the board if it's player 2
     if(player.team == 1){
         mirrorBoard();
     }
     console.log('You are player '+ parseInt(player.team + 1));
     socket.emit('updatePawns', pawns);
+    placePawns(pawns);
 }
 
 const placePawns = (pawns) => {
@@ -69,12 +67,8 @@ socket.on('connect', () => {
     }
 })
 
-socket.on('init', () => {
-    init();
-});
-
-socket.on('initPlayer', (player) => {
-    initPlayer(player);
+socket.on('init', (player) => {
+    init(player);
 })
 
 socket.on('createInvite', (room) => {
@@ -456,7 +450,6 @@ const addRandomPawns = () => {
     }
 }
 
-init();
 //addRandomPawns();
 placePawns(pawns);
 
