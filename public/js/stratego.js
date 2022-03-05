@@ -330,8 +330,46 @@ const checkForEnemyContact = (new_x, new_y, team) => {
 }
 
 const movePawn = (old_x, old_y, pawn, team) => {
+
+    // TODO: replace last section with first section
+    // Check for static pawn
+    if(pawn == 11 || pawn == 0){
+        // Cancel move
+        return;
+    }
+    // Check all the tiles
+    $("#board div").each(function(){
+        // Check for legal tiles
+        if(isLegalMove(old_x, old_y, $(this).data('x'), $(this).data('y'), pawn, team)){
+            // Add color to legal tile
+            $(this).addClass('legalMove');
+            // Add move event to legal tile
+            $(this).on("click", function(){
+                // Remove classes from the tiles
+                $('#board div').removeClass('legalMove selected');
+                // Remove event listener click from all tiles
+                $('#board div').off('click');
+                // Get values from selected tile
+                new_x = $(this).data("x");
+                new_y = $(this).data("y");
+            });
+        }else if($(this).data("x") == old_x && $(this).data("y") == old_y){
+            // Set selected tile
+            $(this).addClass('selected');
+            // Add cancel event
+            $(this).on("click", function(){
+                // Remove classes from the tiles
+                $('#board div').removeClass('legalMove selected');
+                // Remove event listener click from all tiles
+                $('#board div').off('click');
+            });
+        }
+    });
+    // replace this
     // Add event listener to all tiles
     $('#board div').on("click", function(){
+        // Remove colors from tiles
+        $('#board div').removeClass('legalMove');
         // Remove event listener click from all tiles
         $('#board div').off('click');
 
