@@ -24,10 +24,6 @@ io.on('connection', (socket) => {
     // Log info: new connection
     console.log("\x1b[36m%s\x1b[0m", "[stratego] user `" + socket.id + "` connected.");
 
-    socket.on('connect', () => { 
-        //
-    });
-
     socket.on('createGame', (roomCode) => {
         // Join room
         socket.join(roomCode);
@@ -42,10 +38,10 @@ io.on('connection', (socket) => {
         console.log("\x1b[32m%s\x1b[0m", "[stratego] user `" + socket.id + "` successfully created room `" + roomCode + "` as player " + parseInt(socket.player + 1) + ".");
 
         // Return room code to create invite
-        io.emit('createInvite', roomCode);
+        io.in(roomCode).emit('createInvite', roomCode);
 
-        socket.to(roomCode).emit('initPlayer', socket.player);
-        //io.emit('initPlayer', socket.player);
+        //socket.to(roomCode).emit('initPlayer', socket.player);
+        socket.emit('initPlayer', socket.player);
     });
 
     socket.on('joinGame', (roomCode) => {
@@ -84,8 +80,8 @@ io.on('connection', (socket) => {
         // Log success
         console.log("\x1b[32m%s\x1b[0m", "[stratego] user `" + socket.id + "` successfully joined room `" + roomCode + "` as player " + parseInt(socket.player + 1) + ".");
         
-        socket.to(roomCode).emit('initPlayer', socket.player);
-        //io.emit('initPlayer', socket.player);
+        //socket.to(roomCode).emit('initPlayer', socket.player);
+        socket.emit('initPlayer', socket.player);
     });
 
     socket.on('updateBoard', (roomCode, pawns) => {

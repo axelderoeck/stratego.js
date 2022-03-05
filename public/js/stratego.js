@@ -27,7 +27,7 @@ const initPlayer = (teamNumber) => {
     if(player.team == 1){
         mirrorBoard();
     }
-    console.log(player.team + 1);
+    console.log('You are player '+ parseInt(player.team + 1));
     socket.emit('updatePawns', pawns);
 }
 
