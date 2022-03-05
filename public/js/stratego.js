@@ -50,10 +50,12 @@ const placePawns = (pawns) => {
             tile.prepend('<img src="./themes/' + theme + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
                 .prepend('<span data-team=' + pawn[3] + '>' + pawn[2] + '</span>')
         }
-        // Add event listener
-        tile.click(function() {
-            movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
-        });
+        if(pawn[3] == player.team){
+            // Add event listener
+            tile.click(function() {
+                movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
+            });
+        }
     })
 }
 
@@ -423,20 +425,13 @@ const movePawn = (old_x, old_y, pawn, team) => {
             }
 
             socket.emit('updateBoard', roomCode, pawns);
-
-            // Place pawns
-            placePawns(pawns);
         }else{
             log("Illegal move.");
             console.log("Illegal move");
-            // Re attach click event
-            pawns.forEach(pawn => {
-                $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
-                .click(function() {
-                    movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
-                });
-            })
         }
+
+        // Place pawns
+        placePawns(pawns);
     });
 }
 
