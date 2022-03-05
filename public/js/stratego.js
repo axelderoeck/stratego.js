@@ -18,7 +18,7 @@ const updatePawns = (array) => {
 //let pawns = [];
 
 const init = () => {
-    initBoard();
+    //initBoard();
     placePawns(pawns);
 }
 
@@ -27,6 +27,7 @@ const initPlayer = (teamNumber) => {
     if(player.team == 1){
         mirrorBoard();
     }
+    console.log(player.team + 1);
     socket.emit('updatePawns', pawns);
 }
 
@@ -111,7 +112,7 @@ const initBoard = () => {
     } 
 }
 
-//initBoard();
+initBoard();
 
 /* Pawns 2D array = [[X, Y, Pawn, Team], ...]
 *
@@ -189,16 +190,6 @@ const fight = (attackingPawn, defendingPawn) => {
         }
         return true;
     }
-}
-
-const log = (message) => {
-    let log = $('<span>' + message + '</span>')
-        .appendTo('#fullboard')
-        .addClass('log');
-
-    setTimeout(function(){
-        log.remove();
-    }, 6000);
 }
 
 const mirrorBoard = () => {

@@ -17,3 +17,12 @@ const generateString = (length) => {
     return result;
 }
 
+const log = (message) => {
+  let log = $('<span>' + message + '</span>')
+      .appendTo('#fullboard')
+      .addClass('log');
+
+  setTimeout(function(){
+      log.remove();
+  }, 6000);
+}
