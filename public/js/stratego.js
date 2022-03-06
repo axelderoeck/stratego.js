@@ -26,7 +26,7 @@ const init = (teamNumber) => {
     if(player.team == 1){
         mirrorBoard();
     }
-    
+
     console.log('You are player '+ parseInt(player.team + 1));
     socket.emit('updatePawns', pawns);
     placePawns(pawns);
@@ -164,8 +164,7 @@ let cemetery = [];
 * 
 **/
 
-const fight = (attackingPawn, defendingPawn) => {
-
+const fightOutcome = (attackingPawn, defendingPawn) => {
     // If the defending pawn is the flag
     if(defendingPawn == 0){
         return "win";
@@ -189,6 +188,45 @@ const fight = (attackingPawn, defendingPawn) => {
         }
         return true;
     }
+}
+
+const fight = (x1, y1, x2, y2, array) => {
+    attackingPawn = getPawnByCoordinate(x1, y1);
+    defendingPawn = getPawnByCoordinate(x2, y2);
+
+    attackingPawnId = getPawnId(attackingPawn[0], attackingPawn[1], attackingPawn[2], attackingPawn[3]);
+    switch (fightOutcome(attackingPawn[2], defendingPawn[2])){
+        case true:
+            console.log("won fight");
+            // Delete/kill the defending pawn
+            deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
+            // Set new coordinate values to pawn
+            array[attackingPawnId][0] = defendingPawn[0];
+            array[attackingPawnId][1] = defendingPawn[1];
+            break;
+        case false:
+            console.log("lost fight");
+            // Delete/kill the attacking pawn
+            deletePawn(attackingPawn[0], attackingPawn[1], attackingPawn[2], attackingPawn[3]);
+            break;
+        case "stalemate":
+            console.log("both lose");
+            // Delete/kill both pawns
+            deletePawn(attackingPawn[0], attackingPawn[1], attackingPawn[2], attackingPawn[3]);
+            deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
+            break;
+        case "win":
+            console.log("won game");
+            // Delete/kill the defending pawn
+            deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
+            // Set new coordinate values to pawn
+            array[attackingPawnId][0] = defendingPawn[0];
+            array[attackingPawnId][1] = defendingPawn[1];
+            endGame();
+            break;
+    }
+
+    return array;
 }
 
 const mirrorBoard = () => {
@@ -329,7 +367,6 @@ const checkForEnemyContact = (new_x, new_y, team) => {
 }
 
 const movePawn = (old_x, old_y, pawn, team) => {
-
     // TODO: replace last section with first section
     // Check for static pawn
     if(pawn == 11 || pawn == 0){
@@ -385,7 +422,7 @@ const movePawn = (old_x, old_y, pawn, team) => {
 
             if (checkForEnemyContact(new_x, new_y, team)){
                 defendingPawn = getPawnByCoordinate(new_x, new_y);
-                switch (fight(pawn, defendingPawn[2])){
+                switch (fightOutcome(pawn, defendingPawn[2])){
                     case true:
                         console.log("won fight");
                         // Delete/kill the defending pawn
