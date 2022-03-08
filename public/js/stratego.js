@@ -311,7 +311,10 @@ const getPawnId = (x, y, pawn, team) => {
 
 const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
     // Get pawn info from new tile
-    tilePawn = getPawnByCoordinate(new_x, new_y);
+    let tilePawn = getPawnByCoordinate(new_x, new_y);
+
+    // Set defaults
+    let passedEnemies = 0;
 
     // Check if tile is disabled
     if(!isTileDisabled(new_x, new_y)){
@@ -322,27 +325,67 @@ const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
             }else if(pawn == 2){ // Check for scout pawn
                 // New X or Y can be any value except the old while the other axis has to stay the same (avoid diagonal walking)
                 if(new_x != old_x && new_y == old_y || new_y != old_y && new_x == old_x){
-                    //
-                    // if(old_x == new_x){
-                    //     if(old_y < new_y){
-                    //         for(i = old_y; i <= new_y; i++){
-                    //             if(isTileDisabled(new_x, i)){
-                    //                 return false;
-                    //             }
-                    //         }
-                    //     }else{
-                    //         for(i = new_y; i >= old_y; i--){
-                    //             if(isTileDisabled(new_x, i)){
-                    //                 return false;
-                    //             }
-                    //         }
-                    //     }
-                    // }
-                    // for(i = 0; i < BOARD_SIZE; i++){
-                    //     if(isTileDisabled(new_x, i) || isTileDisabled(i, new_y)){
-                    //         return false;
-                    //     }
-                    // }
+                    if(old_x == new_x){
+                        if(old_y < new_y){
+                            for(i = old_y +1; i <= new_y; i++){
+                                if (getPawnByCoordinate(new_x, i) != null){
+                                    if (checkForEnemyContact(new_x, i, team)){
+                                        passedEnemies++;
+                                        if(passedEnemies > 1){
+                                            return false;
+                                        }
+                                    }
+                                }
+                                if(isTileDisabled(new_x, i)){
+                                    return false;
+                                }
+                            }
+                        }else{
+                            for(i = old_y -1; i >= new_y; i--){
+                                if (getPawnByCoordinate(new_x, i) != null){
+                                    if (checkForEnemyContact(new_x, i, team)){
+                                        passedEnemies++;
+                                        if(passedEnemies > 1){
+                                            return false;
+                                        }
+                                    }
+                                }
+                                if(isTileDisabled(new_x, i)){
+                                    return false;
+                                }
+                            }
+                        }
+                    }else if(old_y == new_y){
+                        if(old_x < new_x){
+                            for(i = old_x +1; i <= new_x; i++){
+                                if (getPawnByCoordinate(i, new_y) != null){
+                                    if (checkForEnemyContact(i, new_y, team)){
+                                        passedEnemies++;
+                                        if(passedEnemies > 1){
+                                            return false;
+                                        }
+                                    }
+                                }
+                                if(isTileDisabled(i, new_y)){
+                                    return false;
+                                }
+                            }
+                        }else{
+                            for(i = old_x -1; i >= new_x; i--){
+                                if (getPawnByCoordinate(i, new_y) != null){
+                                    if (checkForEnemyContact(i, new_y, team)){
+                                        passedEnemies++;
+                                        if(passedEnemies > 1){
+                                            return false;
+                                        }
+                                    }
+                                }
+                                if(isTileDisabled(i, new_y)){
+                                    return false;
+                                }
+                            }
+                        }
+                    }
                     return true;
                 }else{
                     return false;
