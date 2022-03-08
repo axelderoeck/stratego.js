@@ -108,6 +108,7 @@ body {
 }
 
 #board div.legalMove {
+    opacity: 1;
     background-color: rgba(241, 239, 100, 0.4) !important;
     -webkit-box-shadow:inset 0px 0px 0px 2px #e6fd17;
     -moz-box-shadow:inset 0px 0px 0px 2px #e6fd17;
