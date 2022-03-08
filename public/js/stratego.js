@@ -382,10 +382,16 @@ const movePawn = (old_x, old_y, pawn, team) => {
         // Cancel move
         return;
     }
+    // Set defaults
+    let atLeastOneLegalMove = false;
     // Check all the tiles
     $("#board div").each(function(){
         // Check for legal tiles
         if(isLegalMove(old_x, old_y, $(this).data('x'), $(this).data('y'), pawn, team)){
+            // Turn checker on if isn't on already
+            if(!atLeastOneLegalMove){
+                atLeastOneLegalMove = true;
+            }
             // Add color to legal tile
             $(this).addClass('legalMove shineEffect');
             // Check if tile has an enemy
@@ -418,6 +424,13 @@ const movePawn = (old_x, old_y, pawn, team) => {
             });
         }
     });
+    // Check if pawn has legal moves -> if none cancel
+    if(!atLeastOneLegalMove){
+        // Remove classes from the tiles
+        $('#board div').removeClass('selected');
+        return;
+    }
+
     // replace this
     // Add event listener to all tiles
     $('#board div').on("click", function(){
