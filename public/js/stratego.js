@@ -95,6 +95,10 @@ const isTileDisabled = (x, y) => {
 }
 
 const initBoard = () => {
+    // Delete possible existing tiles
+    $("#board").children().remove();
+
+    // Create all tiles
     for(y = 1; y <= BOARD_SIZE; y++){
         for(x = 1; x <= BOARD_SIZE; x++){
             // Create tile
@@ -110,8 +114,6 @@ const initBoard = () => {
         }
     } 
 }
-
-//initBoard();
 
 /* Pawns 2D array = [[X, Y, Pawn, Team], ...]
 *
