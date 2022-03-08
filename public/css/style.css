@@ -83,15 +83,6 @@ body {
     animation: scale 0.5s both ease-out;
 }
 
-@keyframes scale {
-    0% {
-        transform: scale(0);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
 #board div:hover {
     opacity: 1;
 }
@@ -144,7 +135,7 @@ body {
   
 .shineEffect:hover {
     transition: 0.5s;
-    transform: scale(1.03);
+    /* transform: scale(1.03); */
     background-position: 0 0, 0 0;
     -webkit-transition-duration: 0.5s;
     -moz-transition-duration: 0.5s;
