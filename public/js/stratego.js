@@ -282,6 +282,10 @@ const getPawnByCoordinate = (x, y) => {
     }
 }
 
+const getPawnById = (id) => {
+    return pawns[id]
+}
+
 const getPawnId = (x, y, pawn, team) => {
     found = false;
     // Loop through all pawns
