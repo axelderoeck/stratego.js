@@ -1,0 +1,5 @@
+@media only screen and (max-width: 660px) {
+    #board {
+        width: 100%;
+    }
+}
