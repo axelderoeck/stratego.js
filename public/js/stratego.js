@@ -35,15 +35,18 @@ const init = (teamNumber) => {
 const placePawns = (pawns) => {
     theme = 'classic';
 
-    // Delete old images
+    // Delete old images and effects
     $("#board div")
+        .removeClass('shineEffect')
         .children()
         .remove();
     
     // Place pawns
     pawns.forEach(pawn => {
         // Create pawn
-        let tile = $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']")
+        let tile = $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']");
+        // Add shine effect to pawn
+        tile.addClass('shineEffect');
         // Special pawn settings based on team
         if(pawn[3] != player.team){
             tile.prepend('<img src="./themes/' + theme + '/' + pawn[3] + '/unknown.png" />')
@@ -384,13 +387,19 @@ const movePawn = (old_x, old_y, pawn, team) => {
         // Check for legal tiles
         if(isLegalMove(old_x, old_y, $(this).data('x'), $(this).data('y'), pawn, team)){
             // Add color to legal tile
-            $(this).addClass('legalMove');
+            $(this).addClass('legalMove shineEffect');
+            // Check if tile has an enemy
+            if(checkForEnemyContact($(this).data('x'), $(this).data('y'), team)){
+                $(this).prepend('<img class="fightIcon" src="./themes/classic/fight.png" />');
+            }
             // Add move event to legal tile
             $(this).on("click", function(){
                 // Remove classes from the tiles
-                $('#board div').removeClass('legalMove selected');
+                $('#board div').removeClass('legalMove selected shineEffect');
                 // Remove event listener click from all tiles
                 $('#board div').off('click');
+                // Delete all images with fighticon class
+                $("img").remove(".fightIcon");
                 // Get values from selected tile
                 new_x = $(this).data("x");
                 new_y = $(this).data("y");
@@ -401,9 +410,11 @@ const movePawn = (old_x, old_y, pawn, team) => {
             // Add cancel event
             $(this).on("click", function(){
                 // Remove classes from the tiles
-                $('#board div').removeClass('legalMove selected');
+                $('#board div').removeClass('legalMove selected shineEffect');
                 // Remove event listener click from all tiles
                 $('#board div').off('click');
+                // Delete all images with fighticon class
+                $("img").remove(".fightIcon");
             });
         }
     });
