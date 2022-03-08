@@ -328,7 +328,7 @@ const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
                     if(old_x == new_x){
                         if(old_y < new_y){
                             for(i = old_y +1; i <= new_y; i++){
-                                if(passedEnemies >= 1){
+                                if(passedEnemies >= 1 || isTileDisabled(new_x, i)){
                                     return false;
                                 }
                                 if (getPawnByCoordinate(new_x, i) != null){
@@ -337,14 +337,11 @@ const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
                                     }else{
                                         return false;
                                     }
-                                }
-                                if(isTileDisabled(new_x, i)){
-                                    return false;
                                 }
                             }
                         }else{
                             for(i = old_y -1; i >= new_y; i--){
-                                if(passedEnemies >= 1){
+                                if(passedEnemies >= 1 || isTileDisabled(new_x, i)){
                                     return false;
                                 }
                                 if (getPawnByCoordinate(new_x, i) != null){
@@ -353,16 +350,13 @@ const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
                                     }else{
                                         return false;
                                     }
-                                }
-                                if(isTileDisabled(new_x, i)){
-                                    return false;
                                 }
                             }
                         }
                     }else if(old_y == new_y){
                         if(old_x < new_x){
                             for(i = old_x +1; i <= new_x; i++){
-                                if(passedEnemies >= 1){
+                                if(passedEnemies >= 1 || isTileDisabled(i, new_y)){
                                     return false;
                                 }
                                 if (getPawnByCoordinate(i, new_y) != null){
@@ -371,14 +365,11 @@ const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
                                     }else{
                                         return false;
                                     }
-                                }
-                                if(isTileDisabled(i, new_y)){
-                                    return false;
                                 }
                             }
                         }else{
                             for(i = old_x -1; i >= new_x; i--){
-                                if(passedEnemies >= 1){
+                                if(passedEnemies >= 1 || isTileDisabled(i, new_y)){
                                     return false;
                                 }
                                 if (getPawnByCoordinate(i, new_y) != null){
@@ -387,9 +378,6 @@ const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
                                     }else{
                                         return false;
                                     }
-                                }
-                                if(isTileDisabled(i, new_y)){
-                                    return false;
                                 }
                             }
                         }
