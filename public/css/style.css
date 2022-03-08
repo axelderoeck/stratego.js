@@ -1,3 +1,8 @@
+@font-face {
+    font-family: fredoka;
+    src: url(fonts/Fredoka-VariableFont_wdth\,wght.ttf);
+}
+
 html,
 body {
     height:100%;
@@ -55,7 +60,8 @@ body {
     top: 0;
     left: 0;
     position: absolute;
-    font-size: 12px;
+    font-family: fredoka;
+    font-size: 100%;
 }
 
 #board div span[data-team='0']{
