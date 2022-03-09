@@ -217,42 +217,40 @@ const fightOutcome = (attackingPawn, defendingPawn) => {
     }
 }
 
-const fight = (x1, y1, x2, y2, array) => {
-    attackingPawn = getPawnByCoordinate(x1, y1);
-    defendingPawn = getPawnByCoordinate(x2, y2);
-
+const fight = (attackingPawn, defendingPawn, array) => {
+    // Get id from attacking pawn
     attackingPawnId = getPawnId(attackingPawn[0], attackingPawn[1], attackingPawn[2], attackingPawn[3]);
+    // Check for fight result
     switch (fightOutcome(attackingPawn[2], defendingPawn[2])){
         case true:
             console.log("won fight");
-            // Delete/kill the defending pawn
-            deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
             // Set new coordinate values to pawn
             array[attackingPawnId][0] = defendingPawn[0];
             array[attackingPawnId][1] = defendingPawn[1];
+            // Delete/kill the defending pawn
+            deletePawn(defendingPawn, array);
             break;
         case false:
             console.log("lost fight");
             // Delete/kill the attacking pawn
-            deletePawn(attackingPawn[0], attackingPawn[1], attackingPawn[2], attackingPawn[3]);
+            deletePawn(attackingPawn, array);
             break;
         case "stalemate":
             console.log("both lose");
             // Delete/kill both pawns
-            deletePawn(attackingPawn[0], attackingPawn[1], attackingPawn[2], attackingPawn[3]);
-            deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
+            deletePawn(attackingPawn, array);
+            deletePawn(defendingPawn, array);
             break;
         case "win":
             console.log("won game");
-            // Delete/kill the defending pawn
-            deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
             // Set new coordinate values to pawn
             array[attackingPawnId][0] = defendingPawn[0];
             array[attackingPawnId][1] = defendingPawn[1];
-            endGame();
+            // Delete/kill the defending pawn
+            deletePawn(defendingPawn, array);
+            endGame(attackingPawn[3]);
             break;
     }
-
     return array;
 }
 
@@ -273,22 +271,26 @@ const addPawn = (x, y, pawn, team) => {
     }
 }
 
-const deletePawn = (x, y, pawn, team) => {
-    id = getPawnId(x, y, pawn, team);
+const deletePawn = (pawn, array) => {
+    id = getPawnId(pawn[0], pawn[1], pawn[2], pawn[3]);
     if(id != null){
-        pawns.splice(id, 1);
-        cemetery.push([pawn, team]);
-        placePawns(pawns);
+        // Remove pawn from array
+        array.splice(id, 1);
+        // Add pawn to cemetery array
+        cemetery.push([pawn[2], pawn[3]]);
+        // Place all pawns
+        placePawns(array);
         return true;
     }else{
-        console.log("pawn does not exist.");
+        console.log("pawn: " + pawn + " does not exist.");
         return false;
     }
 }
 
-const endGame = () => {
+const endGame = (player) => {
     // Remove event listener click from all tiles
     $('#board div').off('click');
+    console.log("player: " + parseInt(player + 1) + " has won the game.");
     console.log("The game has ended.");
 }
 
@@ -517,37 +519,7 @@ const movePawn = (old_x, old_y, pawn, team) => {
                 attackingPawn = getPawnById(pawnId);
                 defendingPawn = getPawnByCoordinate(new_x, new_y);
 
-                fight(attackingPawn, defendingPawn);
-            
-                // switch (fightOutcome(attackingPawn, defendingPawn)){
-                //     case true:
-                //         console.log("won fight");
-                //         // Delete/kill the defending pawn
-                //         deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
-                //         // Set new coordinate values to pawn
-                //         pawns[pawnId][0] = new_x;
-                //         pawns[pawnId][1] = new_y;
-
-                //         break;
-                //     case false:
-                //         console.log("lost fight");
-                //         // Delete/kill the attacking pawn
-                //         deletePawn(old_x, old_y, pawn, team);
-
-                //         break;
-                //     case "stalemate":
-                //         console.log("both lose");
-                //         // Delete/kill both pawns
-                //         deletePawn(old_x, old_y, pawn, team);
-                //         deletePawn(defendingPawn[0], defendingPawn[1], defendingPawn[2], defendingPawn[3]);
-
-                //         break;
-                //     case "win":
-                //         console.log("won game");
-                //         endGame();
-
-                //         break;
-                // }
+                pawns = fight(attackingPawn, defendingPawn, pawns);
             }else{
                 console.log("Moved pawn: " + pawn);
                 // Set new coordinate values to pawn
