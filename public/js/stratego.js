@@ -15,6 +15,7 @@ const updatePawns = (array) => {
     return pawns;
 }
 
+/*
 // Add shine effect to a random pawn every minute
 setInterval(function(){ 
     // Generate random axis values
@@ -34,6 +35,7 @@ setInterval(function(){
         tile.removeClass("forceShine");
     }, 1000);
 }, 60000);
+*/
 
 //let pawns = [];
 
