@@ -54,7 +54,7 @@ const init = (teamNumber) => {
     placePawns(pawns);
 }
 
-const placePawns = (pawns) => {
+const placePawns = (array) => {
     theme = 'classic';
 
     // Delete old images and effects
@@ -64,7 +64,7 @@ const placePawns = (pawns) => {
         .remove();
     
     // Place pawns
-    pawns.forEach(pawn => {
+    array.forEach(pawn => {
         // Create pawn
         let tile = $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']");
         // Add shine effect to pawn
@@ -100,8 +100,9 @@ socket.on('init', (player) => {
 })
 
 socket.on('createInvite', (room) => {
+    ip = "192.168.0.167";
     roomCode = room;
-    console.log('Invite link: http://localhost:3000/game.html?room=' + room);
+    console.log('Invite link: http://' + ip + ':3000/game.html?room=' + room);
 });
 
 socket.on('updatePawns', (array) => {
@@ -466,14 +467,35 @@ const movePawn = (old_x, old_y, pawn, team) => {
             $(this).on("click", function(){
                 // Remove classes from the tiles
                 $('#board div').removeClass('legalMove selected shineEffect');
-                // Remove event listener click from all tiles
-                $('#board div').off('click');
                 // Delete all images with fighticon class
                 $("img").remove(".fightIcon");
                 // Get values from selected tile
                 new_x = $(this).data("x");
                 new_y = $(this).data("y");
+                // Get pawn ID from array
+                pawnId = getPawnId(old_x, old_y, pawn, team);
+                // Check if there has to be a fight
+                if (checkForEnemyContact(new_x, new_y, team)){
+                    // Get full pawn object of both parties
+                    attackingPawn = getPawnById(pawnId);
+                    defendingPawn = getPawnByCoordinate(new_x, new_y);
+                    // Execute the fight
+                    pawns = fight(attackingPawn, defendingPawn, pawns);
+                }else{
+                    console.log("Moved pawn: " + pawn + " to x:" + new_x + " y:" + new_y);
+                    console.log(pawn);
+                    // Set new coordinate values to pawn
+                    pawns[pawnId][0] = new_x;
+                    pawns[pawnId][1] = new_y;
+                }
+                // Remove event listener click from all tiles
+                $('#board div').off('click');
+                // Place pawns
+                placePawns(pawns);
+                // Update the array on server
+                socket.emit('updateBoard', roomCode, pawns);
             });
+        // Cancel on click same tile
         }else if($(this).data("x") == old_x && $(this).data("y") == old_y){
             // Set selected tile
             $(this).addClass('selected');
@@ -481,10 +503,12 @@ const movePawn = (old_x, old_y, pawn, team) => {
             $(this).on("click", function(){
                 // Remove classes from the tiles
                 $('#board div').removeClass('legalMove selected shineEffect');
-                // Remove event listener click from all tiles
-                $('#board div').off('click');
                 // Delete all images with fighticon class
                 $("img").remove(".fightIcon");
+                // Remove event listener click from all tiles
+                $('#board div').off('click');
+                // Place pawns
+                placePawns(pawns);
             });
         }
     });
@@ -494,48 +518,6 @@ const movePawn = (old_x, old_y, pawn, team) => {
         $('#board div').removeClass('selected');
         return;
     }
-
-    // replace this
-    // Add event listener to all tiles
-    $('#board div').on("click", function(){
-        // Remove colors from tiles
-        $('#board div').removeClass('legalMove');
-        // Remove event listener click from all tiles
-        $('#board div').off('click');
-
-        // Get selected tile
-        selectedTile = $(this);
-        // Get values from selected tile
-        new_x = selectedTile.data("x");
-        new_y = selectedTile.data("y");
-
-        // Move the pawn
-        if(isLegalMove(old_x, old_y, new_x, new_y, pawn, team)){
-            // Get pawn ID from array
-            pawnId = getPawnId(old_x, old_y, pawn, team);
-
-            if (checkForEnemyContact(new_x, new_y, team)){
-                // Get full pawn object of both parties
-                attackingPawn = getPawnById(pawnId);
-                defendingPawn = getPawnByCoordinate(new_x, new_y);
-
-                pawns = fight(attackingPawn, defendingPawn, pawns);
-            }else{
-                console.log("Moved pawn: " + pawn);
-                // Set new coordinate values to pawn
-                pawns[pawnId][0] = new_x;
-                pawns[pawnId][1] = new_y;
-            }
-
-            socket.emit('updateBoard', roomCode, pawns);
-        }else{
-            log("Illegal move.");
-            console.log("Illegal move");
-        }
-
-        // Place pawns
-        placePawns(pawns);
-    });
 }
 
 const addRandomPawns = () => {
