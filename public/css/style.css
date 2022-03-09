@@ -75,7 +75,14 @@ body {
     top: 0;
     left: 0;
     opacity: 1;
-    animation: scale 0.5s both ease-out;
+}
+
+#board div img.swordLeft {
+    animation: swoopInLeft 0.5s both ease-out;   
+}
+
+#board div img.swordRight {
+    animation: swoopInRight 0.5s both ease-out;   
 }
 
 #board div:hover {
@@ -130,7 +137,6 @@ body {
   
 .shineEffect:hover {
     transition: 0.5s;
-    /* transform: scale(1.03); */
     background-position: 0 0, 0 0;
     -webkit-transition-duration: 0.5s;
     -moz-transition-duration: 0.5s;
