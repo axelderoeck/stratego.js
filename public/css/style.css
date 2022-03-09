@@ -142,3 +142,11 @@ body {
     -moz-transition-duration: 0.5s;
     transition-duration: 0.5s;
 }
+
+.forceShine {
+    opacity: 0.5;
+    background-position: 0 0, 0 0;
+    -webkit-transition-duration: 1s;
+    -moz-transition-duration: 1s;
+    transition-duration: 1s;
+}

@@ -15,6 +15,26 @@ const updatePawns = (array) => {
     return pawns;
 }
 
+// Add shine effect to a random pawn every minute
+setInterval(function(){ 
+    // Generate random axis values
+    let randomX = Math.floor(Math.random() * 10) + 1;
+    let randomY = Math.floor(Math.random() * 10) + 1;
+    // Check if tile has a pawn
+    while (getPawnByCoordinate(randomX, randomY) == null){
+        randomX = Math.floor(Math.random() * 10) + 1;
+        randomY = Math.floor(Math.random() * 10) + 1;
+    }
+    // Get the random tile 
+    let tile = $("div[data-x='" + randomX + "'][data-y='" + randomY + "']");
+    // Add shine effect
+    tile.addClass("shineEffect forceShine");
+    // Remove shine effect class after 1 second
+    setTimeout(function() {
+        tile.removeClass("forceShine");
+    }, 1000);
+}, 60000);
+
 //let pawns = [];
 
 const init = (teamNumber) => {
