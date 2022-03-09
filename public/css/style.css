@@ -150,3 +150,65 @@ body {
     -moz-transition-duration: 1s;
     transition-duration: 1s;
 }
+
+.scale {
+    animation: opacity 1s both ease-out;
+}
+
+#visualFight {
+    position: absolute;
+    display: none;
+    width: 40%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    height: 200px;
+    z-index: 999;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    /* box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px; */
+    border-radius: 10px;
+    overflow: hidden;
+    /* background-color: rgba(255, 255, 255, 0.2); */
+    background-color: rgba(0,0,0, 0.2);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+
+}
+
+#visualFight span.versus {
+    font-size: 20px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1000;
+    color: #ffffff;
+    position: absolute;
+}
+
+#visualFight #left img,
+#visualFight #right img{
+    height: 80%;
+    object-fit: contain;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%,-50%);
+}
+
+#visualFight #left,
+#visualFight #right {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    /* box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset; */
+}
+
+#visualFight #left {
+    float: left;
+    /* background-color: #3597f3; */
+}
+
+#visualFight #right {
+    float: right;
+    /* background-color: #e43c25; */
+}
