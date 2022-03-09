@@ -15,6 +15,53 @@ const updatePawns = (array) => {
     return pawns;
 }
 
+const random_move = () => {
+    // Generate new random values
+    let randomX = Math.floor(Math.random() * 10) + 1;
+    let randomY = Math.floor(Math.random() * 10) + 1;
+    // Check if it's a legally moveable tile (same team, no flag/bomb)
+    while (getPawnByCoordinate(randomX, randomY) == null || getPawnByCoordinate(randomX, randomY)[3] != player.team || getPawnByCoordinate(randomX, randomY)[2] == 0 || getPawnByCoordinate(randomX, randomY)[2] == 11){
+        // Generate new random values
+        randomX = Math.floor(Math.random() * 10) + 1;
+        randomY = Math.floor(Math.random() * 10) + 1;
+    }
+    // Get pawn
+    let pawn = getPawnByCoordinate(randomX, randomY);
+    // Click the random pawn
+    $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']").trigger('click');
+    
+    setTimeout(function(){
+        // Generate new random values
+        randomX = Math.floor(Math.random() * 10) + 1;
+        randomY = Math.floor(Math.random() * 10) + 1;
+        // Set counter to avoid overloading
+        tries = 0;
+        // Check if tile is a legal move
+        while (!isLegalMove(pawn[0], pawn[1], randomX, randomY, pawn[2], pawn[3]) && tries <= 100){
+            tries++;
+            // Generate new random values
+            randomX = Math.floor(Math.random() * 10) + 1;
+            randomY = Math.floor(Math.random() * 10) + 1;
+        }
+        // Cancel move on 100 tries
+        if(tries >= 100){
+            $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']").trigger('click');
+            console.log("Cancelled move.");
+        }else{
+            // Click a random legal tile
+            $("div[data-x='" + randomX + "'][data-y='" + randomY + "']").trigger('click');
+        }
+    }, 100);
+}
+
+// Insane ai implementation with a very complex algorithm
+// totally not randomised clicks and ifs
+const ai_tester = () => {
+    setInterval(function(){ 
+        random_move();
+    }, 500);
+}
+
 /*
 // Add shine effect to a random pawn every minute
 setInterval(function(){ 
