@@ -1,6 +1,3 @@
-// Connect to socket
-let socket = io();
-
 // Length of roomcode
 const ROOMCODE_LENGTH = 6;
 
@@ -8,14 +5,13 @@ let player = {
     team: 0
 };
 let roomCode;
-let team;
 
 const updatePawns = (array) => {
     pawns = array;
     return pawns;
 }
 
-const random_move = () => {
+const randomMove = () => {
     // Generate new random values
     let randomX = Math.floor(Math.random() * 10) + 1;
     let randomY = Math.floor(Math.random() * 10) + 1;
@@ -56,9 +52,9 @@ const random_move = () => {
 
 // Insane ai implementation with a very complex algorithm
 // totally not randomised clicks and ifs
-const ai_tester = () => {
+const loopRandomMove = () => {
     setInterval(function(){ 
-        random_move();
+        randomMove();
     }, 500);
 }
 
@@ -83,8 +79,6 @@ setInterval(function(){
     }, 1000);
 }, 60000);
 */
-
-//let pawns = [];
 
 const init = (teamNumber) => {
     // Create the board
@@ -131,31 +125,6 @@ const placePawns = (array) => {
         }
     })
 }
-
-socket.on('connect', () => {
-    // If room parameter does not exist -> create room
-    if (params.room){
-        roomCode = params.room
-        socket.emit('joinGame', params.room);
-    }else{
-        socket.emit('createGame', generateString(ROOMCODE_LENGTH));
-    }
-})
-
-socket.on('init', (player) => {
-    init(player);
-})
-
-socket.on('createInvite', (room) => {
-    ip = "192.168.0.167";
-    roomCode = room;
-    console.log('Invite link: http://' + ip + ':3000/game.html?room=' + room);
-});
-
-socket.on('updatePawns', (array) => {
-    pawns = updatePawns(array);
-    placePawns(pawns);
-})
 
 const isTileDisabled = (x, y) => {
     // Check if tile is disabled
@@ -587,8 +556,3 @@ const addRandomPawns = () => {
         }
     }
 }
-
-//addRandomPawns();
-placePawns(pawns);
-
-//socket.emit('updateBoard', pawns);
