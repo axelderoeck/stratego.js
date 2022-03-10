@@ -96,8 +96,6 @@ const init = (teamNumber) => {
 }
 
 const placePawns = (array) => {
-    theme = 'classic';
-
     // Delete old images and effects
     $("#board div")
         .removeClass('shineEffect')
@@ -112,9 +110,9 @@ const placePawns = (array) => {
         tile.addClass('shineEffect');
         // Special pawn settings based on team
         if(pawn[3] != player.team){
-            tile.prepend('<img src="./themes/' + theme + '/' + pawn[3] + '/unknown.png" />')
+            tile.prepend('<img src="./themes/' + decodeURI(params.theme) + '/' + pawn[3] + '/unknown.png" />')
         }else{
-            tile.prepend('<img src="./themes/' + theme + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
+            tile.prepend('<img src="./themes/' + decodeURI(params.theme) + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
                 .prepend('<span data-team=' + pawn[3] + '>' + pawn[2] + '</span>')
         }
         if(pawn[3] == player.team){
