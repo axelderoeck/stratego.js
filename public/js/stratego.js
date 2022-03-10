@@ -474,8 +474,8 @@ const movePawn = (old_x, old_y, pawn, team) => {
             $(this).addClass('legalMove shineEffect');
             // Check if tile has an enemy
             if(checkForEnemyContact($(this).data('x'), $(this).data('y'), team)){
-                $(this).prepend('<img class="fightIcon swordLeft" src="./themes/classic/misc/sword_left.png" />');
-                $(this).prepend('<img class="fightIcon swordRight" src="./themes/classic/misc/sword_right.png" />');
+                $(this).prepend('<img class="fightIcon swordLeft" src="./themes/' + encodeURI(params.theme) + '/misc/sword_left.png" />');
+                $(this).prepend('<img class="fightIcon swordRight" src="./themes/' + encodeURI(params.theme) + '/misc/sword_right.png" />');
             }
             // Add move event to legal tile
             $(this).on("click", function(){
