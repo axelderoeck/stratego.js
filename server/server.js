@@ -36,19 +36,14 @@ io.on('connection', (socket) => {
     socket.on('createGame', (theme, roomCode) => {
         // Join room
         socket.join(roomCode);
-
         // Assign room to socket id
         clientRooms[socket.id] = roomCode;
-
         // Assign player number to socket
         socket.player = 0;
-
         // Log success
         console.log("\x1b[32m%s\x1b[0m", "[stratego] user `" + socket.id + "` successfully created room `" + roomCode + "` as player " + parseInt(socket.player + 1) + ".");
-
         // Return room code to create invite
         io.in(roomCode).emit('createInvite', theme, roomCode);
-
         //socket.to(roomCode).emit('initPlayer', socket.player);
         socket.emit('init', socket.player);
     });
@@ -56,15 +51,12 @@ io.on('connection', (socket) => {
     socket.on('joinGame', (roomCode) => {
         // Get the room by code
         const room = io.sockets.adapter.rooms.get(roomCode);
-
         // Set defaults
         let players = 0;
-
         // If room exists -> add users to variable
         if(room){
             players = room.size;
         }
-
         if (players === 0) {
             //client.emit('gameNotFound');
             // Log warning
@@ -76,7 +68,6 @@ io.on('connection', (socket) => {
             console.log("\x1b[33m%s\x1b[0m", "[stratego] user `" + socket.id + "` tried to connect to room `" + roomCode + "` but the room is full.");
             return;
         }
-
         // Join room
         socket.join(roomCode);
         // Assign room to socket id
