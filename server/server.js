@@ -1,4 +1,5 @@
 const path = require('path');
+const url = require('url');    
 const http = require('http');
 const fs = require('fs');
 const express = require('express');
@@ -13,13 +14,42 @@ let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
 
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(express.urlencoded());
+// Parse JSON bodies (as sent by API clients)
+app.use(express.json());
+
 app.use(express.static(publicPath));
 
 app.set('view engine', 'ejs');
 
+// On get root directory
 app.get('/', async function(req, res) {
+    // Render index page
     res.render(publicPath + '/index', {
+        // get all themes and pass it through to page
         themes: await getThemes()
+    });
+});
+
+// On post root directory
+app.post('/', function(req, res) {
+    // Redirect user to game page
+    res.redirect(url.format({
+        pathname:"/game",
+        // Add theme post value to url parameter
+        query: {
+           "theme": req.body.theme,
+         }
+    }));
+});
+
+// On get game directory
+app.get('/game', function(req, res) {
+    // Render game page
+    res.render(publicPath + '/game', {
+        // Get theme parameter from url and pass it through to page
+        theme: req.query.theme
     });
 });
 

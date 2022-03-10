@@ -10,8 +10,13 @@
 </head>
 <body>
 
+    <form action="" method="post">
+        <input type="hidden" name="theme" value="classic">
+        <input type="submit" value="Create Game">
+    </form>
+    
     <% themes.forEach(function(theme) { %>
-        <a href="game.html?theme=<%=theme%>"><%=theme%></a>
+        <a href="game?theme=<%=theme%>"><%=theme%></a>
     <% }); %>
 
 </body>

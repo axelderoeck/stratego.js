@@ -1,3 +1,6 @@
+<% if(theme == null){
+    window.location.href = "game?theme=classic";
+} %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,16 +18,16 @@
 
     <div id="visualFight">
         <div class="swords">
-            <img class="swoopInLeft" src="./themes/classic/misc/sword_left.png" />
-            <img class="swoopInRight" src="./themes/classic/misc/sword_right.png" />
+            <img class="swoopInLeft" src="./themes/<%=theme%>/misc/sword_left.png" />
+            <img class="swoopInRight" src="./themes/<%=theme%>/misc/sword_right.png" />
         </div>
         <span class="versus">VS</span>
         <div id="left">
-            <img src="themes/classic/1/4.png" alt="">
+            <img src="themes/<%=theme%>/1/4.png" alt="">
             <span>4. Sergeant</span>
         </div>
         <div id="right">
-            <img src="themes/classic/0/6.png" alt="">
+            <img src="themes/<%=theme%>/0/6.png" alt="">
             <span>6. Captain</span>
         </div>
         <span class="result">Win</span>
@@ -32,7 +35,7 @@
     <div id="board"></div>
 
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
-    <script src="themes/classic/config.js"></script>
+    <script src="themes/<%=theme%>/config.js"></script>
     <script src="js/scripts.js"></script>
     <script src="js/stratego.js"></script>
     <script src="js/socket.js"></script>
