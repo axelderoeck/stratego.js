@@ -9,15 +9,31 @@
     <title>Document</title>
 </head>
 <body>
-
-    <form action="" method="post">
-        <input type="hidden" name="theme" value="classic">
+    
+    <form method="post">
+        <!-- Selection group -->
+        <div class="radio-group">
+        <% themes.forEach( theme => { %>
+            <div class='radio' data-value="<%=theme%>"></div><%=theme%>
+        <% }); %>
+        </div>
+        <!-- Actual choice to post -->
+        <input id="finalChoice" name="theme" type="hidden" value="classic">
         <input type="submit" value="Create Game">
     </form>
-    
-    <% themes.forEach(function(theme) { %>
-        <a href="game?theme=<%=theme%>"><%=theme%></a>
-    <% }); %>
+
+    <script>
+        // Set values of form
+        $('.radio-group .radio').click(function(){
+            $(this).parent().find('.radio').removeClass('selected');
+            $(this).addClass('selected');
+            // Get new clicked value
+            var val = $(this).attr('data-value');
+            // Set value to hidden input
+            //$(this).parent().find("input[name='theme']").val(val);
+            $("#finalChoice").val(val);
+        });
+    </script>
 
 </body>
 </html>

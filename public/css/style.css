@@ -258,3 +258,22 @@ body {
 #visualFight #right {
     float: right;
 }
+
+.radio-group{
+    position: relative;
+}
+
+.radio{
+    display:inline-block;
+    width:15px;
+    height: 15px;
+    border-radius: 100%;
+    background-color:lightblue;
+    border: 2px solid lightblue;
+    cursor:pointer;
+    margin: 2px 0; 
+}
+
+.radio.selected{
+    border-color: blue;
+}
