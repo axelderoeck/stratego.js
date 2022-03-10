@@ -14,6 +14,11 @@ let io = socketIO(server);
 
 app.use(express.static(publicPath));
 
+app.set('view engine', 'ejs');
+app.get('/', function(req, res) {
+    res.render(publicPath + '/index');
+});
+
 server.listen(port, ()=> {
     console.log("[stratego] server is running on port " + port + ".");
 });
