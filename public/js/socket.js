@@ -8,7 +8,7 @@ socket.on('connect', () => {
         roomCode = params.room
         socket.emit('joinGame', params.room);
     }else{
-        socket.emit('createGame', generateString(ROOMCODE_LENGTH));
+        socket.emit('createGame', params.theme, generateString(ROOMCODE_LENGTH));
     }
 })
 
@@ -16,10 +16,10 @@ socket.on('init', (player) => {
     init(player);
 })
 
-socket.on('createInvite', (room) => {
+socket.on('createInvite', (theme, room) => {
     ip = "localhost";
     roomCode = room;
-    console.log('Invite link: http://' + ip + ':3000/game.html?room=' + room);
+    console.log('Invite link: http://' + ip + ':3000/game.html?theme=' + theme + '&room=' + room);
 });
 
 socket.on('updatePawns', (array) => {

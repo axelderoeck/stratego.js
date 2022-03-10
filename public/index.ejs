@@ -10,22 +10,9 @@
 </head>
 <body>
 
-    <a id="createGameBtn" href="game.html">play</a>
-
-    <!--
-
-        // Basic idea in php: read all directories
-        TODO: replace with js
-        
-        $themes = scandir('themes');
-        foreach($themes as $theme){
-            if($theme != "." && $theme != ".." && !is_file("themes/$theme")){
-                echo "<li>" . $theme . "</li>";
-                echo "<a href='game.php?t=$theme'>" . $theme . "</a>";
-            }
-        }
-
-    -->
+    <% themes.forEach(function(theme) { %>
+        <a href="game.html?theme=<%=theme%>"><%=theme%></a>
+    <% }); %>
 
 </body>
 </html>

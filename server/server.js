@@ -1,5 +1,6 @@
 const path = require('path');
 const http = require('http');
+const fs = require('fs');
 const express = require('express');
 const socketIO = require('socket.io');
 const { connect } = require('http2');
@@ -15,8 +16,11 @@ let io = socketIO(server);
 app.use(express.static(publicPath));
 
 app.set('view engine', 'ejs');
-app.get('/', function(req, res) {
-    res.render(publicPath + '/index');
+
+app.get('/', async function(req, res) {
+    res.render(publicPath + '/index', {
+        themes: await getThemes()
+    });
 });
 
 server.listen(port, ()=> {
@@ -29,7 +33,7 @@ io.on('connection', (socket) => {
     // Log info: new connection
     console.log("\x1b[36m%s\x1b[0m", "[stratego] user `" + socket.id + "` connected.");
 
-    socket.on('createGame', (roomCode) => {
+    socket.on('createGame', (theme, roomCode) => {
         // Join room
         socket.join(roomCode);
 
@@ -43,7 +47,7 @@ io.on('connection', (socket) => {
         console.log("\x1b[32m%s\x1b[0m", "[stratego] user `" + socket.id + "` successfully created room `" + roomCode + "` as player " + parseInt(socket.player + 1) + ".");
 
         // Return room code to create invite
-        io.in(roomCode).emit('createInvite', roomCode);
+        io.in(roomCode).emit('createInvite', theme, roomCode);
 
         //socket.to(roomCode).emit('initPlayer', socket.player);
         socket.emit('init', socket.player);
@@ -99,6 +103,14 @@ io.on('connection', (socket) => {
     });
 });
 
-const updateBoard = (roomCode, pawns) => {
-    io.sockets.in(roomCode).emit('updateBoard', pawns);
+const getThemes = () => {
+    return new Promise(resolve => {
+        fs.readdir(publicPath + "/themes/", function (err, files) {
+            if (err) throw err;
+            result = files
+                .filter(file => fs.statSync(publicPath + "/themes/" + file).isDirectory())
+                .map(file => file);
+            resolve(result);
+        });
+    });
 }
