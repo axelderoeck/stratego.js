@@ -14,7 +14,10 @@
         <!-- Selection group -->
         <div class="radio-group">
         <% themes.forEach( theme => { %>
-            <div class='radio' data-value="<%=theme%>"></div><%=theme%>
+            <div class='radio' data-value="<%=theme%>">
+                <img src="./themes/<%=theme%>/misc/theme_logo.png" alt="">
+                <span><%=theme%></span>
+            </div>
         <% }); %>
         </div>
         <!-- Actual choice to post -->
