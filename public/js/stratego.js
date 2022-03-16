@@ -11,15 +11,19 @@ const updatePawns = (array) => {
     return pawns;
 }
 
+const getUpdatedArray = (array) => {
+    return array;
+}
+
 const randomMove = () => {
     // Generate new random values
-    let randomX = Math.floor(Math.random() * 10) + 1;
-    let randomY = Math.floor(Math.random() * 10) + 1;
+    let randomX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+    let randomY = Math.floor(Math.random() * (10 - 1 + 1) + 1);
     // Check if it's a legally moveable tile (same team, no flag/bomb)
     while (getPawnByCoordinate(randomX, randomY) == null || getPawnByCoordinate(randomX, randomY)[3] != player.team || getPawnByCoordinate(randomX, randomY)[2] == 0 || getPawnByCoordinate(randomX, randomY)[2] == 11){
         // Generate new random values
-        randomX = Math.floor(Math.random() * 10) + 1;
-        randomY = Math.floor(Math.random() * 10) + 1;
+        randomX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+        randomY = Math.floor(Math.random() * (10 - 1 + 1) + 1);
     }
     // Get pawn
     let pawn = getPawnByCoordinate(randomX, randomY);
@@ -28,16 +32,16 @@ const randomMove = () => {
     
     setTimeout(function(){
         // Generate new random values
-        randomX = Math.floor(Math.random() * 10) + 1;
-        randomY = Math.floor(Math.random() * 10) + 1;
+        randomX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+        randomY = Math.floor(Math.random() * (10 - 1 + 1) + 1);
         // Set counter to avoid overloading
         tries = 0;
         // Check if tile is a legal move
         while (!isLegalMove(pawn[0], pawn[1], randomX, randomY, pawn[2], pawn[3]) && tries <= 100){
             tries++;
             // Generate new random values
-            randomX = Math.floor(Math.random() * 10) + 1;
-            randomY = Math.floor(Math.random() * 10) + 1;
+            randomX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+            randomY = Math.floor(Math.random() * (10 - 1 + 1) + 1);
         }
         // Cancel move on 100 tries
         if(tries >= 100){
@@ -155,6 +159,21 @@ const initBoard = () => {
     } 
 }
 
+let pawnsInBox = [
+    0, // 1x Flag
+    1, // 1x Spy
+    2,2,2,2,2,2,2,2, // 8x Scout
+    3,3,3,3,3, // 5x Miner
+    4,4,4,4, // 4x Sergeant
+    5,5,5,5, // 4x Lieutenant
+    6,6,6,6, // 4x Captain
+    7,7,7, // 3x Major
+    8,8, // 2x Colonel
+    9, // 1x General
+    10, // 1x Marshall
+    11,11,11,11,11,11 // 6x Bomb
+]
+
 /* Pawns 2D array = [[X, Y, Pawn, Team], ...]
 *
 * @param pawns[ID][0] = X (1-10)
@@ -164,32 +183,7 @@ const initBoard = () => {
 * 
 **/
 
-let pawns = [
-    [10, 10, 0, 0],
-    [9, 10, 1, 0],
-    [8, 10, 2, 0],
-    [7, 10, 3, 0],
-    [6, 10, 4, 0],
-    [5, 10, 5, 0],
-    [4, 10, 6, 0],
-    [3, 10, 7, 0],
-    [2, 10, 8, 0],
-    [1, 10, 9, 0],
-    [10, 9, 10, 0],
-    [9, 9, 11, 0],
-    [1, 1, 0, 1],
-    [2, 1, 1, 1],
-    [3, 1, 2, 1],
-    [4, 1, 3, 1],
-    [5, 1, 4, 1],
-    [6, 1, 5, 1],
-    [7, 1, 6, 1],
-    [8, 1, 7, 1],
-    [9, 1, 8, 1],
-    [10, 1, 9, 1],
-    [1, 2, 10, 1],
-    [2, 2, 11, 1]
-];
+let pawns = [];
 
 /* Cemetery 2D array = [[Pawn, Team], ...]
 *
@@ -454,7 +448,6 @@ const checkForEnemyContact = (new_x, new_y, team) => {
 }
 
 const movePawn = (old_x, old_y, pawn, team) => {
-    // TODO: replace last section with first section
     // Check for static pawn
     if(pawn == 11 || pawn == 0){
         // Cancel move
@@ -535,22 +528,27 @@ const movePawn = (old_x, old_y, pawn, team) => {
 }
 
 const addRandomPawns = () => {
-    // In order: 0 (=flag), 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 (=bomb)
-    let amount_pawns = [1, 1, 8, 5, 4, 4, 4, 3, 2, 1, 1, 6];
-    test = 0;
-    /* 
-    * i = pawn number
-    * j = counter pawns
-    **/
-    for (i = 0; i < amount_pawns.length; i++){
-        for(j = 0; j <= amount_pawns[i]; j++){
-            randomX = Math.floor(Math.random() * 10) + 1;
-            randomY = Math.floor(Math.random() * 10) + 7;
-
-            while (addPawn(randomX, randomY, i, 0) == false) {
-                randomX = Math.floor(Math.random() * 10) + 1;
-                randomY = Math.floor(Math.random() * 10) + 7;
-            }
-        }
+    // Set random Y coordinate based on player
+    if (player.team == 0){
+        maxY = 10;
+        minY = 7;
+    }else{
+        maxY = 4;
+        minY = 1;
     }
+    // For every pawn available
+    pawnsInBox.forEach(pawn => {
+        // Generate random values
+        let randomX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+        let randomY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
+        while(getPawnByCoordinate(randomX, randomY) != null){
+            // Generate random values
+            randomX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+            randomY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
+        }
+        // Add pawn on field
+        addPawn(randomX, randomY, pawn, player.team);
+    });
+
+    return pawns;
 }
