@@ -160,19 +160,21 @@ const initBoard = () => {
 }
 
 let pawnsInBox = [
-    0, // 1x Flag
-    1, // 1x Spy
-    2,2,2,2,2,2,2,2, // 8x Scout
-    3,3,3,3,3, // 5x Miner
-    4,4,4,4, // 4x Sergeant
-    5,5,5,5, // 4x Lieutenant
-    6,6,6,6, // 4x Captain
-    7,7,7, // 3x Major
-    8,8, // 2x Colonel
-    9, // 1x General
-    10, // 1x Marshall
-    11,11,11,11,11,11 // 6x Bomb
-]
+    0,                  // 1x Flag
+    1,                  // 1x Spy
+    2,2,2,2,2,2,2,2,    // 8x Scout
+    3,3,3,3,3,          // 5x Miner
+    4,4,4,4,            // 4x Sergeant
+    5,5,5,5,            // 4x Lieutenant
+    6,6,6,6,            // 4x Captain
+    7,7,7,              // 3x Major
+    8,8,                // 2x Colonel
+    9,                  // 1x General
+    10,                 // 1x Marshall
+    11,11,11,11,11,11   // 6x Bomb
+];
+
+let myPawns = [];
 
 /* Pawns 2D array = [[X, Y, Pawn, Team], ...]
 *
