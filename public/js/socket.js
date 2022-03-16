@@ -19,7 +19,7 @@ socket.on('init', (player) => {
 socket.on('createInvite', (theme, room) => {
     ip = "localhost";
     roomCode = room;
-    console.log('Invite link: http://' + ip + ':3000/game?theme=' + theme + '&room=' + room);
+    console.info('Invite link: http://' + ip + ':3000/game?theme=' + theme + '&room=' + room);
 });
 
 socket.on('updatePawns', (array) => {

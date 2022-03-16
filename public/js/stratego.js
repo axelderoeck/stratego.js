@@ -94,7 +94,7 @@ const init = (teamNumber) => {
         mirrorBoard();
     }
 
-    console.log('You are player '+ parseInt(player.team + 1));
+    console.info('You are player '+ parseInt(player.team + 1));
     socket.emit('updatePawns', pawns);
     placePawns(pawns);
 }
@@ -271,13 +271,12 @@ const mirrorBoard = () => {
 }
 
 const addPawn = (x, y, pawn, team) => {
-    id = getPawnId(x, y, pawn, team);
-    if(id == null){
+    if(getPawnByCoordinate(x, y) == null){
         pawns.push([x, y, pawn, team]);
         placePawns(pawns);
         return true;
     }else{
-        console.log("pawn already exists!");
+        console.error("Failed to execute addPawn() \n Pawn already exists on x:" + x + " y:" + y + ".");
         return false;
     }
 }
