@@ -174,6 +174,32 @@ let pawnsInBox = [
     11,11,11,11,11,11   // 6x Bomb
 ];
 
+const getPawnsArrayFromServer = () => {
+    // Call the server.js and say hello we want the newest whereabouts of the pawns
+    socket.emit("getPawnsArrayFromServer");
+
+    // We make the server pinky promise to give us the new pawns because it is the most sacred vow
+    // This way it will def work
+    const pinkyPromise = new Promise(resolve => {
+        socket.on('getPawnsArrayFromServer', (array) => {
+            resolve(array);
+        })
+    });
+
+    // Declare a new empty array
+    let array = [];
+
+    // After we get the pinky promise back we have to convert it to an array for some reason
+    pinkyPromise.then(promiseArray => {
+        promiseArray.forEach(pawn => {
+            array.push(pawn);
+        });
+    });
+
+    // Return the new array
+    return array;
+}
+
 let myPawns = [];
 
 /* Pawns 2D array = [[X, Y, Pawn, Team], ...]

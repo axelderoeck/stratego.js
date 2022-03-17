@@ -122,6 +122,11 @@ io.on('connection', (socket) => {
     socket.on('startGame', () => {
         io.emit('startGame');
     });
+
+    let pawns = [];
+    socket.on('getPawnsArrayFromServer', () => {
+        socket.emit('getPawnsArrayFromServer', pawns);
+    })
 });
 
 const getThemes = () => {
