@@ -88,12 +88,12 @@ io.on('connection', (socket) => {
             players = room.size;
         }
         if (players === 0) {
-            //client.emit('gameNotFound');
+            socket.emit('gameNotFound', roomCode);
             // Log warning
             console.log("\x1b[33m%s\x1b[0m", "[stratego] user `" + socket.id + "` tried to connect to room `" + roomCode + "` but the room does not exist.");
             return;
         }else if (players > 1){
-            //client.emit('gameFull');
+            socket.emit('gameFull', roomCode);
             // Log warning
             console.log("\x1b[33m%s\x1b[0m", "[stratego] user `" + socket.id + "` tried to connect to room `" + roomCode + "` but the room is full.");
             return;

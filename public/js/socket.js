@@ -26,3 +26,13 @@ socket.on('updatePawns', (array) => {
     pawns = updatePawns(array);
     placePawns(pawns);
 })
+
+socket.on('gameNotFound', (room) => {
+    //window.location.href = '/';
+    console.error('Room: ' + room + ' not found.');
+})
+
+socket.on('gameFull', (room) => {
+    //window.location.href = '/';
+    console.info('Room:  ' + room + ' is full.');
+})
