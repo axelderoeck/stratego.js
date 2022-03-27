@@ -70,12 +70,12 @@ io.on('connection', (socket) => {
         clientRooms[socket.id] = roomCode;
         // Assign player number to socket
         socket.player = 0;
-        // Log success
-        console.log("\x1b[32m%s\x1b[0m", "[stratego] user `" + socket.id + "` successfully created room `" + roomCode + "` as player " + parseInt(socket.player + 1) + ".");
         // Return room code to create invite
         io.in(roomCode).emit('createInvite', theme, roomCode);
-        //socket.to(roomCode).emit('initPlayer', socket.player);
+        // Init player
         socket.emit('init', socket.player);
+        // Log success
+        console.log("\x1b[32m%s\x1b[0m", "[stratego] user `" + socket.id + "` successfully created room `" + roomCode + "` as player " + parseInt(socket.player + 1) + ".");
     });
 
     socket.on('joinGame', (roomCode) => {
@@ -87,6 +87,7 @@ io.on('connection', (socket) => {
         if(room){
             players = room.size;
         }
+        // Check player number in room
         if (players === 0) {
             socket.emit('gameNotFound', roomCode);
             // Log warning
@@ -97,17 +98,18 @@ io.on('connection', (socket) => {
             // Log warning
             console.log("\x1b[33m%s\x1b[0m", "[stratego] user `" + socket.id + "` tried to connect to room `" + roomCode + "` but the room is full.");
             return;
+        }else{
+            // Join room
+            socket.join(roomCode);
+            // Assign room to socket id
+            clientRooms[socket.id] = roomCode;
+            // Assign player number to socket
+            socket.player = 1; 
+            // Init player
+            socket.emit('init', socket.player);
+            // Log success
+            console.log("\x1b[32m%s\x1b[0m", "[stratego] user `" + socket.id + "` successfully joined room `" + roomCode + "` as player " + parseInt(socket.player + 1) + ".");  
         }
-        // Join room
-        socket.join(roomCode);
-        // Assign room to socket id
-        clientRooms[socket.id] = roomCode;
-        // Assign player number to socket
-        socket.player = 1;
-        // Log success
-        console.log("\x1b[32m%s\x1b[0m", "[stratego] user `" + socket.id + "` successfully joined room `" + roomCode + "` as player " + parseInt(socket.player + 1) + ".");   
-        //socket.to(roomCode).emit('initPlayer', socket.player);
-        socket.emit('init', socket.player);
     });
 
     socket.on('updateBoard', (roomCode, pawns) => {
