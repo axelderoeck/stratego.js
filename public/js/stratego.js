@@ -6,11 +6,6 @@ let player = {
 };
 let roomCode;
 
-const updatePawns = (array) => {
-    pawns = array;
-    return pawns;
-}
-
 const getUpdatedArray = (array) => {
     return array;
 }
@@ -542,7 +537,6 @@ const movePawn = (old_x, old_y, pawn, team) => {
                     pawns = fight(attackingPawn, defendingPawn, pawns);
                 }else{
                     console.log("Moved pawn: " + pawn + " to x:" + new_x + " y:" + new_y);
-                    console.log(pawn);
                     // Set new coordinate values to pawn
                     pawns[pawnId][0] = new_x;
                     pawns[pawnId][1] = new_y;

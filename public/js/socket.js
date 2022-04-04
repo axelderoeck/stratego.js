@@ -23,7 +23,7 @@ socket.on('createInvite', (theme, room) => {
 });
 
 socket.on('updatePawns', (array) => {
-    pawns = updatePawns(array);
+    pawns = array;
     placePawns(pawns);
 })
 
