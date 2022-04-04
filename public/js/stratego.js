@@ -1,5 +1,6 @@
 // Length of roomcode
 const ROOMCODE_LENGTH = 6;
+let setupStage = true;
 
 let player = {
     team: 0
@@ -80,10 +81,11 @@ setInterval(function(){
 */
 
 const init = (teamNumber) => {
-    // Create the board
-    initBoard();
     // Assign team number
     player.team = teamNumber;
+    // Create the board
+    initBoard(setupStage);
+
     // Mirror the board if it's player 2
     if(player.team == 1){
         mirrorBoard();
@@ -133,7 +135,7 @@ const isTileDisabled = (x, y) => {
     return false;
 }
 
-const initBoard = () => {
+const initBoard = (setup) => {
     // Delete possible existing tiles
     $("#board").children().remove();
 
@@ -145,6 +147,11 @@ const initBoard = () => {
                 .appendTo('#board')
                 .attr('data-x', x)
                 .attr('data-y', y);
+
+            // If its the setup phase
+            if(setup && !isTileInSpawnZone(y)){
+                tile.addClass('nospawn');
+            }
 
             // Add class if tile is disabled
             if(isTileDisabled(x, y)){
@@ -597,4 +604,62 @@ const addRandomPawns = () => {
     });
 
     return pawns;
+}
+
+const createBox = () => {
+    $('<div id="box"></div>').appendTo('#fullboard');
+
+    // for(i = 0; i <= 11; i++){
+    //     $('<div id="pawn_' + i +'"><img src="./themes/' + decodeURI(params.theme) + '/' + player.team + '/' + i + '.png" /><span data-team="' + player.team + '">' + i + '</span></div>')
+    //     .appendTo('#box')
+    //     .attr('data-pawn', i)
+    //     .click(function(pawn) {
+    //         $("#board div").each(function(){
+    //             // Add move event to legal tile
+    //             $(this).on("click", function(){
+    //                 //console.log($('<div/>').html(pawn.currentTarget).contents().data('pawn'));
+    //                 // Set new coordinate values to pawn
+    //                 tempSetup.push([$(this).data('x'), $(this).data('y'), $('<div/>').html(pawn.currentTarget).contents().data('pawn'), player.team]);
+    //                 // Remove event listener click from all tiles
+    //                 $('#board div').off('click');
+
+    //                 placePawns(tempSetup);
+    //             });
+    //         });
+    //     });
+    // }
+
+    for(i = 0; i < pawnsInBox.length; i++){
+        $('<div id="pawn_' + pawnsInBox[i] +'"><img src="./themes/' + decodeURI(params.theme) + '/' + player.team + '/' + pawnsInBox[i] + '.png" /><span data-team="' + player.team + '">' + pawnsInBox[i] + '</span></div>')
+        .appendTo('#box')
+        .attr('data-pawn', pawnsInBox[i])
+        .click(function(pawn) {
+            $("#board div").each(function(){
+                // Add move event to legal tile
+                $(this).on("click", function(){
+                    //console.log($('<div/>').html(pawn.currentTarget).contents().data('pawn'));
+                    // Set new coordinate values to pawn
+                    tempSetup.push([$(this).data('x'), $(this).data('y'), $('<div/>').html(pawn.currentTarget).contents().data('pawn'), player.team]);
+                    // Remove event listener click from all tiles
+                    $('#board div').off('click');
+
+                    placePawns(tempSetup);
+                });
+            });
+        });
+    }
+}
+createBox();
+
+let tempSetup = [];
+
+const addPawnToSetup = (x, y, pawn) => {
+    tempSetup.push([x, y, pawn, player.team])
+}
+
+const isTileInSpawnZone = (y) => {
+    if(player.team == 0 && y >= 7 || player.team == 1 && y <= 4){
+        return true;
+    }
+    return false;
 }
