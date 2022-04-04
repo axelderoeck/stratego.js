@@ -5,31 +5,48 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Document</title>
 </head>
-<body>
-    
-    <form method="post">
-        <!-- Selection group -->
-        <div class="radio-group">
-        <% themes.forEach( theme => { %>
-            <div class='radio' data-value="<%=theme%>">
-                <img src="./themes/<%=theme%>/misc/theme_logo.png" alt="">
-                <span><%=theme%></span>
+<body class="main">
+
+    <div class="container">
+        <img src="img/logo.png" alt="">
+
+        <h2>Create a game</h2>
+        <h3>Themes</h3>
+        <form method="post">
+            <!-- Selection group -->
+            <div class="radio-group">
+            <% themes.forEach( theme => { %>
+                <div class='radio' data-value="<%=theme%>">
+                    <img src="./themes/<%=theme%>/misc/theme_logo.png" alt="">
+                    <span><%=theme%></span>
+                </div>
+            <% }); %>
             </div>
-        <% }); %>
-        </div>
-        <!-- Actual choice to post -->
-        <input id="finalChoice" name="theme" type="hidden" value="classic">
-        <input type="submit" value="Create Game">
-    </form>
+            <!-- Actual choice to post -->
+            <input id="finalChoice" name="theme" type="hidden" value="classic">
+            <input id="createGameBtn" disabled type="submit" value="Create Game">
+        </form>
+    
+        <h2>Or join an existing game</h2>
+        <form method="post">
+            <input type="text" placeholder="Gamecode">
+            <br>
+            <input type="submit" value="Join game">
+        </form>
+    </div>
 
     <script>
         // Set values of form
         $('.radio-group .radio').click(function(){
+            // Select the theme
             $(this).parent().find('.radio').removeClass('selected');
             $(this).addClass('selected');
+            // Enable button when theme is selected
+            $("#createGameBtn").prop('disabled', false);
             // Get new clicked value
             var val = $(this).attr('data-value');
             // Set value to hidden input

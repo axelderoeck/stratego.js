@@ -11,6 +11,7 @@
 html,
 body {
     height:100%;
+    margin: 0;
 }
 
 #fullboard {
@@ -257,6 +258,32 @@ body {
 
 #visualFight #right {
     float: right;
+}
+
+.main {
+    background-image: url(../img/background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.container {
+    background-color: rgba(0,0,0,0.8);
+    margin: 0 auto;
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+
+.container h2 {
+    color: #ffffff;
+    font-size: 30px;
+}
+
+.container h3 {
+    color: #ffffff;
+    font-family: seagram;
 }
 
 .radio-group {
