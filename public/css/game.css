@@ -1,0 +1,245 @@
+#fullboard {
+    width: 100%;
+    height: 100%;
+    background-color: #90ee90;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+#fullboard span.log {
+    color: rgba(204, 28, 28, 1);
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    animation: slideOut 5s both ease-out;
+}
+
+#board {
+    margin: 0 auto;
+    padding: 0;
+    width: 45%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 1px;
+}
+
+#board div {
+    background-color: rgba(255,255,255,0.4);
+    opacity: 0.5;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+#board div span{
+    top: 0;
+    left: 0;
+    position: absolute;
+    font-family: fredoka;
+    font-size: 100%;
+}
+
+#board div span[data-team='0']{
+    color: blue;
+}
+
+#board div span[data-team='1']{
+    color: red;
+}
+
+#board div img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: 1s;
+    z-index: 50;
+}
+
+#board div img.fightIcon {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    opacity: 1;
+}
+
+#board div img.swordLeft {
+    animation: swoopInLeft 0.5s both ease-out;   
+}
+
+#board div img.swordRight {
+    animation: swoopInRight 0.5s both ease-out;   
+}
+
+#board div:hover {
+    opacity: 1;
+}
+
+#board div.disabled {
+    background-color: rgba(0,0,0,0);
+    visibility: hidden;
+    opacity: 0;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+#board div.legalMove {
+    opacity: 1;
+    background-color: rgba(241, 239, 100, 0.4) !important;
+    -webkit-box-shadow:inset 0px 0px 0px 1px #e6fd17;
+    -moz-box-shadow:inset 0px 0px 0px 1px #e6fd17;
+    box-shadow:inset 0px 0px 0px 1px #e6fd17;
+}
+
+#board div.selected {
+    opacity: 1 !important;
+}
+
+.mirror {
+    -moz-transform: scale(-1, -1);
+    -webkit-transform: scale(-1, -1);
+    -o-transform: scale(-1, -1);
+    -ms-transform: scale(-1, -1);
+    transform: scale(-1, -1);
+}
+
+.shineEffect {
+    background-repeat: no-repeat;
+    background-position: -120px -120px, 0 0;   
+    background-image: -webkit-linear-gradient(top left,rgba(255, 255, 255, 0.2) 0%,rgba(255, 255, 255, 0.2) 37%,rgba(255, 255, 255, 0.8) 45%,rgba(255, 255, 255, 0.0) 50%);
+    background-image: -moz-linear-gradient(0 0,rgba(255, 255, 255, 0.2) 0%,rgba(255, 255, 255, 0.2) 37%,rgba(255, 255, 255, 0.8) 45%,rgba(255, 255, 255, 0.0) 50%);    
+    background-image: -o-linear-gradient(0 0,rgba(255, 255, 255, 0.2) 0%,rgba(255, 255, 255, 0.2) 37%,rgba(255, 255, 255, 0.8) 45%,rgba(255, 255, 255, 0.0) 50%);
+    background-image: linear-gradient(0 0,rgba(255, 255, 255, 0.2) 0%,rgba(255, 255, 255, 0.2) 37%,rgba(255, 255, 255, 0.8) 45%,rgba(255, 255, 255, 0.0) 50%);
+    -moz-background-size: 250% 250%, 100% 100%;
+    background-size: 250% 250%, 100% 100%;
+    -webkit-transition: background-position 0s ease;
+    -moz-transition: background-position 0s ease;       
+    -o-transition: background-position 0s ease;
+    transition: background-position 0s ease;
+}
+  
+.shineEffect:hover {
+    transition: 0.5s;
+    background-position: 0 0, 0 0;
+    -webkit-transition-duration: 0.5s;
+    -moz-transition-duration: 0.5s;
+    transition-duration: 0.5s;
+}
+
+.forceShine {
+    opacity: 0.5;
+    background-position: 0 0, 0 0;
+    -webkit-transition-duration: 1s;
+    -moz-transition-duration: 1s;
+    transition-duration: 1s;
+}
+
+.scale {
+    animation: opacity 1s both ease-out;
+}
+
+#visualFight {
+    position: absolute;
+    display: none;
+    width: 60%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    height: 200px;
+    z-index: 999;
+}
+
+#visualFight span {
+    font-family: seagram;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 0px 5px 5px rgba(0,0,0,0.1),
+                 10px 5px 5px rgba(0,0,0,0.05),
+                 -10px 5px 5px rgba(0,0,0,0.05);
+}
+
+#visualFight span.versus {
+    font-size: 40px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1000;
+    position: absolute;
+}
+
+#visualFight span.result {
+    font-size: 40px;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%,-50%);
+    z-index: 1000;
+    position: absolute;
+}
+
+#visualFight div.swords {
+    position: absolute;
+    width: 50%;
+    height: 80%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#visualFight div.swords img {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    object-fit: contain;
+    height: 100%;
+}
+
+.swoopInLeft {
+    animation: swoopInLeft 0.5s both ease-out; 
+}
+
+.swoopInRight {
+    animation: swoopInRight 0.5s both ease-out; 
+}
+
+#visualFight #left img,
+#visualFight #right img{
+    height: 80%;
+    object-fit: contain;
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%,-50%);
+}
+
+#visualFight #left span,
+#visualFight #right span {
+    z-index: 1000;
+    position: absolute;
+    font-size: 20px;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%,-50%);
+}
+
+#visualFight #left,
+#visualFight #right {
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
+
+#visualFight #left {
+    float: left;
+}
+
+#visualFight #right {
+    float: right;
+}
