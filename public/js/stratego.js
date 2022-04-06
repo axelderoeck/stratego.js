@@ -629,7 +629,17 @@ const movePawn = (old_x, old_y, pawn, team) => {
     }
 }
 
-const addRandomPawns = () => {
+const resetPawns = () => {
+    // Empty the setup
+    tempSetup = [];
+    // Reset the pawnsInBox array
+    pawnsInBox = [0,1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,11,11,11,11,11];
+    //
+    initBox();
+    placePawns(tempSetup);
+}
+
+const randomisePawns = () => {
     // Set random Y coordinate based on player
     if (player.team == 0){
         maxY = 10;
@@ -638,6 +648,12 @@ const addRandomPawns = () => {
         maxY = 4;
         minY = 1;
     }
+
+    // If we already have a full set
+    if(pawnsInBox.length == 0){
+        resetPawns();
+    }
+
     // For every pawn available
     pawnsInBox.forEach(pawn => {
         // Generate random values
@@ -648,9 +664,14 @@ const addRandomPawns = () => {
             randomX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
             randomY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
         }
-        // Add pawn on field
-        addPawn(randomX, randomY, pawn, player.team);
+        // Add pawn
+        tempSetup.push([randomX, randomY, pawn, player.team]);
     });
+
+    // empty the array
+    pawnsInBox = [];
+    placePawns(tempSetup);
+    initBox();
 
     return pawns;
 }
