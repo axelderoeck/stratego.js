@@ -661,16 +661,20 @@ const initBox = () => {
                             // Remove pawn from box
                             pawnsInBox.splice(pawnsInBox.indexOf(pawnElement.data('pawn')), 1);
                         }
+
+                        // Remove event listener click from all tiles
+                        $('#board div').off('click');
+                        // Place pawns
+                        placePawns(tempSetup);
                         // Check if all pawns have been placed
                         if(tempSetup.length == 40){
                             console.log('placed all pawns');
                             // Ready button appears
+                        }else if(tempSetup.length < 40){
+                            initBox();
+                        }else{
+                            // too many pawns someones cheating
                         }
-                        // Remove event listener click from all tiles
-                        $('#board div').off('click');
-                        // Place pawns
-                        initBox();
-                        placePawns(tempSetup);
                     });
                 });
             });
