@@ -85,6 +85,7 @@ const init = (teamNumber) => {
     player.team = teamNumber;
     // Create the board
     initBoard(setupStage);
+    initBox();
 
     // Mirror the board if it's player 2
     if(player.team == 1){
@@ -606,50 +607,76 @@ const addRandomPawns = () => {
     return pawns;
 }
 
-const createBox = () => {
+// const countPawnsAvailableInBox = async (pawn) => {
+//     // Count available pawns
+//     let amountPawnsAvailable = 0;
+//     for(i = 0; i < pawnsInBox.length; i++){
+//         // Look for the pawn
+//         if(pawn == pawnsInBox[i]){
+//             // +1 everytime pawn is found in box
+//             amountPawnsAvailable++;
+//         }
+//         // Break the loop if we already passed our pawn (better performance I guess)
+//         if(pawn < pawnsInBox[i]){
+//             break;
+//         }
+//     }
+//     return amountPawnsAvailable;
+// }
+
+const initBox = () => {
+    $('#box').remove();
     $('<div id="box"></div>').appendTo('#fullboard');
 
-    // for(i = 0; i <= 11; i++){
-    //     $('<div id="pawn_' + i +'"><img src="./themes/' + decodeURI(params.theme) + '/' + player.team + '/' + i + '.png" /><span data-team="' + player.team + '">' + i + '</span></div>')
-    //     .appendTo('#box')
-    //     .attr('data-pawn', i)
-    //     .click(function(pawn) {
-    //         $("#board div").each(function(){
-    //             // Add move event to legal tile
-    //             $(this).on("click", function(){
-    //                 //console.log($('<div/>').html(pawn.currentTarget).contents().data('pawn'));
-    //                 // Set new coordinate values to pawn
-    //                 tempSetup.push([$(this).data('x'), $(this).data('y'), $('<div/>').html(pawn.currentTarget).contents().data('pawn'), player.team]);
-    //                 // Remove event listener click from all tiles
-    //                 $('#board div').off('click');
+    for(i = 0; i <= Math.max(...pawnsInBox); i++){
+        // Count available pawns
+        let amountPawnsAvailable = 0;
+        for(j = 0; j < pawnsInBox.length; j++){
+            // Look for the pawn
+            if(i == pawnsInBox[j]){
+                // +1 everytime pawn is found in box
+                amountPawnsAvailable++;
+            }
+            // Break the loop if we already passed our pawn (better performance I guess)
+            if(i < pawnsInBox[j]){
+                break;
+            }
+        }
 
-    //                 placePawns(tempSetup);
-    //             });
-    //         });
-    //     });
-    // }
-
-    for(i = 0; i < pawnsInBox.length; i++){
-        $('<div id="pawn_' + pawnsInBox[i] +'"><img src="./themes/' + decodeURI(params.theme) + '/' + player.team + '/' + pawnsInBox[i] + '.png" /><span data-team="' + player.team + '">' + pawnsInBox[i] + '</span></div>')
-        .appendTo('#box')
-        .attr('data-pawn', pawnsInBox[i])
-        .click(function(pawn) {
-            $("#board div").each(function(){
-                // Add move event to legal tile
-                $(this).on("click", function(){
-                    //console.log($('<div/>').html(pawn.currentTarget).contents().data('pawn'));
-                    // Set new coordinate values to pawn
-                    tempSetup.push([$(this).data('x'), $(this).data('y'), $('<div/>').html(pawn.currentTarget).contents().data('pawn'), player.team]);
-                    // Remove event listener click from all tiles
-                    $('#board div').off('click');
-
-                    placePawns(tempSetup);
+        // If still available -> place pawn in box
+        if(amountPawnsAvailable > 0){
+            $('<div id="pawn_' + i +'"><img src="./themes/' + decodeURI(params.theme) + '/' + player.team + '/' + i + '.png" /><span data-team="' + player.team + '">' + i + '</span><span class="amount">' + amountPawnsAvailable + 'x</span></div>')
+            .appendTo('#box')
+            .attr('data-pawn', i)
+            .attr('data-remaining', amountPawnsAvailable)
+            .click(function(pawn) {
+                $("#board div").each(function(){
+                    // Add move event to legal tile
+                    $(this).on("click", function(){
+                        // Turn the html string to a JQuery element object
+                        let pawnElement = $($.parseHTML(pawn.currentTarget.outerHTML));
+                        if(pawnElement.data('remaining') > 0){
+                            // Add pawn to setup
+                            tempSetup.push([$(this).data('x'), $(this).data('y'), pawnElement.data('pawn'), player.team]);
+                            // Remove pawn from box
+                            pawnsInBox.splice(pawnsInBox.indexOf(pawnElement.data('pawn')), 1);
+                        }
+                        // Check if all pawns have been placed
+                        if(tempSetup.length == 40){
+                            console.log('placed all pawns');
+                            // Ready button appears
+                        }
+                        // Remove event listener click from all tiles
+                        $('#board div').off('click');
+                        // Place pawns
+                        initBox();
+                        placePawns(tempSetup);
+                    });
                 });
             });
-        });
+        }
     }
 }
-createBox();
 
 let tempSetup = [];
 

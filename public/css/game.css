@@ -38,20 +38,29 @@
 
 #board div span,
 #box div span {
-    top: 0;
-    left: 0;
     position: absolute;
     font-family: fredoka;
     font-size: 100%;
 }
 
+#box div span.amount {
+    bottom: 0;
+    right: 0;
+    font-weight: bold;
+    color: #ffffff;
+}
+
 #board div span[data-team='0'],
 #box div span[data-team='0']{
+    top: 0;
+    left: 0;
     color: blue;
 }
 
 #board div span[data-team='1'],
 #box div span[data-team='1']{
+    top: 0;
+    left: 0;
     color: red;
 }
 
@@ -264,13 +273,13 @@
     top: 0;
     left: 0;
     padding: 0;
-    width: 30%;
+    width: 20%;
     height: 100%;
     background-color: rgba(0,0,0,0);
     position: absolute;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(6, 1fr);
     gap: 1px;
 }
 
