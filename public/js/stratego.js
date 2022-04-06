@@ -389,10 +389,16 @@ const getPawnById = (id) => {
 }
 
 const getPawnId = (x, y, pawn, team) => {
+    if(setupStage){
+        array = tempSetup;
+    }else{
+        array = pawns;
+    }
+
     found = false;
     // Loop through all pawns
-    for (var i = 0; i < pawns.length; i++) {
-        if (pawns[i][0] == x && pawns[i][1] == y && pawns[i][2] == pawn && pawns[i][3] == team){
+    for (var i = 0; i < array.length; i++) {
+        if (array[i][0] == x && array[i][1] == y && array[i][2] == pawn && array[i][3] == team){
             found = true;
             break;
         }
@@ -512,81 +518,114 @@ const checkForEnemyContact = (new_x, new_y, team) => {
 }
 
 const movePawn = (old_x, old_y, pawn, team) => {
-    // Check for static pawn
-    if(pawn == 11 || pawn == 0){
-        // Cancel move
-        return;
-    }
-    // Set defaults
-    let atLeastOneLegalMove = false;
-    // Check all the tiles
-    $("#board div").each(function(){
-        // Check for legal tiles
-        if(isLegalMove(old_x, old_y, $(this).data('x'), $(this).data('y'), pawn, team)){
-            // Turn checker on if isn't on already
-            if(!atLeastOneLegalMove){
-                atLeastOneLegalMove = true;
+    // Check if we are in the setup stage
+    if(setupStage){
+        // Check all the tiles
+        $("#board div").each(function(){
+            if(isTileInSpawnZone($(this).data('y'))){
+                // Add move event to legal tile
+                $(this).on("click", function(){
+                    // Get pawn ID from array
+                    pawnId = getPawnId(old_x, old_y, pawn, team);
+                    if(getPawnByCoordinate($(this).data('x'), $(this).data('y')) == null){
+                        // Move pawn
+                        tempSetup[pawnId][0] = $(this).data('x');
+                        tempSetup[pawnId][1] = $(this).data('y');
+                    }else{
+                        // Get selected pawn
+                        selectedPawn = getPawnByCoordinate($(this).data('x'), $(this).data('y'));
+                        selectedPawnId = getPawnId(selectedPawn[0], selectedPawn[1], selectedPawn[2], selectedPawn[3]);
+                        // Move selected pawn to current tile
+                        tempSetup[selectedPawnId][0] = old_x;
+                        tempSetup[selectedPawnId][1] = old_y;
+                        // Move pawn to the now free tile
+                        tempSetup[pawnId][0] = $(this).data('x');
+                        tempSetup[pawnId][1] = $(this).data('y');
+                    }
+                    // Remove event listener click from all tiles
+                    $('#board div').off('click');
+                    // Place pawns
+                    placePawns(tempSetup);
+                });
             }
-            // Add color to legal tile
-            $(this).addClass('legalMove shineEffect');
-            // Check if tile has an enemy
-            if(checkForEnemyContact($(this).data('x'), $(this).data('y'), team)){
-                $(this).prepend('<img class="fightIcon swordLeft" src="./themes/' + encodeURI(params.theme) + '/misc/sword_left.png" />');
-                $(this).prepend('<img class="fightIcon swordRight" src="./themes/' + encodeURI(params.theme) + '/misc/sword_right.png" />');
-            }
-            // Add move event to legal tile
-            $(this).on("click", function(){
-                // Remove classes from the tiles
-                $('#board div').removeClass('legalMove selected shineEffect');
-                // Delete all images with fighticon class
-                $("img").remove(".fightIcon");
-                // Get values from selected tile
-                new_x = $(this).data("x");
-                new_y = $(this).data("y");
-                // Get pawn ID from array
-                pawnId = getPawnId(old_x, old_y, pawn, team);
-                // Check if there has to be a fight
-                if (checkForEnemyContact(new_x, new_y, team)){
-                    // Get full pawn object of both parties
-                    attackingPawn = getPawnById(pawnId);
-                    defendingPawn = getPawnByCoordinate(new_x, new_y);
-                    // Execute the fight
-                    pawns = fight(attackingPawn, defendingPawn, pawns);
-                }else{
-                    console.log("Moved pawn: " + pawn + " to x:" + new_x + " y:" + new_y);
-                    // Set new coordinate values to pawn
-                    pawns[pawnId][0] = new_x;
-                    pawns[pawnId][1] = new_y;
-                }
-                // Remove event listener click from all tiles
-                $('#board div').off('click');
-                // Place pawns
-                placePawns(pawns);
-                // Update the array on server
-                socket.emit('updateBoard', roomCode, pawns);
-            });
-        // Cancel on click same tile
-        }else if($(this).data("x") == old_x && $(this).data("y") == old_y){
-            // Set selected tile
-            $(this).addClass('selected');
-            // Add cancel event
-            $(this).on("click", function(){
-                // Remove classes from the tiles
-                $('#board div').removeClass('legalMove selected shineEffect');
-                // Delete all images with fighticon class
-                $("img").remove(".fightIcon");
-                // Remove event listener click from all tiles
-                $('#board div').off('click');
-                // Place pawns
-                placePawns(pawns);
-            });
+        });
+    }else{
+        // Check for static pawn
+        if(pawn == 11 || pawn == 0){
+            // Cancel move
+            return;
         }
-    });
-    // Check if pawn has legal moves -> if none cancel
-    if(!atLeastOneLegalMove){
-        // Remove classes from the tiles
-        $('#board div').removeClass('selected');
-        return;
+        // Set defaults
+        let atLeastOneLegalMove = false;
+        // Check all the tiles
+        $("#board div").each(function(){
+            // Check for legal tiles
+            if(isLegalMove(old_x, old_y, $(this).data('x'), $(this).data('y'), pawn, team)){
+                // Turn checker on if isn't on already
+                if(!atLeastOneLegalMove){
+                    atLeastOneLegalMove = true;
+                }
+                // Add color to legal tile
+                $(this).addClass('legalMove shineEffect');
+                // Check if tile has an enemy
+                if(checkForEnemyContact($(this).data('x'), $(this).data('y'), team)){
+                    $(this).prepend('<img class="fightIcon swordLeft" src="./themes/' + encodeURI(params.theme) + '/misc/sword_left.png" />');
+                    $(this).prepend('<img class="fightIcon swordRight" src="./themes/' + encodeURI(params.theme) + '/misc/sword_right.png" />');
+                }
+                // Add move event to legal tile
+                $(this).on("click", function(){
+                    // Remove classes from the tiles
+                    $('#board div').removeClass('legalMove selected shineEffect');
+                    // Delete all images with fighticon class
+                    $("img").remove(".fightIcon");
+                    // Get values from selected tile
+                    new_x = $(this).data("x");
+                    new_y = $(this).data("y");
+                    // Get pawn ID from array
+                    pawnId = getPawnId(old_x, old_y, pawn, team);
+                    // Check if there has to be a fight
+                    if (checkForEnemyContact(new_x, new_y, team)){
+                        // Get full pawn object of both parties
+                        attackingPawn = getPawnById(pawnId);
+                        defendingPawn = getPawnByCoordinate(new_x, new_y);
+                        // Execute the fight
+                        pawns = fight(attackingPawn, defendingPawn, pawns);
+                    }else{
+                        console.log("Moved pawn: " + pawn + " to x:" + new_x + " y:" + new_y);
+                        // Set new coordinate values to pawn
+                        pawns[pawnId][0] = new_x;
+                        pawns[pawnId][1] = new_y;
+                    }
+                    // Remove event listener click from all tiles
+                    $('#board div').off('click');
+                    // Place pawns
+                    placePawns(pawns);
+                    // Update the array on server
+                    socket.emit('updateBoard', roomCode, pawns);
+                });
+            // Cancel on click same tile
+            }else if($(this).data("x") == old_x && $(this).data("y") == old_y){
+                // Set selected tile
+                $(this).addClass('selected');
+                // Add cancel event
+                $(this).on("click", function(){
+                    // Remove classes from the tiles
+                    $('#board div').removeClass('legalMove selected shineEffect');
+                    // Delete all images with fighticon class
+                    $("img").remove(".fightIcon");
+                    // Remove event listener click from all tiles
+                    $('#board div').off('click');
+                    // Place pawns
+                    placePawns(pawns);
+                });
+            }
+        });
+        // Check if pawn has legal moves -> if none cancel
+        if(!atLeastOneLegalMove){
+            // Remove classes from the tiles
+            $('#board div').removeClass('selected');
+            return;
+        }
     }
 }
 
@@ -665,10 +704,13 @@ const initBox = () => {
                         // Turn the html string to a JQuery element object
                         let pawnElement = $($.parseHTML(pawn.currentTarget.outerHTML));
                         if(pawnElement.data('remaining') > 0){
-                            // Add pawn to setup
-                            tempSetup.push([$(this).data('x'), $(this).data('y'), pawnElement.data('pawn'), player.team]);
-                            // Remove pawn from box
-                            pawnsInBox.splice(pawnsInBox.indexOf(pawnElement.data('pawn')), 1);
+                            // Check if the place already has a pawn
+                            if(getPawnByCoordinate($(this).data('x'), $(this).data('y')) == null){
+                                // Add pawn to setup
+                                tempSetup.push([$(this).data('x'), $(this).data('y'), pawnElement.data('pawn'), player.team]);
+                                // Remove pawn from box
+                                pawnsInBox.splice(pawnsInBox.indexOf(pawnElement.data('pawn')), 1);
+                            }
                         }
 
                         // Remove event listener click from all tiles
@@ -692,10 +734,6 @@ const initBox = () => {
 }
 
 let tempSetup = [];
-
-const addPawnToSetup = (x, y, pawn) => {
-    tempSetup.push([x, y, pawn, player.team])
-}
 
 const isTileInSpawnZone = (y) => {
     if(player.team == 0 && y >= 7 || player.team == 1 && y <= 4){
