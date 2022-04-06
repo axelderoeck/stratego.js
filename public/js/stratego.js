@@ -84,8 +84,10 @@ const init = (teamNumber) => {
     // Assign team number
     player.team = teamNumber;
     // Create the board
-    initBoard(setupStage);
-    initBox();
+    initBoard();
+    if(setupStage){
+        initBox();
+    }
 
     // Mirror the board if it's player 2
     if(player.team == 1){
@@ -136,7 +138,7 @@ const isTileDisabled = (x, y) => {
     return false;
 }
 
-const initBoard = (setup) => {
+const initBoard = () => {
     // Delete possible existing tiles
     $("#board").children().remove();
 
@@ -150,7 +152,7 @@ const initBoard = (setup) => {
                 .attr('data-y', y);
 
             // If its the setup phase
-            if(setup && !isTileInSpawnZone(y)){
+            if(setupStage && !isTileInSpawnZone(y)){
                 tile.addClass('nospawn');
             }
 
@@ -359,9 +361,16 @@ const endGame = (player) => {
 }
 
 const getPawnByCoordinate = (x, y) => {
+    // Set specific to setup or game stage
+    if(setupStage){
+        array = tempSetup;
+    }else{
+        array = pawns;
+    }
+
     found = false;
-    for (var i = 0; i < pawns.length; i++) {
-        if (pawns[i][0] == x && pawns[i][1] == y){
+    for (var i = 0; i < array.length; i++) {
+        if (array[i][0] == x && array[i][1] == y){
             found = true;
             break;
         }
@@ -369,7 +378,7 @@ const getPawnByCoordinate = (x, y) => {
 
     if(found){
         // Return pawn array
-        return pawns[i];
+        return array[i];
     }else{
         return null;
     }
