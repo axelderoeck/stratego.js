@@ -516,27 +516,26 @@ const checkForEnemyContact = (new_x, new_y, team) => {
 const movePawn = (old_x, old_y, pawn, team) => {
     // Check if we are in the setup stage
     if(setupStage){
+        // Remove event listener click from all tiles
+        $('#board div').off('click');
         // Check all the tiles
         $("#board div").each(function(){
             if(isTileInSpawnZone($(this).data('y'))){
                 // Add move event to legal tile
                 $(this).on("click", function(){
                     // Get pawn ID from array
-                    pawnId = getPawnId(old_x, old_y, pawn, team);
-                    if(getPawnByCoordinate($(this).data('x'), $(this).data('y')) == null){
-                        // Move pawn
-                        tempSetup[pawnId][0] = $(this).data('x');
-                        tempSetup[pawnId][1] = $(this).data('y');
-                    }else{
+                    pawnId = getPawnId(old_x, old_y, pawn, player.team);
+                    // Move pawn
+                    tempSetup[pawnId][0] = $(this).data('x');
+                    tempSetup[pawnId][1] = $(this).data('y');
+                    // If spot was already taken -> swap place
+                    if(getPawnByCoordinate($(this).data('x'), $(this).data('y')) != null){
                         // Get selected pawn
                         selectedPawn = getPawnByCoordinate($(this).data('x'), $(this).data('y'));
-                        selectedPawnId = getPawnId(selectedPawn[0], selectedPawn[1], selectedPawn[2], selectedPawn[3]);
+                        selectedPawnId = getPawnId(selectedPawn[0], selectedPawn[1], selectedPawn[2], player.team);
                         // Move selected pawn to current tile
                         tempSetup[selectedPawnId][0] = old_x;
                         tempSetup[selectedPawnId][1] = old_y;
-                        // Move pawn to the now free tile
-                        tempSetup[pawnId][0] = $(this).data('x');
-                        tempSetup[pawnId][1] = $(this).data('y');
                     }
                     // Remove highlight class
                     $('#board div').removeClass('legalMove selected');
