@@ -516,27 +516,29 @@ const checkForEnemyContact = (new_x, new_y, team) => {
 const movePawn = (old_x, old_y, pawn, team) => {
     // Check if we are in the setup stage
     if(setupStage){
-        // Remove event listener click from all tiles
+        // Remove event listener click from all tiles before adding new ones to avoid conflict
         $('#board div').off('click');
-        // Check all the tiles
+        // Loop through all tiles on the board
         $("#board div").each(function(){
+            // Check if tile is in the spawnzone
             if(isTileInSpawnZone($(this).data('y'))){
-                // Add move event to legal tile
+                // Add click event to the tile that will move our previously selected pawn to the new tile
                 $(this).on("click", function(){
-                    // Get pawn ID from array
+                    // Get our previously selected pawn id
                     pawnId = getPawnId(old_x, old_y, pawn, player.team);
-                    // Move pawn
-                    tempSetup[pawnId][0] = $(this).data('x');
-                    tempSetup[pawnId][1] = $(this).data('y');
-                    // If spot was already taken -> swap place
-                    if(getPawnByCoordinate($(this).data('x'), $(this).data('y')) != null){
-                        // Get selected pawn
-                        selectedPawn = getPawnByCoordinate($(this).data('x'), $(this).data('y'));
-                        selectedPawnId = getPawnId(selectedPawn[0], selectedPawn[1], selectedPawn[2], player.team);
-                        // Move selected pawn to current tile
+                    // Get selected tile's pawn (if exists)
+                    selectedTile = getPawnByCoordinate($(this).data('x'), $(this).data('y'));
+                    // Check if the selected tile already has a pawn or not (yes -> swap place)
+                    if(selectedTile != null){
+                        // Get other pawn id
+                        selectedPawnId = getPawnId(selectedTile[0], selectedTile[1], selectedTile[2], player.team);
+                        // Move other pawn to current tile
                         tempSetup[selectedPawnId][0] = old_x;
                         tempSetup[selectedPawnId][1] = old_y;
                     }
+                    // Move original selected pawn to selected tile
+                    tempSetup[pawnId][0] = $(this).data('x');
+                    tempSetup[pawnId][1] = $(this).data('y');
                     // Remove highlight class
                     $('#board div').removeClass('legalMove selected');
                     // Remove event listener click from all tiles
