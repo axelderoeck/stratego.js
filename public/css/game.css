@@ -115,7 +115,7 @@
     -o-user-select: none;
 }
 
-#board div.legalMove {
+.legalMove {
     opacity: 1;
     background-color: rgba(241, 239, 100, 0.4) !important;
     -webkit-box-shadow:inset 0px 0px 0px 1px #e6fd17;
@@ -123,7 +123,7 @@
     box-shadow:inset 0px 0px 0px 1px #e6fd17;
 }
 
-#board div.selected {
+.selected {
     opacity: 1 !important;
 }
 

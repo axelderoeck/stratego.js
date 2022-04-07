@@ -138,6 +138,8 @@ const placePawns = (array) => {
         if(pawn[3] == player.team){
             // Add event listener
             tile.click(function() {
+                // Add highlight class
+                tile.addClass('legalMove selected');
                 movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
             });
         }
@@ -536,6 +538,8 @@ const movePawn = (old_x, old_y, pawn, team) => {
                         tempSetup[pawnId][0] = $(this).data('x');
                         tempSetup[pawnId][1] = $(this).data('y');
                     }
+                    // Remove highlight class
+                    $('#board div').removeClass('legalMove selected');
                     // Remove event listener click from all tiles
                     $('#board div').off('click');
                     // Place pawns
@@ -713,35 +717,42 @@ const initBox = () => {
             .attr('data-pawn', i)
             .attr('data-remaining', amountPawnsAvailable)
             .click(function(pawn) {
+                // Add highlight class to tile
+                $(this).addClass('legalMove selected');
+                // Loop all tiles
                 $("#board div").each(function(){
-                    // Add move event to legal tile
-                    $(this).on("click", function(){
-                        // Turn the html string to a JQuery element object
-                        let pawnElement = $($.parseHTML(pawn.currentTarget.outerHTML));
-                        if(pawnElement.data('remaining') > 0){
-                            // Check if the place already has a pawn
-                            if(getPawnByCoordinate($(this).data('x'), $(this).data('y')) == null){
-                                // Add pawn to setup
-                                tempSetup.push([$(this).data('x'), $(this).data('y'), pawnElement.data('pawn'), player.team]);
-                                // Remove pawn from box
-                                pawnsInBox.splice(pawnsInBox.indexOf(pawnElement.data('pawn')), 1);
+                    if(isTileInSpawnZone($(this).data('y'))){
+                        // Add move event to legal tile
+                        $(this).on("click", function(){
+                            // Remove highlight class
+                            $('#board div').removeClass('legalMove selected');
+                            // Turn the html string to a JQuery element object
+                            let pawnElement = $($.parseHTML(pawn.currentTarget.outerHTML));
+                            if(pawnElement.data('remaining') > 0){
+                                // Check if the place already has a pawn
+                                if(getPawnByCoordinate($(this).data('x'), $(this).data('y')) == null){
+                                    // Add pawn to setup
+                                    tempSetup.push([$(this).data('x'), $(this).data('y'), pawnElement.data('pawn'), player.team]);
+                                    // Remove pawn from box
+                                    pawnsInBox.splice(pawnsInBox.indexOf(pawnElement.data('pawn')), 1);
+                                }
                             }
-                        }
 
-                        // Remove event listener click from all tiles
-                        $('#board div').off('click');
-                        // Place pawns
-                        placePawns(tempSetup);
-                        // Check if all pawns have been placed
-                        if(tempSetup.length == 40){
-                            console.log('placed all pawns');
-                            // Ready button appears
-                        }else if(tempSetup.length < 40){
-                            initBox();
-                        }else{
-                            // too many pawns someones cheating
-                        }
-                    });
+                            // Remove event listener click from all tiles
+                            $('#board div').off('click');
+                            // Place pawns
+                            placePawns(tempSetup);
+                            // Check if all pawns have been placed
+                            if(tempSetup.length == 40){
+                                console.log('placed all pawns');
+                                // Ready button appears
+                            }else if(tempSetup.length < 40){
+                                initBox();
+                            }else{
+                                // too many pawns someones cheating
+                            }
+                        });
+                    }
                 });
             });
         }
