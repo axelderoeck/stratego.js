@@ -104,7 +104,10 @@ const init = (teamNumber) => {
 const initNavigation = () => {
     // Remove existing buttons
     $("#navigation").children().remove();
+    $("#navigation").attr('data-team', player.team);
     if (setupStage){
+        // Add ready button
+        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(randomisePawns).prepend('<i class="fa-solid fa-check"></i>').append('</br>Ready');
         // Add randomise button
         $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(randomisePawns).prepend('<i class="fa-solid fa-dice"></i>').append('</br>Random');
         // Add reset button

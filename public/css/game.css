@@ -301,17 +301,25 @@
     padding: 5px;
 }
 
+#navigation[data-team='0'] .strategoBtn{
+    color: blue;
+    border-color: blue;
+}
+
+#navigation[data-team='1'] .strategoBtn{
+    color: red;
+    border-color: red;
+}
+
 .strategoBtn {
     width: 70px;
     margin: 0 auto;
     background: none;
-    background-color: rgba(0,0,0,0);
     font-size: 15px;
     border: 2px solid black;
     padding: 5px;
     border-radius: 5px;
     transition: 0.5s;
-    display: inline-block;
 }
 
 .strategoBtn i {
@@ -322,5 +330,7 @@
 
 .strategoBtn:hover {
     transition: 0.5s;
+    border-color: green;
+    background-color: white;
     transform: translateY(5px);
 }
