@@ -86,8 +86,10 @@ const init = (teamNumber) => {
     // Create the board
     initBoard();
     if(setupStage){
+        // Add box
         initBox();
     }
+    initNavigation();
 
     // Mirror the board if it's player 2
     if(player.team == 1){
@@ -97,6 +99,17 @@ const init = (teamNumber) => {
     console.info('You are player '+ parseInt(player.team + 1));
     socket.emit('updatePawns', pawns);
     placePawns(pawns);
+}
+
+const initNavigation = () => {
+    // Remove existing buttons
+    $("#navigation").children().remove();
+    if (setupStage){
+        // Add randomise button
+        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(randomisePawns).prepend('<i class="fa-solid fa-dice"></i>').append('</br>Random');
+        // Add reset button
+        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(resetPawns).prepend('<i class="fa-solid fa-arrow-rotate-left"></i>').append('</br>Reset');
+    }
 }
 
 const placePawns = (array) => {
