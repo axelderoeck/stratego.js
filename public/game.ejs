@@ -12,6 +12,19 @@
     <title>Document</title>
 </head>
 <body id="fullboard">
+    <div id="navigation">
+        <button class="strategoBtn" onclick="randomisePawns()">
+            <i class="fa-solid fa-dice"></i>
+            <br>
+            Random
+        </button>
+        <button class="strategoBtn" onclick="resetPawns()">
+            <i class="fa-solid fa-arrow-rotate-left"></i>
+            <br>
+            Reset
+        </button>
+    </div>
+
     <button id="startButton">Start</button>
 
     <div id="visualFight">
@@ -32,6 +45,7 @@
     </div>
     <div id="board"></div>
 
+    <script src="https://kit.fontawesome.com/90f9e5d42f.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
     <script src="themes/<%=theme%>/config.js"></script>
     <script src="js/scripts.js"></script>

@@ -293,3 +293,33 @@
     -webkit-user-select: none;
     -o-user-select: none;
 }
+
+#navigation {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+}
+
+.strategoBtn {
+    width: 70px;
+    margin: 0 auto;
+    background: none;
+    background-color: rgba(0,0,0,0);
+    font-size: 15px;
+    border: 2px solid black;
+    padding: 5px;
+    border-radius: 5px;
+    transition: 0.5s;
+}
+
+.strategoBtn i {
+    margin: 0 0 5px 0;
+    padding: 0;
+    font-size: 30px;
+}
+
+.strategoBtn:hover {
+    transition: 0.5s;
+    transform: translateY(5px);
+}
