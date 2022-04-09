@@ -113,10 +113,12 @@ io.on('connection', (socket) => {
     });
 
     socket.on('readyUp', (roomCode) => {
+        console.log("\x1b[36m%s\x1b[0m", "[stratego] user `" + socket.id + "`(player " + parseInt(socket.player + 1) + ") is ready to play in room `" + roomCode + "`.");
         io.in(roomCode).emit('readyUp', socket.player);
     });
 
     socket.on('cancelReadyUp', (roomCode) => {
+        console.log("\x1b[36m%s\x1b[0m", "[stratego] user `" + socket.id + "`(player " + parseInt(socket.player + 1) + ") is no longer ready to play in room `" + roomCode + "`.");
         io.in(roomCode).emit('cancelReadyUp', socket.player);
     });
 
