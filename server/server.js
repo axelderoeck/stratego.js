@@ -137,7 +137,7 @@ io.on('connection', (socket) => {
 
     socket.on('updateBoard', (roomCode, pawns) => {
         // change to io later like readyUp
-        socket.in(roomCode).emit('updatePawns', pawns);
+        io.in(roomCode).emit('updatePawns', pawns);
     });
 
     socket.on('disconnect', () => {

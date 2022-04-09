@@ -61,28 +61,6 @@ const loopRandomMove = () => {
     }, 500);
 }
 
-/*
-// Add shine effect to a random pawn every minute
-setInterval(function(){ 
-    // Generate random axis values
-    let randomX = Math.floor(Math.random() * 10) + 1;
-    let randomY = Math.floor(Math.random() * 10) + 1;
-    // Check if tile has a pawn
-    while (getPawnByCoordinate(randomX, randomY) == null){
-        randomX = Math.floor(Math.random() * 10) + 1;
-        randomY = Math.floor(Math.random() * 10) + 1;
-    }
-    // Get the random tile 
-    let tile = $("div[data-x='" + randomX + "'][data-y='" + randomY + "']");
-    // Add shine effect
-    tile.addClass("shineEffect forceShine");
-    // Remove shine effect class after 1 second
-    setTimeout(function() {
-        tile.removeClass("forceShine");
-    }, 1000);
-}, 60000);
-*/
-
 const init = (teamNumber) => {
     // Assign team number
     player.team = teamNumber;
@@ -161,6 +139,13 @@ const isTileDisabled = (x, y) => {
     return false;
 }
 
+const isTileInSpawnZone = (y) => {
+    if(player.team == 0 && y >= 7 || player.team == 1 && y <= 4){
+        return true;
+    }
+    return false;
+}
+
 const initBoard = () => {
     // Delete possible existing tiles
     $("#board").children().remove();
@@ -205,34 +190,6 @@ let allPawns = [
 // Copy all existing pawns into the box
 let pawnsInBox = [...allPawns];
 
-const getPawnsArrayFromServer = () => {
-    // Call the server.js and say hello we want the newest whereabouts of the pawns
-    socket.emit("getPawnsArrayFromServer");
-
-    // We make the server pinky promise to give us the new pawns because it is the most sacred vow
-    // This way it will def work
-    const pinkyPromise = new Promise(resolve => {
-        socket.on('getPawnsArrayFromServer', (array) => {
-            resolve(array);
-        })
-    });
-
-    // Declare a new empty array
-    let array = [];
-
-    // After we get the pinky promise back we have to convert it to an array for some reason
-    pinkyPromise.then(promiseArray => {
-        promiseArray.forEach(pawn => {
-            array.push(pawn);
-        });
-    });
-
-    // Return the new array
-    return array;
-}
-
-let myPawns = [];
-
 /* Pawns 2D array = [[X, Y, Pawn, Team], ...]
 *
 * @param pawns[ID][0] = X (1-10)
@@ -243,6 +200,7 @@ let myPawns = [];
 **/
 
 let pawns = [];
+let pawnsSetup = [];
 
 /* Cemetery 2D array = [[Pawn, Team], ...]
 *
@@ -255,7 +213,7 @@ let cemetery = [];
 
 /* This function is written in favor of the attacker.
 *
-* true = attacker wins.
+* return true = attacker wins.
 * 
 **/
 
@@ -364,7 +322,7 @@ const endGame = (player) => {
 const getPawnByCoordinate = (x, y) => {
     // Set specific to setup or game stage
     if(setupStage){
-        array = tempSetup;
+        array = pawnsSetup;
     }else{
         array = pawns;
     }
@@ -391,7 +349,7 @@ const getPawnById = (id) => {
 
 const getPawnId = (x, y, pawn, team) => {
     if(setupStage){
-        array = tempSetup;
+        array = pawnsSetup;
     }else{
         array = pawns;
     }
@@ -538,18 +496,18 @@ const movePawn = (old_x, old_y, pawn, team) => {
                         // Get other pawn id
                         selectedPawnId = getPawnId(selectedTile[0], selectedTile[1], selectedTile[2], player.team);
                         // Move other pawn to current tile
-                        tempSetup[selectedPawnId][0] = old_x;
-                        tempSetup[selectedPawnId][1] = old_y;
+                        pawnsSetup[selectedPawnId][0] = old_x;
+                        pawnsSetup[selectedPawnId][1] = old_y;
                     }
                     // Move original selected pawn to selected tile
-                    tempSetup[pawnId][0] = $(this).data('x');
-                    tempSetup[pawnId][1] = $(this).data('y');
+                    pawnsSetup[pawnId][0] = $(this).data('x');
+                    pawnsSetup[pawnId][1] = $(this).data('y');
                     // Remove highlight class
                     $('#board div').removeClass('legalMove selected');
                     // Remove event listener click from all tiles
                     $('#board div').off('click');
                     // Place pawns
-                    placePawns(tempSetup);
+                    placePawns(pawnsSetup);
                 });
             }
         });
@@ -635,12 +593,12 @@ const movePawn = (old_x, old_y, pawn, team) => {
 
 const resetPawns = () => {
     // Empty the setup
-    tempSetup = [];
+    pawnsSetup = [];
     // Reset the pawnsInBox array
     pawnsInBox = [...allPawns];
     //
     initBox();
-    placePawns(tempSetup);
+    placePawns(pawnsSetup);
 }
 
 const randomisePawns = () => {
@@ -669,33 +627,16 @@ const randomisePawns = () => {
             randomY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
         }
         // Add pawn
-        tempSetup.push([randomX, randomY, pawn, player.team]);
+        pawnsSetup.push([randomX, randomY, pawn, player.team]);
     });
 
     // empty the array
     pawnsInBox = [];
-    placePawns(tempSetup);
+    placePawns(pawnsSetup);
     initBox();
 
     return pawns;
 }
-
-// const countPawnsAvailableInBox = async (pawn) => {
-//     // Count available pawns
-//     let amountPawnsAvailable = 0;
-//     for(i = 0; i < pawnsInBox.length; i++){
-//         // Look for the pawn
-//         if(pawn == pawnsInBox[i]){
-//             // +1 everytime pawn is found in box
-//             amountPawnsAvailable++;
-//         }
-//         // Break the loop if we already passed our pawn (better performance I guess)
-//         if(pawn < pawnsInBox[i]){
-//             break;
-//         }
-//     }
-//     return amountPawnsAvailable;
-// }
 
 const initBox = () => {
     $('#box').remove();
@@ -738,7 +679,7 @@ const initBox = () => {
                                 // Check if the place already has a pawn
                                 if(getPawnByCoordinate($(this).data('x'), $(this).data('y')) == null){
                                     // Add pawn to setup
-                                    tempSetup.push([$(this).data('x'), $(this).data('y'), pawnElement.data('pawn'), player.team]);
+                                    pawnsSetup.push([$(this).data('x'), $(this).data('y'), pawnElement.data('pawn'), player.team]);
                                     // Remove pawn from box
                                     pawnsInBox.splice(pawnsInBox.indexOf(pawnElement.data('pawn')), 1);
                                 }
@@ -747,12 +688,12 @@ const initBox = () => {
                             // Remove event listener click from all tiles
                             $('#board div').off('click');
                             // Place pawns
-                            placePawns(tempSetup);
+                            placePawns(pawnsSetup);
                             // Check if all pawns have been placed
-                            if(tempSetup.length == 40){
+                            if(pawnsSetup.length == 40){
                                 console.log('placed all pawns');
                                 // Ready button appears
-                            }else if(tempSetup.length < 40){
+                            }else if(pawnsSetup.length < 40){
                                 initBox();
                             }else{
                                 // too many pawns someones cheating
@@ -763,15 +704,6 @@ const initBox = () => {
             });
         }
     }
-}
-
-let tempSetup = [];
-
-const isTileInSpawnZone = (y) => {
-    if(player.team == 0 && y >= 7 || player.team == 1 && y <= 4){
-        return true;
-    }
-    return false;
 }
 
 const readyUp = () => {
