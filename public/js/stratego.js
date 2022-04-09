@@ -773,6 +773,9 @@ const isTileInSpawnZone = (y) => {
 }
 
 const readyUp = () => {
-    console.log('first ready');
     socket.emit('readyUp', roomCode);
+}
+
+const cancelReadyUp = () => {
+    socket.emit('cancelReadyUp', roomCode);
 }

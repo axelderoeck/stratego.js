@@ -26,7 +26,19 @@ socket.on('readyUp', (teamNumber) => {
     if (player.team == teamNumber){
         player.ready = true;
     }
-    readyCounter++;
+    if(readyCounter < 2){
+        readyCounter++;
+    }
+    console.log('ready counter: ', readyCounter);
+})
+
+socket.on('cancelReadyUp', (teamNumber) => {
+    if (player.team == teamNumber){
+        player.ready = false;
+    }
+    if(readyCounter >= 1){
+        readyCounter--;
+    }
     console.log('ready counter: ', readyCounter);
 })
 
