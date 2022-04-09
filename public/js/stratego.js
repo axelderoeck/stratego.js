@@ -6,7 +6,8 @@ let readyCounter = 0;
 
 let player = {
     team: 0,
-    ready: false
+    ready: false,
+    turn: false
 };
 let roomCode;
 
@@ -69,6 +70,8 @@ const init = (teamNumber) => {
     if(setupStage){
         // Add box
         initBox();
+    }else if(player.team == 0){
+        player.turn = true;
     }
     initNavigation();
 
@@ -118,13 +121,18 @@ const placePawns = (array) => {
             tile.prepend('<img src="./themes/' + decodeURI(params.theme) + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
                 .prepend('<span data-team=' + pawn[3] + '>' + pawn[2] + '</span>')
         }
-        if(pawn[3] == player.team){
+        if(pawn[3] == player.team && player.turn == true || setupStage == true){
             // Add event listener
             tile.click(function() {
                 // Add highlight class
                 tile.addClass('legalMove selected');
                 movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
             });
+            tile.removeClass('notMoveable');
+        }else if(pawn[3] == player.team && player.turn == false || pawn[3] != player.team && player.turn == true){
+            tile.addClass('notMoveable');
+        }else{
+            tile.removeClass('notMoveable');
         }
     })
 }
@@ -558,6 +566,9 @@ const movePawn = (old_x, old_y, pawn, team) => {
                         pawns[pawnId][0] = new_x;
                         pawns[pawnId][1] = new_y;
                     }
+                    // End our turn
+                    socket.emit('endTurn', roomCode);
+                    player.turn = false;
                     // Remove event listener click from all tiles
                     $('#board div').off('click');
                     // Place pawns

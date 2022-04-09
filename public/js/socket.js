@@ -77,6 +77,10 @@ socket.on('startGame', (array) => {
     init(player.team);
 })
 
+socket.on('startTurn', () => {
+    player.turn = true;
+})
+
 socket.on('updatePawns', (array) => {
     pawns = array;
     placePawns(pawns);

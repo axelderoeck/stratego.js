@@ -140,15 +140,15 @@ io.on('connection', (socket) => {
         io.in(roomCode).emit('updatePawns', pawns);
     });
 
+    socket.on('endTurn', (roomCode) => {
+        // change to io later like readyUp
+        socket.in(roomCode).emit('startTurn');
+    });
+
     socket.on('disconnect', () => {
         console.log("\x1b[36m%s\x1b[0m", "[stratego] user `" + socket.id + "` disconnected.");
         console.log('[stratego] server connections: ' + io.engine.clientsCount);
     });
-
-    let pawns = [];
-    socket.on('getPawnsArrayFromServer', () => {
-        socket.emit('getPawnsArrayFromServer', pawns);
-    })
 });
 
 const getThemes = () => {
