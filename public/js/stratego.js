@@ -477,10 +477,10 @@ const checkForEnemyContact = (new_x, new_y, team) => {
 }
 
 const movePawn = (old_x, old_y, pawn, team) => {
+    // Remove event listener click from all tiles before adding new ones to avoid conflict
+    $('#board div').off('click');
     // Check if we are in the setup stage
     if(setupStage){
-        // Remove event listener click from all tiles before adding new ones to avoid conflict
-        $('#board div').off('click');
         // Loop through all tiles on the board
         $("#board div").each(function(){
             // Check if tile is in the spawnzone
