@@ -122,13 +122,17 @@ io.on('connection', (socket) => {
         io.in(roomCode).emit('cancelReadyUp', socket.player);
     });
 
+    // Game is about to start
     socket.on('checkReadyStatus', (roomCode) => {
-        // Only target the other player in the room not yourself
+        // Only target the other player in the room
         socket.in(roomCode).emit('checkReadyStatus');
     });
 
-    socket.on('startGame', (roomCode) => {
-        io.in(roomCode).emit('startGame', socket.player);
+    // Start the game
+    socket.on('startGame', (roomCode, array) => {
+        console.log("\x1b[36m%s\x1b[0m", "[stratego] game started in room `" + roomCode + "`.");
+        // Give the setup array along to the other user when starting game
+        socket.in(roomCode).emit('startGame', array);
     });
 
     socket.on('updateBoard', (roomCode, pawns) => {

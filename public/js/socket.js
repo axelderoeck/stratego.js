@@ -34,6 +34,7 @@ socket.on('readyUp', (teamNumber) => {
     if(readyCounter < 2){
         readyCounter++;
     }
+    // Check if both players are ready
     checkReadyStatus();
 })
 
@@ -49,14 +50,30 @@ socket.on('cancelReadyUp', (teamNumber) => {
     }
 })
 
+// Game is about to start
 socket.on('checkReadyStatus', () => {
-    socket.emit('startGame', roomCode);
+    // Start the game
+    socket.emit('startGame', roomCode, tempSetup);
 })
 
-socket.on('startGame', () => {
-    console.log('game started');
+socket.on('startGame', (array) => {
+    // Turn off the setup phase
     setupStage = false;
-    pawns = tempSetup;
+    // Merge the enemy array with our array based on team
+    if (player.team == 0){
+        pawns = tempSetup;
+        for(i = 0; i < array.length; i++){
+            pawns.push(array[i]);
+        }
+    }else{
+        for(i = 0; i < array.length; i++){
+            pawns.push(array[i]);
+        }
+        for(i = 0; i < tempSetup.length; i++){
+            pawns.push(tempSetup[i]);
+        }
+    } 
+    // Initialise the game
     init(player.team);
 })
 

@@ -784,6 +784,7 @@ const cancelReadyUp = () => {
 
 const checkReadyStatus = () => {
     if(readyCounter >= 2){
+        // Both players are ready -> start the process to start the game
         socket.emit('checkReadyStatus', roomCode);
     }
 }
