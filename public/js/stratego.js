@@ -781,3 +781,9 @@ const readyUp = () => {
 const cancelReadyUp = () => {
     socket.emit('cancelReadyUp', roomCode);
 }
+
+const checkReadyStatus = () => {
+    if(readyCounter >= 2){
+        socket.emit('checkReadyStatus', roomCode);
+    }
+}

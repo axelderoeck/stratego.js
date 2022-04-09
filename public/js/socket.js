@@ -25,21 +25,30 @@ socket.on('createInvite', (theme, room) => {
 socket.on('readyUp', (teamNumber) => {
     if (player.team == teamNumber){
         player.ready = true;
+        console.log('You are ready');
+    }else{
+        console.log('The other player is ready');
     }
     if(readyCounter < 2){
         readyCounter++;
     }
-    console.log('ready counter: ', readyCounter);
+    checkReadyStatus();
 })
 
 socket.on('cancelReadyUp', (teamNumber) => {
     if (player.team == teamNumber){
         player.ready = false;
+        console.log('You are no longer ready');
+    }else{
+        console.log('The other player is no longer ready');
     }
     if(readyCounter >= 1){
         readyCounter--;
     }
-    console.log('ready counter: ', readyCounter);
+})
+
+socket.on('checkReadyStatus', () => {
+    console.log('both players are ready, counter: ', readyCounter);
 })
 
 socket.on('updatePawns', (array) => {

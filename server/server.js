@@ -122,6 +122,11 @@ io.on('connection', (socket) => {
         io.in(roomCode).emit('cancelReadyUp', socket.player);
     });
 
+    socket.on('checkReadyStatus', (roomCode) => {
+        // Only target the other player in the room not yourself
+        socket.in(roomCode).emit('checkReadyStatus');
+    });
+
     socket.on('updateBoard', (roomCode, pawns) => {
         // change to io later like readyUp
         socket.in(roomCode).emit('updatePawns', pawns);
