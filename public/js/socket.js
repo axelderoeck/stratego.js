@@ -8,7 +8,9 @@ socket.on('connect', () => {
         roomCode = params.room
         socket.emit('joinGame', params.room);
     }else{
-        socket.emit('createGame', params.theme, generateString(ROOMCODE_LENGTH));
+        roomCode = generateString(ROOMCODE_LENGTH);
+        params.room = roomCode;
+        socket.emit('createGame', params.theme, roomCode);
     }
 })
 
@@ -48,7 +50,14 @@ socket.on('cancelReadyUp', (teamNumber) => {
 })
 
 socket.on('checkReadyStatus', () => {
-    console.log('both players are ready, counter: ', readyCounter);
+    socket.emit('startGame', roomCode);
+})
+
+socket.on('startGame', () => {
+    console.log('game started');
+    setupStage = false;
+    pawns = tempSetup;
+    init(player.team);
 })
 
 socket.on('updatePawns', (array) => {

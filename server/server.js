@@ -127,6 +127,10 @@ io.on('connection', (socket) => {
         socket.in(roomCode).emit('checkReadyStatus');
     });
 
+    socket.on('startGame', (roomCode) => {
+        io.in(roomCode).emit('startGame', socket.player);
+    });
+
     socket.on('updateBoard', (roomCode, pawns) => {
         // change to io later like readyUp
         socket.in(roomCode).emit('updatePawns', pawns);
@@ -135,10 +139,6 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log("\x1b[36m%s\x1b[0m", "[stratego] user `" + socket.id + "` disconnected.");
         console.log('[stratego] server connections: ' + io.engine.clientsCount);
-    });
-
-    socket.on('startGame', () => {
-        io.emit('startGame');
     });
 
     let pawns = [];
