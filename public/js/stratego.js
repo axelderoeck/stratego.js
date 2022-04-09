@@ -109,7 +109,9 @@ const initNavigation = () => {
     $("#navigation").children().remove();
     $("#navigation").attr('data-team', player.team);
     if (setupStage){
-        // Add ready button
+        // Add cancel button (TEMPORARY)
+        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(cancelReadyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Cancel');
+        // Add ready button (TEMPORARY)
         $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(readyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Ready');
         // Add randomise button
         $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(randomisePawns).prepend('<i class="fa-solid fa-dice"></i>').append('</br>Random');
