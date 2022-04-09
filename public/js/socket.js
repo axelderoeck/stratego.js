@@ -22,6 +22,14 @@ socket.on('createInvite', (theme, room) => {
     console.info('Invite link: http://' + ip + ':3000/game?theme=' + theme + '&room=' + room);
 });
 
+socket.on('readyUp', (teamNumber) => {
+    if (player.team == teamNumber){
+        player.ready = true;
+    }
+    readyCounter++;
+    console.log('ready counter: ', readyCounter);
+})
+
 socket.on('updatePawns', (array) => {
     pawns = array;
     placePawns(pawns);

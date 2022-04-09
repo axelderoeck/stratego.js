@@ -2,8 +2,11 @@
 const ROOMCODE_LENGTH = 6;
 let setupStage = true;
 
+let readyCounter = 0;
+
 let player = {
-    team: 0
+    team: 0,
+    ready: false
 };
 let roomCode;
 
@@ -107,7 +110,7 @@ const initNavigation = () => {
     $("#navigation").attr('data-team', player.team);
     if (setupStage){
         // Add ready button
-        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(randomisePawns).prepend('<i class="fa-solid fa-check"></i>').append('</br>Ready');
+        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(readyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Ready');
         // Add randomise button
         $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(randomisePawns).prepend('<i class="fa-solid fa-dice"></i>').append('</br>Random');
         // Add reset button
@@ -767,4 +770,9 @@ const isTileInSpawnZone = (y) => {
         return true;
     }
     return false;
+}
+
+const readyUp = () => {
+    console.log('first ready');
+    socket.emit('readyUp', roomCode);
 }

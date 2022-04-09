@@ -112,7 +112,12 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('readyUp', (roomCode) => {
+        io.in(roomCode).emit('readyUp', socket.player);
+    });
+
     socket.on('updateBoard', (roomCode, pawns) => {
+        // change to io later like readyUp
         socket.in(roomCode).emit('updatePawns', pawns);
     });
 
