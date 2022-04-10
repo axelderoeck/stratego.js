@@ -1,7 +1,10 @@
+// STRATEGO.JS
+// =========================
+
 // CONFIG
 // =========================
 
-const ROOMCODE_LENGTH = 6; // Length of roomcode
+const ROOMCODE_LENGTH = 6; // Length of roomcode (in characters)
 const TIME_FIGHT_DISPLAY = 5; // Amount of time the fight display stays on screen (in seconds)
 
 // ARRAYS SETUP
@@ -28,6 +31,9 @@ let pawnsSetup = [];
 **/
 
 let cemetery = [];
+
+// SET DEFAULTS
+// =========================
 
 let readyCounter = 0;
 
@@ -631,6 +637,9 @@ const movePawn = (old_x, old_y, pawn, team) => {
         }
     }
 }
+
+// SETUP PHASE FUNCTIONS
+// =========================
 
 const resetPawns = () => {
     // Empty the setup
