@@ -55,7 +55,7 @@ socket.on('checkReadyStatus', () => {
 
 socket.on('startGame', (array) => {
     // Turn off the setup phase
-    setupStage = false;
+    player.setup = false;
     // Merge the enemy array with our array based on team
     if (player.team == 0){
         pawns = pawnsSetup;

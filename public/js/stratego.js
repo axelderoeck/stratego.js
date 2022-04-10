@@ -26,15 +26,14 @@ let pawnsSetup = [];
 
 let cemetery = [];
 
-let setupStage = true;
-
 let readyCounter = 0;
 
 // Initialise player object
 let player = {
     team: 0,
     ready: false,
-    turn: false
+    turn: false,
+    setup: true
 };
 
 const getUpdatedArray = (array) => {
@@ -93,7 +92,7 @@ const init = (teamNumber) => {
     player.team = teamNumber;
     // Create the board
     initBoard();
-    if(setupStage){
+    if(player.setup){
         // Add box
         initBox();
     }else if(player.team == 0){
@@ -115,7 +114,7 @@ const initNavigation = () => {
     // Remove existing buttons
     $("#navigation").children().remove();
     $("#navigation").attr('data-team', player.team);
-    if (setupStage){
+    if (player.setup){
         // Add cancel button (TEMPORARY)
         $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(cancelReadyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Cancel');
         // Add ready button (TEMPORARY)
@@ -147,7 +146,7 @@ const placePawns = (array) => {
             tile.prepend('<img src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
                 .prepend('<span data-team=' + pawn[3] + '>' + pawn[2] + '</span>')
         }
-        if(pawn[3] == player.team && player.turn == true || setupStage == true){
+        if(pawn[3] == player.team && player.turn == true || player.setup == true){
             // Add event listener
             tile.click(function() {
                 // Add highlight class
@@ -194,7 +193,7 @@ const initBoard = () => {
                 .attr('data-y', y);
 
             // If its the setup phase
-            if(setupStage && !isTileInSpawnZone(y)){
+            if(player.setup && !isTileInSpawnZone(y)){
                 tile.addClass('nospawn');
             }
 
@@ -349,7 +348,7 @@ const endGame = (player) => {
 
 const getPawnByCoordinate = (x, y) => {
     // Set specific to setup or game stage
-    if(setupStage){
+    if(player.setup){
         array = pawnsSetup;
     }else{
         array = pawns;
@@ -376,7 +375,7 @@ const getPawnById = (id) => {
 }
 
 const getPawnId = (x, y, pawn, team) => {
-    if(setupStage){
+    if(player.setup){
         array = pawnsSetup;
     }else{
         array = pawns;
@@ -508,7 +507,7 @@ const movePawn = (old_x, old_y, pawn, team) => {
     // Remove event listener click from all tiles before adding new ones to avoid conflict
     $('#board div').off('click');
     // Check if we are in the setup stage
-    if(setupStage){
+    if(player.setup){
         // Loop through all tiles on the board
         $("#board div").each(function(){
             // Check if tile is in the spawnzone
