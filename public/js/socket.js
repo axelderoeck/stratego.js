@@ -50,26 +50,16 @@ socket.on('cancelReadyUp', (teamNumber) => {
 // Game is about to start
 socket.on('checkReadyStatus', () => {
     // Start the game
-    socket.emit('startGame', game.room, pawnsSetup);
+    socket.emit('startGame', game.room, pawns);
 })
 
 socket.on('startGame', (array) => {
     // Turn off the setup phase
     player.setup = false;
-    // Merge the enemy array with our array based on team
-    if (player.team == 0){
-        pawns = pawnsSetup;
-        for(i = 0; i < array.length; i++){
-            pawns.push(array[i]);
-        }
-    }else{
-        for(i = 0; i < array.length; i++){
-            pawns.push(array[i]);
-        }
-        for(i = 0; i < pawnsSetup.length; i++){
-            pawns.push(pawnsSetup[i]);
-        }
-    } 
+    // Merge the enemy array with our array
+    for(i = 0; i < array.length; i++){
+        pawns.push(array[i]);
+    }
     // Initialise the game
     init(player.team);
 })

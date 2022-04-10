@@ -6,6 +6,7 @@
 
 const ROOMCODE_LENGTH = 6; // Length of roomcode (in characters)
 const TIME_FIGHT_DISPLAY = 5; // Amount of time the fight display stays on screen (in seconds)
+const PLAYER_FIRST_MOVE = 0; // Player that gets the first move (0 = Blue, 1 = Red)
 
 // ARRAYS SETUP
 // =========================
@@ -21,7 +22,6 @@ let pawnsInBox = [...ALL_PAWNS];
 **/
 
 let pawns = [];
-let pawnsSetup = [];
 
 /* Cemetery 2D array = [[Pawn, Team], ...]
 *
@@ -84,16 +84,9 @@ const getPawnName = (pawn) => {
 }
 
 const getPawnByCoordinate = (x, y) => {
-    // Set specific to setup or game stage
-    if(player.setup){
-        array = pawnsSetup;
-    }else{
-        array = pawns;
-    }
-
-    for (var i = 0; i < array.length; i++) {
-        if (array[i][0] == x && array[i][1] == y){
-            return array[i];
+    for (var i = 0; i < pawns.length; i++) {
+        if (pawns[i][0] == x && pawns[i][1] == y){
+            return pawns[i];
         }
     }
     return null;
@@ -104,15 +97,9 @@ const getPawnById = (id) => {
 }
 
 const getPawnId = (x, y, pawn, team) => {
-    if(player.setup){
-        array = pawnsSetup;
-    }else{
-        array = pawns;
-    }
-
     // Loop through all pawns
-    for (var i = 0; i < array.length; i++) {
-        if (array[i][0] == x && array[i][1] == y && array[i][2] == pawn && array[i][3] == team){
+    for (var i = 0; i < pawns.length; i++) {
+        if (pawns[i][0] == x && pawns[i][1] == y && pawns[i][2] == pawn && pawns[i][3] == team){
             // Pawn found -> return id
             return i;
         }
@@ -291,7 +278,7 @@ const init = (teamNumber) => {
     if(player.setup){
         // Add box
         initBox();
-    }else if(player.team == 0){
+    }else if(player.team == PLAYER_FIRST_MOVE){
         player.turn = true;
     }
     initNavigation();
@@ -526,18 +513,18 @@ const movePawn = (old_x, old_y, pawn, team) => {
                         // Get other pawn id
                         selectedPawnId = getPawnId(selectedTile[0], selectedTile[1], selectedTile[2], player.team);
                         // Move other pawn to current tile
-                        pawnsSetup[selectedPawnId][0] = old_x;
-                        pawnsSetup[selectedPawnId][1] = old_y;
+                        pawns[selectedPawnId][0] = old_x;
+                        pawns[selectedPawnId][1] = old_y;
                     }
                     // Move original selected pawn to selected tile
-                    pawnsSetup[pawnId][0] = $(this).data('x');
-                    pawnsSetup[pawnId][1] = $(this).data('y');
+                    pawns[pawnId][0] = $(this).data('x');
+                    pawns[pawnId][1] = $(this).data('y');
                     // Remove highlight class
                     $('#board div').removeClass('legalMove selected');
                     // Remove event listener click from all tiles
                     $('#board div').off('click');
                     // Place pawns
-                    placePawns(pawnsSetup);
+                    placePawns(pawns);
                 });
             }
         });
@@ -629,12 +616,12 @@ const movePawn = (old_x, old_y, pawn, team) => {
 
 const resetPawns = () => {
     // Empty the setup
-    pawnsSetup = [];
+    pawns = [];
     // Reset the pawnsInBox array
     pawnsInBox = [...ALL_PAWNS];
     //
     initBox();
-    placePawns(pawnsSetup);
+    placePawns(pawns);
 }
 
 const randomisePawns = () => {
@@ -663,12 +650,12 @@ const randomisePawns = () => {
             randomY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
         }
         // Add pawn
-        pawnsSetup.push([randomX, randomY, pawn, player.team]);
+        pawns.push([randomX, randomY, pawn, player.team]);
     });
 
     // empty the array
     pawnsInBox = [];
-    placePawns(pawnsSetup);
+    placePawns(pawns);
     initBox();
 
     return pawns;
@@ -715,7 +702,7 @@ const initBox = () => {
                                 // Check if the place already has a pawn
                                 if(getPawnByCoordinate($(this).data('x'), $(this).data('y')) == null){
                                     // Add pawn to setup
-                                    pawnsSetup.push([$(this).data('x'), $(this).data('y'), pawnElement.data('pawn'), player.team]);
+                                    pawns.push([$(this).data('x'), $(this).data('y'), pawnElement.data('pawn'), player.team]);
                                     // Remove pawn from box
                                     pawnsInBox.splice(pawnsInBox.indexOf(pawnElement.data('pawn')), 1);
                                 }
@@ -724,12 +711,12 @@ const initBox = () => {
                             // Remove event listener click from all tiles
                             $('#board div').off('click');
                             // Place pawns
-                            placePawns(pawnsSetup);
+                            placePawns(pawns);
                             // Check if all pawns have been placed
-                            if(pawnsSetup.length == 40){
+                            if(pawns.length == 40){
                                 console.log('placed all pawns');
                                 // Ready button appears
-                            }else if(pawnsSetup.length < 40){
+                            }else if(pawns.length < 40){
                                 initBox();
                             }else{
                                 // too many pawns someones cheating
