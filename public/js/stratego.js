@@ -91,20 +91,12 @@ const getPawnByCoordinate = (x, y) => {
         array = pawns;
     }
 
-    found = false;
     for (var i = 0; i < array.length; i++) {
         if (array[i][0] == x && array[i][1] == y){
-            found = true;
-            break;
+            return array[i];
         }
     }
-
-    if(found){
-        // Return pawn array
-        return array[i];
-    }else{
-        return null;
-    }
+    return null;
 }
 
 const getPawnById = (id) => {
