@@ -1,17 +1,20 @@
-// Length of roomcode
-const ROOMCODE_LENGTH = 6;
-// Amount of time the fight display stays on screen (in seconds)
-const TIME_FIGHT_DISPLAY = 5;
+// CONFIG
+// =========================
+
+const ROOMCODE_LENGTH = 6; // Length of roomcode
+const TIME_FIGHT_DISPLAY = 5; // Amount of time the fight display stays on screen (in seconds)
+
+// ARRAYS SETUP
+// =========================
+
 // Copy all existing pawns into the box
 let pawnsInBox = [...ALL_PAWNS];
 
 /* Pawns 2D array = [[X, Y, Pawn, Team], ...]
-*
 * @param pawns[ID][0] = X (1-10)
 * @param pawns[ID][1] = Y (1-10)
 * @param pawns[ID][2] = Pawn (0-11) // Flag = 0, Spy = 1, Bomb = 11
 * @param pawns[ID][3] = Team (0/1) // Blue = 0, Red = 1
-* 
 **/
 
 let pawns = [];
@@ -36,9 +39,210 @@ let player = {
     setup: true
 };
 
+// GET DATA FUNCTIONS
+// =========================
+
 const getUpdatedArray = (array) => {
     return array;
 }
+
+const getPawnName = (pawn) => {
+    switch (pawn){
+        case 0:
+            return 'Flag';
+        case 1:
+            return 'Spy';
+        case 2:
+            return 'Scout';
+        case 3:
+            return 'Miner';
+        case 4:
+            return 'Sergeant';
+        case 5:
+            return 'Lieutenant';
+        case 6:
+            return 'Captain';
+        case 7:
+            return 'Major';
+        case 8:
+            return 'Colonel';
+        case 9:
+            return 'General';
+        case 10:
+            return 'Marshall';
+        case 11:
+            return 'Bomb';
+        default:
+            return null;
+    }
+}
+
+const getPawnByCoordinate = (x, y) => {
+    // Set specific to setup or game stage
+    if(player.setup){
+        array = pawnsSetup;
+    }else{
+        array = pawns;
+    }
+
+    found = false;
+    for (var i = 0; i < array.length; i++) {
+        if (array[i][0] == x && array[i][1] == y){
+            found = true;
+            break;
+        }
+    }
+
+    if(found){
+        // Return pawn array
+        return array[i];
+    }else{
+        return null;
+    }
+}
+
+const getPawnById = (id) => {
+    return pawns[id]
+}
+
+const getPawnId = (x, y, pawn, team) => {
+    if(player.setup){
+        array = pawnsSetup;
+    }else{
+        array = pawns;
+    }
+
+    found = false;
+    // Loop through all pawns
+    for (var i = 0; i < array.length; i++) {
+        if (array[i][0] == x && array[i][1] == y && array[i][2] == pawn && array[i][3] == team){
+            found = true;
+            break;
+        }
+    }
+
+    if(found){
+        // Return pawn ID
+        return i;
+    }else{
+        return null;
+    }
+}
+
+// CHECK FUNCTIONS
+// =========================
+
+const isTileDisabled = (x, y) => {
+    // Check if tile is disabled
+    for (var i = 0; i < DISABLED_TILES.length; i++) {
+        if (DISABLED_TILES[i][0] == x && DISABLED_TILES[i][1] == y){
+            return true;
+        }
+    }
+    return false;
+}
+
+const isTileInSpawnZone = (y) => {
+    if(player.team == 0 && y >= 7 || player.team == 1 && y <= 4){
+        return true;
+    }
+    return false;
+}
+
+const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
+    // Get pawn info from new tile
+    let tilePawn = getPawnByCoordinate(new_x, new_y);
+
+    // Set defaults
+    let passedEnemies = 0;
+
+    // Check if tile is disabled
+    if(!isTileDisabled(new_x, new_y)){
+        // If pawn does not exist or is not part of team ->
+        if(tilePawn == null || tilePawn[3] != team){
+            if(pawn == 0 || pawn == 11){ // Check for static pawns
+                return false;
+            }else if(pawn == 2){ // Check for scout pawn
+                // New X or Y can be any value except the old while the other axis has to stay the same (avoid diagonal walking)
+                if(new_x != old_x && new_y == old_y || new_y != old_y && new_x == old_x){
+                    if(old_x == new_x){
+                        if(old_y < new_y){
+                            for(i = old_y +1; i <= new_y; i++){
+                                if(passedEnemies >= 1 || isTileDisabled(new_x, i)){
+                                    return false;
+                                }
+                                if (getPawnByCoordinate(new_x, i) != null){
+                                    if (checkForEnemyContact(new_x, i, team)){
+                                        passedEnemies++;
+                                    }else{
+                                        return false;
+                                    }
+                                }
+                            }
+                        }else{
+                            for(i = old_y -1; i >= new_y; i--){
+                                if(passedEnemies >= 1 || isTileDisabled(new_x, i)){
+                                    return false;
+                                }
+                                if (getPawnByCoordinate(new_x, i) != null){
+                                    if (checkForEnemyContact(new_x, i, team)){
+                                        passedEnemies++;
+                                    }else{
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }else if(old_y == new_y){
+                        if(old_x < new_x){
+                            for(i = old_x +1; i <= new_x; i++){
+                                if(passedEnemies >= 1 || isTileDisabled(i, new_y)){
+                                    return false;
+                                }
+                                if (getPawnByCoordinate(i, new_y) != null){
+                                    if (checkForEnemyContact(i, new_y, team)){
+                                        passedEnemies++;
+                                    }else{
+                                        return false;
+                                    }
+                                }
+                            }
+                        }else{
+                            for(i = old_x -1; i >= new_x; i--){
+                                if(passedEnemies >= 1 || isTileDisabled(i, new_y)){
+                                    return false;
+                                }
+                                if (getPawnByCoordinate(i, new_y) != null){
+                                    if (checkForEnemyContact(i, new_y, team)){
+                                        passedEnemies++;
+                                    }else{
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{ // Any other pawn
+                // New X or Y has to be +1 or -1 while the other coordinate axis has to stay the same (avoid diagonal walking)
+                if((new_x == old_x + 1 || new_x == old_x - 1) && new_y == old_y || (new_y == old_y + 1 || new_y == old_y - 1) && new_x == old_x){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }else{
+            return false;
+        }
+    }else{
+        return false;
+    }
+}
+
+
 
 const randomMove = () => {
     // Generate new random values
@@ -162,23 +366,6 @@ const placePawns = (array) => {
     })
 }
 
-const isTileDisabled = (x, y) => {
-    // Check if tile is disabled
-    for (var i = 0; i < DISABLED_TILES.length; i++) {
-        if (DISABLED_TILES[i][0] == x && DISABLED_TILES[i][1] == y){
-            return true;
-        }
-    }
-    return false;
-}
-
-const isTileInSpawnZone = (y) => {
-    if(player.team == 0 && y >= 7 || player.team == 1 && y <= 4){
-        return true;
-    }
-    return false;
-}
-
 const initBoard = () => {
     // Delete possible existing tiles
     $("#board").children().remove();
@@ -276,37 +463,6 @@ const fight = (attackingPawn, defendingPawn, array) => {
     return array;
 }
 
-const getPawnName = (pawn) => {
-    switch (pawn){
-        case 0:
-            return 'Flag';
-        case 1:
-            return 'Spy';
-        case 2:
-            return 'Scout';
-        case 3:
-            return 'Miner';
-        case 4:
-            return 'Sergeant';
-        case 5:
-            return 'Lieutenant';
-        case 6:
-            return 'Captain';
-        case 7:
-            return 'Major';
-        case 8:
-            return 'Colonel';
-        case 9:
-            return 'General';
-        case 10:
-            return 'Marshall';
-        case 11:
-            return 'Bomb';
-        default:
-            return null;
-    }
-}
-
 const mirrorBoard = () => {
     $("#board").addClass("mirror");
     $("#board div").addClass("mirror");
@@ -344,151 +500,6 @@ const endGame = (player) => {
     $('#board div').off('click');
     console.log("player: " + parseInt(player + 1) + " has won the game.");
     console.log("The game has ended.");
-}
-
-const getPawnByCoordinate = (x, y) => {
-    // Set specific to setup or game stage
-    if(player.setup){
-        array = pawnsSetup;
-    }else{
-        array = pawns;
-    }
-
-    found = false;
-    for (var i = 0; i < array.length; i++) {
-        if (array[i][0] == x && array[i][1] == y){
-            found = true;
-            break;
-        }
-    }
-
-    if(found){
-        // Return pawn array
-        return array[i];
-    }else{
-        return null;
-    }
-}
-
-const getPawnById = (id) => {
-    return pawns[id]
-}
-
-const getPawnId = (x, y, pawn, team) => {
-    if(player.setup){
-        array = pawnsSetup;
-    }else{
-        array = pawns;
-    }
-
-    found = false;
-    // Loop through all pawns
-    for (var i = 0; i < array.length; i++) {
-        if (array[i][0] == x && array[i][1] == y && array[i][2] == pawn && array[i][3] == team){
-            found = true;
-            break;
-        }
-    }
-
-    if(found){
-        // Return pawn ID
-        return i;
-    }else{
-        return null;
-    }
-}
-
-const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
-    // Get pawn info from new tile
-    let tilePawn = getPawnByCoordinate(new_x, new_y);
-
-    // Set defaults
-    let passedEnemies = 0;
-
-    // Check if tile is disabled
-    if(!isTileDisabled(new_x, new_y)){
-        // If pawn does not exist or is not part of team ->
-        if(tilePawn == null || tilePawn[3] != team){
-            if(pawn == 0 || pawn == 11){ // Check for static pawns
-                return false;
-            }else if(pawn == 2){ // Check for scout pawn
-                // New X or Y can be any value except the old while the other axis has to stay the same (avoid diagonal walking)
-                if(new_x != old_x && new_y == old_y || new_y != old_y && new_x == old_x){
-                    if(old_x == new_x){
-                        if(old_y < new_y){
-                            for(i = old_y +1; i <= new_y; i++){
-                                if(passedEnemies >= 1 || isTileDisabled(new_x, i)){
-                                    return false;
-                                }
-                                if (getPawnByCoordinate(new_x, i) != null){
-                                    if (checkForEnemyContact(new_x, i, team)){
-                                        passedEnemies++;
-                                    }else{
-                                        return false;
-                                    }
-                                }
-                            }
-                        }else{
-                            for(i = old_y -1; i >= new_y; i--){
-                                if(passedEnemies >= 1 || isTileDisabled(new_x, i)){
-                                    return false;
-                                }
-                                if (getPawnByCoordinate(new_x, i) != null){
-                                    if (checkForEnemyContact(new_x, i, team)){
-                                        passedEnemies++;
-                                    }else{
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
-                    }else if(old_y == new_y){
-                        if(old_x < new_x){
-                            for(i = old_x +1; i <= new_x; i++){
-                                if(passedEnemies >= 1 || isTileDisabled(i, new_y)){
-                                    return false;
-                                }
-                                if (getPawnByCoordinate(i, new_y) != null){
-                                    if (checkForEnemyContact(i, new_y, team)){
-                                        passedEnemies++;
-                                    }else{
-                                        return false;
-                                    }
-                                }
-                            }
-                        }else{
-                            for(i = old_x -1; i >= new_x; i--){
-                                if(passedEnemies >= 1 || isTileDisabled(i, new_y)){
-                                    return false;
-                                }
-                                if (getPawnByCoordinate(i, new_y) != null){
-                                    if (checkForEnemyContact(i, new_y, team)){
-                                        passedEnemies++;
-                                    }else{
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    return true;
-                }else{
-                    return false;
-                }
-            }else{ // Any other pawn
-                // New X or Y has to be +1 or -1 while the other coordinate axis has to stay the same (avoid diagonal walking)
-                if((new_x == old_x + 1 || new_x == old_x - 1) && new_y == old_y || (new_y == old_y + 1 || new_y == old_y - 1) && new_x == old_x){
-                    return true;
-                }else{
-                    return false;
-                }
-            }
-        }else{
-            return false;
-        }
-    }else{
-        return false;
-    }
 }
 
 const checkForEnemyContact = (new_x, new_y, team) => {
