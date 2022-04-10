@@ -176,7 +176,7 @@
 
 #visualFight {
     position: absolute;
-    display: none;
+    display: block;
     width: 60%;
     left: 50%;
     top: 50%;

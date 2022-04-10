@@ -136,13 +136,15 @@ io.on('connection', (socket) => {
     });
 
     socket.on('updateBoard', (roomCode, pawns) => {
-        // change to io later like readyUp
         io.in(roomCode).emit('updatePawns', pawns);
     });
 
     socket.on('endTurn', (roomCode) => {
-        // change to io later like readyUp
         socket.in(roomCode).emit('startTurn');
+    });
+
+    socket.on('displayFight', (roomCode, attackingPawn, defendingPawn, winningTeam) => {
+        io.in(roomCode).emit('displayFight', attackingPawn, defendingPawn, winningTeam);
     });
 
     socket.on('disconnect', () => {

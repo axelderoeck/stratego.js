@@ -83,6 +83,32 @@ socket.on('updatePawns', (array) => {
     placePawns(pawns);
 })
 
+socket.on('displayFight', (attackingPawn, defendingPawn, winningTeam) => {
+    // Create visualfight div
+    $('<div id="visualFight"></div>').appendTo('#fullboard');
+        // Add swords
+        $('<div class="swords"></div>').appendTo('#visualFight')
+            .append('<img class="swoopInLeft" src="./themes/' + game.theme + '/misc/sword_left.png"/>')
+            .append('<img class="swoopInRight" src="./themes/' + game.theme + '/misc/sword_right.png" />');
+        // Add versus span
+        $('<span class="versus">VS</span>').appendTo('#visualFight');
+        // Add left section
+        $('<div id="left"></div>').appendTo('#visualFight')
+            .append('<img src="themes/' + game.theme + '/' + attackingPawn[3] + '/' + attackingPawn[2] + '.png" alt="pawn image">')
+            .append('<span>' + attackingPawn[2] + '. ' + getPawnName(attackingPawn[2]) + '</span>');
+        // Add right section
+        $('<div id="right"></div>').appendTo('#visualFight')
+            .append('<img src="themes/' + game.theme + '/' + defendingPawn[3] + '/' + defendingPawn[2] + '.png" alt="pawn image">')
+            .append('<span>' + defendingPawn[2] + '. ' + getPawnName(defendingPawn[2]) + '</span>');
+        // Add result span
+        let result = (winningTeam == player.team) ? 'Win' : 'Lose';
+        $('<span class="result">' + result + '</span>').appendTo('#visualFight');
+    // Delete visualfight div after timer
+    setTimeout(function() {
+        $('#visualFight').remove();
+    }, TIME_FIGHT_DISPLAY * 1000);
+})
+
 socket.on('gameNotFound', (room) => {
     //window.location.href = '/';
     console.error('Room: ' + room + ' not found.');

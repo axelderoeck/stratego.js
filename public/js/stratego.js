@@ -1,5 +1,8 @@
 // Length of roomcode
 const ROOMCODE_LENGTH = 6;
+// Amount of time the fight display stays on screen (in seconds)
+const TIME_FIGHT_DISPLAY = 5;
+
 let setupStage = true;
 
 let readyCounter = 0;
@@ -257,7 +260,8 @@ const fight = (attackingPawn, defendingPawn, array) => {
     // Check for fight result
     switch (fightOutcome(attackingPawn[2], defendingPawn[2])){
         case true:
-            console.log("won fight");
+            // Display fight result
+            socket.emit('displayFight', game.room, attackingPawn, defendingPawn, attackingPawn[3]);
             // Set new coordinate values to pawn
             array[attackingPawnId][0] = defendingPawn[0];
             array[attackingPawnId][1] = defendingPawn[1];
@@ -265,18 +269,19 @@ const fight = (attackingPawn, defendingPawn, array) => {
             deletePawn(defendingPawn, array);
             break;
         case false:
-            console.log("lost fight");
+            // Display fight result
+            socket.emit('displayFight', game.room, attackingPawn, defendingPawn, defendingPawn[3]);
             // Delete/kill the attacking pawn
             deletePawn(attackingPawn, array);
             break;
         case "stalemate":
-            console.log("both lose");
+            // Display fight result
+            socket.emit('displayFight', game.room, attackingPawn, defendingPawn, 3);
             // Delete/kill both pawns
             deletePawn(attackingPawn, array);
             deletePawn(defendingPawn, array);
             break;
         case "win":
-            console.log("won game");
             // Set new coordinate values to pawn
             array[attackingPawnId][0] = defendingPawn[0];
             array[attackingPawnId][1] = defendingPawn[1];
@@ -286,6 +291,37 @@ const fight = (attackingPawn, defendingPawn, array) => {
             break;
     }
     return array;
+}
+
+const getPawnName = (pawn) => {
+    switch (pawn){
+        case 0:
+            return 'Flag';
+        case 1:
+            return 'Spy';
+        case 2:
+            return 'Scout';
+        case 3:
+            return 'Miner';
+        case 4:
+            return 'Sergeant';
+        case 5:
+            return 'Lieutenant';
+        case 6:
+            return 'Captain';
+        case 7:
+            return 'Major';
+        case 8:
+            return 'Colonel';
+        case 9:
+            return 'General';
+        case 10:
+            return 'Marshall';
+        case 11:
+            return 'Bomb';
+        default:
+            return null;
+    }
 }
 
 const mirrorBoard = () => {
