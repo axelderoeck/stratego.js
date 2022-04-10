@@ -118,21 +118,15 @@ const getPawnId = (x, y, pawn, team) => {
         array = pawns;
     }
 
-    found = false;
     // Loop through all pawns
     for (var i = 0; i < array.length; i++) {
         if (array[i][0] == x && array[i][1] == y && array[i][2] == pawn && array[i][3] == team){
-            found = true;
-            break;
+            // Pawn found -> return id
+            return i;
         }
     }
-
-    if(found){
-        // Return pawn ID
-        return i;
-    }else{
-        return null;
-    }
+    // Nothing found -> return null
+    return null;
 }
 
 // CHECK FUNCTIONS
