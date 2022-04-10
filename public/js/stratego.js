@@ -2,6 +2,29 @@
 const ROOMCODE_LENGTH = 6;
 // Amount of time the fight display stays on screen (in seconds)
 const TIME_FIGHT_DISPLAY = 5;
+// Copy all existing pawns into the box
+let pawnsInBox = [...ALL_PAWNS];
+
+/* Pawns 2D array = [[X, Y, Pawn, Team], ...]
+*
+* @param pawns[ID][0] = X (1-10)
+* @param pawns[ID][1] = Y (1-10)
+* @param pawns[ID][2] = Pawn (0-11) // Flag = 0, Spy = 1, Bomb = 11
+* @param pawns[ID][3] = Team (0/1) // Blue = 0, Red = 1
+* 
+**/
+
+let pawns = [];
+let pawnsSetup = [];
+
+/* Cemetery 2D array = [[Pawn, Team], ...]
+*
+* @param pawns[ID][0] = Pawn (0-11) // Flag = 0, Spy = 1, Bomb = 11
+* @param pawns[ID][1] = Team (0/1) // Blue = 0, Red = 1
+* 
+**/
+
+let cemetery = [];
 
 let setupStage = true;
 
@@ -182,45 +205,6 @@ const initBoard = () => {
         }
     } 
 }
-
-// All existing pawns of 1 team
-let allPawns = [
-    0,                  // 1x Flag
-    1,                  // 1x Spy
-    2,2,2,2,2,2,2,2,    // 8x Scout
-    3,3,3,3,3,          // 5x Miner
-    4,4,4,4,            // 4x Sergeant
-    5,5,5,5,            // 4x Lieutenant
-    6,6,6,6,            // 4x Captain
-    7,7,7,              // 3x Major
-    8,8,                // 2x Colonel
-    9,                  // 1x General
-    10,                 // 1x Marshall
-    11,11,11,11,11,11   // 6x Bomb
-];
-// Copy all existing pawns into the box
-let pawnsInBox = [...allPawns];
-
-/* Pawns 2D array = [[X, Y, Pawn, Team], ...]
-*
-* @param pawns[ID][0] = X (1-10)
-* @param pawns[ID][1] = Y (1-10)
-* @param pawns[ID][2] = Pawn (0-11) // Flag = 0, Spy = 1, Bomb = 11
-* @param pawns[ID][3] = Team (0/1) // Blue = 0, Red = 1
-* 
-**/
-
-let pawns = [];
-let pawnsSetup = [];
-
-/* Cemetery 2D array = [[Pawn, Team], ...]
-*
-* @param pawns[ID][0] = Pawn (0-11) // Flag = 0, Spy = 1, Bomb = 11
-* @param pawns[ID][1] = Team (0/1) // Blue = 0, Red = 1
-* 
-**/
-
-let cemetery = [];
 
 /* This function is written in favor of the attacker.
 *
@@ -642,7 +626,7 @@ const resetPawns = () => {
     // Empty the setup
     pawnsSetup = [];
     // Reset the pawnsInBox array
-    pawnsInBox = [...allPawns];
+    pawnsInBox = [...ALL_PAWNS];
     //
     initBox();
     placePawns(pawnsSetup);
