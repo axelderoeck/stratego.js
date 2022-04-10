@@ -131,10 +131,8 @@ const isTileInSpawnZone = (y) => {
 const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
     // Get pawn info from new tile
     let tilePawn = getPawnByCoordinate(new_x, new_y);
-
     // Set defaults
     let passedEnemies = 0;
-
     // Check if tile is disabled
     if(!isTileDisabled(new_x, new_y)){
         // If pawn does not exist or is not part of team ->
@@ -268,45 +266,6 @@ const loopRandomMove = () => {
     setInterval(function(){ 
         randomMove();
     }, 500);
-}
-
-const init = (teamNumber) => {
-    // Assign team number
-    player.team = teamNumber;
-    // Create the board
-    initBoard();
-    if(player.setup){
-        // Add box
-        initBox();
-    }else if(player.team == PLAYER_FIRST_MOVE){
-        player.turn = true;
-    }
-    initNavigation();
-
-    // Mirror the board if it's player 2
-    if(player.team == 1){
-        mirrorBoard();
-    }
-
-    console.info('You are player '+ parseInt(player.team + 1));
-    socket.emit('updatePawns', pawns);
-    placePawns();
-}
-
-const initNavigation = () => {
-    // Remove existing buttons
-    $("#navigation").children().remove();
-    $("#navigation").attr('data-team', player.team);
-    if (player.setup){
-        // Add cancel button (TEMPORARY)
-        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(cancelReadyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Cancel');
-        // Add ready button (TEMPORARY)
-        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(readyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Ready');
-        // Add randomise button
-        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(randomisePawns).prepend('<i class="fa-solid fa-dice"></i>').append('</br>Random');
-        // Add reset button
-        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(resetPawns).prepend('<i class="fa-solid fa-arrow-rotate-left"></i>').append('</br>Reset');
-    }
 }
 
 const placePawns = () => {
@@ -449,7 +408,6 @@ const fight = (attackingPawn, defendingPawn) => {
             endGame(attackingPawn[3]);
             break;
     }
-    return pawns;
 }
 
 const mirrorBoard = () => {
@@ -578,9 +536,8 @@ const movePawn = (old_x, old_y, pawn, team) => {
                         attackingPawn = getPawnById(pawnId);
                         defendingPawn = getPawnByCoordinate(new_x, new_y);
                         // Execute the fight
-                        pawns = fight(attackingPawn, defendingPawn, pawns);
+                        fight(attackingPawn, defendingPawn);
                     }else{
-                        console.log("Moved pawn: " + pawn + " to x:" + new_x + " y:" + new_y);
                         // Set new coordinate values to pawn
                         pawns[pawnId][0] = new_x;
                         pawns[pawnId][1] = new_y;
@@ -671,6 +628,24 @@ const randomisePawns = () => {
     return pawns;
 }
 
+const readyUp = () => {
+    socket.emit('readyUp', game.room);
+}
+
+const cancelReadyUp = () => {
+    socket.emit('cancelReadyUp', game.room);
+}
+
+const checkReadyStatus = () => {
+    if(readyCounter >= 2){
+        // Both players are ready -> start the process to start the game
+        socket.emit('checkReadyStatus', game.room);
+    }
+}
+
+// INIT FUNCTIONS
+// =========================
+
 const initBox = () => {
     $('#box').remove();
     $('<div id="box"></div>').appendTo('#fullboard');
@@ -749,17 +724,41 @@ const initBox = () => {
     }
 }
 
-const readyUp = () => {
-    socket.emit('readyUp', game.room);
+const init = (teamNumber) => {
+    // Assign team number
+    player.team = teamNumber;
+    // Create the board
+    initBoard();
+    if(player.setup){
+        // Add box
+        initBox();
+    }else if(player.team == PLAYER_FIRST_MOVE){
+        player.turn = true;
+    }
+    initNavigation();
+
+    // Mirror the board if it's player 2
+    if(player.team == 1){
+        mirrorBoard();
+    }
+
+    console.info('You are player '+ parseInt(player.team + 1));
+    socket.emit('updatePawns', pawns);
+    placePawns();
 }
 
-const cancelReadyUp = () => {
-    socket.emit('cancelReadyUp', game.room);
-}
-
-const checkReadyStatus = () => {
-    if(readyCounter >= 2){
-        // Both players are ready -> start the process to start the game
-        socket.emit('checkReadyStatus', game.room);
+const initNavigation = () => {
+    // Remove existing buttons
+    $("#navigation").children().remove();
+    $("#navigation").attr('data-team', player.team);
+    if (player.setup){
+        // Add cancel button (TEMPORARY)
+        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(cancelReadyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Cancel');
+        // Add ready button (TEMPORARY)
+        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(readyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Ready');
+        // Add randomise button
+        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(randomisePawns).prepend('<i class="fa-solid fa-dice"></i>').append('</br>Random');
+        // Add reset button
+        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(resetPawns).prepend('<i class="fa-solid fa-arrow-rotate-left"></i>').append('</br>Reset');
     }
 }
