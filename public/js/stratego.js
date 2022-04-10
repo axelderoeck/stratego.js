@@ -290,7 +290,7 @@ const init = (teamNumber) => {
 
     console.info('You are player '+ parseInt(player.team + 1));
     socket.emit('updatePawns', pawns);
-    placePawns(pawns);
+    placePawns();
 }
 
 const initNavigation = () => {
@@ -309,7 +309,7 @@ const initNavigation = () => {
     }
 }
 
-const placePawns = (array) => {
+const placePawns = () => {
     // Delete old images and effects
     $("#board div")
         .removeClass('shineEffect')
@@ -317,7 +317,7 @@ const placePawns = (array) => {
         .remove();
     
     // Place pawns
-    array.forEach(pawn => {
+    pawns.forEach(pawn => {
         // Create pawn
         let tile = $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']");
         // Add shine effect to pawn
@@ -460,7 +460,7 @@ const mirrorBoard = () => {
 const addPawn = (x, y, pawn, team) => {
     if(getPawnByCoordinate(x, y) == null){
         pawns.push([x, y, pawn, team]);
-        placePawns(pawns);
+        placePawns();
         return true;
     }else{
         console.error("Failed to execute addPawn() \n Pawn already exists on x:" + x + " y:" + y + ".");
@@ -476,7 +476,7 @@ const deletePawn = (pawn, array) => {
         // Add pawn to cemetery array
         cemetery.push([pawn[2], pawn[3]]);
         // Place all pawns
-        placePawns(array);
+        placePawns();
         return true;
     }else{
         console.log("pawn: " + pawn + " does not exist.");
@@ -534,7 +534,7 @@ const movePawn = (old_x, old_y, pawn, team) => {
                     // Remove event listener click from all tiles
                     $('#board div').off('click');
                     // Place pawns
-                    placePawns(pawns);
+                    placePawns();
                 });
             }
         });
@@ -591,7 +591,7 @@ const movePawn = (old_x, old_y, pawn, team) => {
                     // Remove event listener click from all tiles
                     $('#board div').off('click');
                     // Place pawns
-                    placePawns(pawns);
+                    placePawns();
                     // Update the array on server
                     socket.emit('updateBoard', game.room, pawns);
                 });
@@ -608,7 +608,7 @@ const movePawn = (old_x, old_y, pawn, team) => {
                     // Remove event listener click from all tiles
                     $('#board div').off('click');
                     // Place pawns
-                    placePawns(pawns);
+                    placePawns();
                 });
             }
         });
@@ -631,7 +631,7 @@ const resetPawns = () => {
     pawnsInBox = [...ALL_PAWNS];
     //
     initBox();
-    placePawns(pawns);
+    placePawns();
 }
 
 const randomisePawns = () => {
@@ -665,7 +665,7 @@ const randomisePawns = () => {
 
     // empty the array
     pawnsInBox = [];
-    placePawns(pawns);
+    placePawns();
     initBox();
 
     return pawns;
@@ -731,7 +731,7 @@ const initBox = () => {
                             // Remove event listener click from all tiles
                             $('#board div').off('click');
                             // Place pawns
-                            placePawns(pawns);
+                            placePawns();
                             // Check if all pawns have been placed
                             if(pawns.length == 40){
                                 console.log('placed all pawns');
