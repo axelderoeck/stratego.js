@@ -326,8 +326,18 @@ const placePawns = (array) => {
         if(pawn[3] != player.team){
             tile.prepend('<img src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/unknown.png" />')
         }else{
+            // Check for flag or bomb pawn
+            let pawnNumber;
+            if(pawn[2] == 0){
+                pawnNumber = 'F';
+            }else if(pawn[2] == 11){
+                pawnNumber = 'B';
+            }else{
+                pawnNumber = pawn[2];
+            }
+            // Place tile image and span
             tile.prepend('<img src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
-                .prepend('<span data-team=' + pawn[3] + '>' + pawn[2] + '</span>')
+                .prepend('<span data-team=' + pawn[3] + '>' + pawnNumber + '</span>')
         }
         if(pawn[3] == player.team && player.turn == true || player.setup == true){
             // Add event listener
@@ -682,7 +692,17 @@ const initBox = () => {
 
         // If still available -> place pawn in box
         if(amountPawnsAvailable > 0){
-            $('<div id="pawn_' + i +'"><img src="./themes/' + decodeURI(game.theme) + '/' + player.team + '/' + i + '.png" /><span data-team="' + player.team + '">' + i + '</span><span class="amount">' + amountPawnsAvailable + 'x</span></div>')
+            // Check for flag or bomb pawn
+            let pawnNumber;
+            if(i == 0){
+                pawnNumber = 'F';
+            }else if(i == 11){
+                pawnNumber = 'B';
+            }else{
+                pawnNumber = i;
+            }
+            // Place pawn in box
+            $('<div id="pawn_' + i +'"><img src="./themes/' + decodeURI(game.theme) + '/' + player.team + '/' + i + '.png" /><span data-team="' + player.team + '">' + pawnNumber + '</span><span class="amount">' + amountPawnsAvailable + 'x</span></div>')
             .appendTo('#box')
             .attr('data-pawn', i)
             .attr('data-remaining', amountPawnsAvailable)
