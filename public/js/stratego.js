@@ -413,7 +413,7 @@ const fightOutcome = (attackingPawn, defendingPawn) => {
     }
 }
 
-const fight = (attackingPawn, defendingPawn, array) => {
+const fight = (attackingPawn, defendingPawn) => {
     // Get id from attacking pawn
     attackingPawnId = getPawnId(attackingPawn[0], attackingPawn[1], attackingPawn[2], attackingPawn[3]);
     // Check for fight result
@@ -422,34 +422,34 @@ const fight = (attackingPawn, defendingPawn, array) => {
             // Display fight result
             socket.emit('displayFight', game.room, attackingPawn, defendingPawn, attackingPawn[3]);
             // Set new coordinate values to pawn
-            array[attackingPawnId][0] = defendingPawn[0];
-            array[attackingPawnId][1] = defendingPawn[1];
+            pawns[attackingPawnId][0] = defendingPawn[0];
+            pawns[attackingPawnId][1] = defendingPawn[1];
             // Delete/kill the defending pawn
-            deletePawn(defendingPawn, array);
+            deletePawn(defendingPawn);
             break;
         case false:
             // Display fight result
             socket.emit('displayFight', game.room, attackingPawn, defendingPawn, defendingPawn[3]);
             // Delete/kill the attacking pawn
-            deletePawn(attackingPawn, array);
+            deletePawn(attackingPawn);
             break;
         case "stalemate":
             // Display fight result
             socket.emit('displayFight', game.room, attackingPawn, defendingPawn, 3);
             // Delete/kill both pawns
-            deletePawn(attackingPawn, array);
-            deletePawn(defendingPawn, array);
+            deletePawn(attackingPawn);
+            deletePawn(defendingPawn);
             break;
         case "win":
             // Set new coordinate values to pawn
-            array[attackingPawnId][0] = defendingPawn[0];
-            array[attackingPawnId][1] = defendingPawn[1];
+            pawns[attackingPawnId][0] = defendingPawn[0];
+            pawns[attackingPawnId][1] = defendingPawn[1];
             // Delete/kill the defending pawn
-            deletePawn(defendingPawn, array);
+            deletePawn(defendingPawn);
             endGame(attackingPawn[3]);
             break;
     }
-    return array;
+    return pawns;
 }
 
 const mirrorBoard = () => {
@@ -468,11 +468,11 @@ const addPawn = (x, y, pawn, team) => {
     }
 }
 
-const deletePawn = (pawn, array) => {
+const deletePawn = (pawn) => {
     id = getPawnId(pawn[0], pawn[1], pawn[2], pawn[3]);
     if(id != null){
         // Remove pawn from array
-        array.splice(id, 1);
+        pawns.splice(id, 1);
         // Add pawn to cemetery array
         cemetery.push([pawn[2], pawn[3]]);
         // Place all pawns

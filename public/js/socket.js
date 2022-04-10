@@ -70,7 +70,7 @@ socket.on('startTurn', () => {
 
 socket.on('updatePawns', (array) => {
     pawns = array;
-    placePawns(pawns);
+    placePawns();
 })
 
 socket.on('displayFight', (attackingPawn, defendingPawn, winningTeam) => {
