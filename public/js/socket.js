@@ -4,13 +4,11 @@ let socket = io();
 // On connection
 socket.on('connect', () => {
     // If room parameter does not exist -> create room
-    if (params.room){
-        roomCode = params.room
-        socket.emit('joinGame', params.room);
+    if (game.room){
+        socket.emit('joinGame', game.room);
     }else{
-        roomCode = generateString(ROOMCODE_LENGTH);
-        params.room = roomCode;
-        socket.emit('createGame', params.theme, roomCode);
+        game.room = generateString(ROOMCODE_LENGTH);
+        socket.emit('createGame', game.theme, game.room);
     }
 })
 
@@ -20,7 +18,6 @@ socket.on('init', (player) => {
 
 socket.on('createInvite', (theme, room) => {
     ip = "localhost";
-    roomCode = room;
     console.info('Invite link: http://' + ip + ':3000/game?theme=' + theme + '&room=' + room);
 });
 
@@ -53,7 +50,7 @@ socket.on('cancelReadyUp', (teamNumber) => {
 // Game is about to start
 socket.on('checkReadyStatus', () => {
     // Start the game
-    socket.emit('startGame', roomCode, pawnsSetup);
+    socket.emit('startGame', game.room, pawnsSetup);
 })
 
 socket.on('startGame', (array) => {

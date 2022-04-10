@@ -1,8 +1,8 @@
 // Get the url parameters and put them in an object
-var params = {};
+var game = {};
 window.location.search
   .replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str,key,value) {
-    params[key] = value;
+    game[key] = value;
   }
 );
 

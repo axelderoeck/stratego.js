@@ -4,12 +4,12 @@ let setupStage = true;
 
 let readyCounter = 0;
 
+// Initialise player object
 let player = {
     team: 0,
     ready: false,
     turn: false
 };
-let roomCode;
 
 const getUpdatedArray = (array) => {
     return array;
@@ -116,9 +116,9 @@ const placePawns = (array) => {
         tile.addClass('shineEffect');
         // Special pawn settings based on team
         if(pawn[3] != player.team){
-            tile.prepend('<img src="./themes/' + decodeURI(params.theme) + '/' + pawn[3] + '/unknown.png" />')
+            tile.prepend('<img src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/unknown.png" />')
         }else{
-            tile.prepend('<img src="./themes/' + decodeURI(params.theme) + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
+            tile.prepend('<img src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
                 .prepend('<span data-team=' + pawn[3] + '>' + pawn[2] + '</span>')
         }
         if(pawn[3] == player.team && player.turn == true || setupStage == true){
@@ -539,8 +539,8 @@ const movePawn = (old_x, old_y, pawn, team) => {
                 $(this).addClass('legalMove shineEffect');
                 // Check if tile has an enemy
                 if(checkForEnemyContact($(this).data('x'), $(this).data('y'), team)){
-                    $(this).prepend('<img class="fightIcon swordLeft" src="./themes/' + encodeURI(params.theme) + '/misc/sword_left.png" />');
-                    $(this).prepend('<img class="fightIcon swordRight" src="./themes/' + encodeURI(params.theme) + '/misc/sword_right.png" />');
+                    $(this).prepend('<img class="fightIcon swordLeft" src="./themes/' + encodeURI(game.theme) + '/misc/sword_left.png" />');
+                    $(this).prepend('<img class="fightIcon swordRight" src="./themes/' + encodeURI(game.theme) + '/misc/sword_right.png" />');
                 }
                 // Add move event to legal tile
                 $(this).on("click", function(){
@@ -567,14 +567,14 @@ const movePawn = (old_x, old_y, pawn, team) => {
                         pawns[pawnId][1] = new_y;
                     }
                     // End our turn
-                    socket.emit('endTurn', roomCode);
+                    socket.emit('endTurn', game.room);
                     player.turn = false;
                     // Remove event listener click from all tiles
                     $('#board div').off('click');
                     // Place pawns
                     placePawns(pawns);
                     // Update the array on server
-                    socket.emit('updateBoard', roomCode, pawns);
+                    socket.emit('updateBoard', game.room, pawns);
                 });
             // Cancel on click same tile
             }else if($(this).data("x") == old_x && $(this).data("y") == old_y){
@@ -670,7 +670,7 @@ const initBox = () => {
 
         // If still available -> place pawn in box
         if(amountPawnsAvailable > 0){
-            $('<div id="pawn_' + i +'"><img src="./themes/' + decodeURI(params.theme) + '/' + player.team + '/' + i + '.png" /><span data-team="' + player.team + '">' + i + '</span><span class="amount">' + amountPawnsAvailable + 'x</span></div>')
+            $('<div id="pawn_' + i +'"><img src="./themes/' + decodeURI(game.theme) + '/' + player.team + '/' + i + '.png" /><span data-team="' + player.team + '">' + i + '</span><span class="amount">' + amountPawnsAvailable + 'x</span></div>')
             .appendTo('#box')
             .attr('data-pawn', i)
             .attr('data-remaining', amountPawnsAvailable)
@@ -718,16 +718,16 @@ const initBox = () => {
 }
 
 const readyUp = () => {
-    socket.emit('readyUp', roomCode);
+    socket.emit('readyUp', game.room);
 }
 
 const cancelReadyUp = () => {
-    socket.emit('cancelReadyUp', roomCode);
+    socket.emit('cancelReadyUp', game.room);
 }
 
 const checkReadyStatus = () => {
     if(readyCounter >= 2){
         // Both players are ready -> start the process to start the game
-        socket.emit('checkReadyStatus', roomCode);
+        socket.emit('checkReadyStatus', game.room);
     }
 }
