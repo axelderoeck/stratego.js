@@ -353,10 +353,12 @@
 }
 
 #hud_lower_right button.standardButton {
+    border: 1px solid #6da4f2;
     background-color: #6da4f2;
     color: #ffffff;
 }
 #hud_lower_right button.standardButton:hover {
+    border: 1px solid #2967ed;
     background-color: #2967ed;
     color: #ffffff;
 }
