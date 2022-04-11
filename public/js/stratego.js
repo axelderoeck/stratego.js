@@ -764,16 +764,18 @@ const init = (teamNumber) => {
 
 const initNavigation = () => {
     // Remove existing buttons
-    $("#navigation").children().remove();
-    $("#navigation").attr('data-team', player.team);
+    $("#hud_lower_right").children().remove();
+    //$("#navigation").attr('data-team', player.team);
     if (player.setup){
-        // Add ready button (TEMPORARY)
-        $('<button id="readyUp"></button>').appendTo('#navigation').addClass('strategoBtn').click(readyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Ready');
-        // Add cancel button (TEMPORARY)
-        $('<button id="cancelReadyUp"></button>').appendTo('#navigation').addClass('strategoBtn hidden').click(cancelReadyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Cancel');
+        // Add info span
+        $('<span>0/2 players ready</span>').appendTo('#hud_lower_right').append('<br>');
+        // Add ready button
+        $('<button id="readyUp"></button>').appendTo('#hud_lower_right').addClass('readyButton').click(readyUp).prepend('<i class="fa-solid fa-check"></i> Ready');
+        // Add cancel button
+        $('<button id="cancelReadyUp"></button>').appendTo('#hud_lower_right').addClass('cancelButton hidden').click(cancelReadyUp).prepend('<i class="fa-solid fa-check"></i> Cancel');
         // Add randomise button
-        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(randomisePawns).prepend('<i class="fa-solid fa-dice"></i>').append('</br>Random');
+        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(randomisePawns).prepend('<i class="fa-solid fa-dice"></i> Random');
         // Add reset button
-        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(resetPawns).prepend('<i class="fa-solid fa-arrow-rotate-left"></i>').append('</br>Reset');
+        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(resetPawns).prepend('<i class="fa-solid fa-arrow-rotate-left"></i> Reset');
     }
 }
