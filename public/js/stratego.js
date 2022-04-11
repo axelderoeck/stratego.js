@@ -629,10 +629,24 @@ const randomisePawns = () => {
 }
 
 const readyUp = () => {
+    // Remove event listener click from all tiles
+    $('#board div').off('click');
+    $('#box div').off('click');
+    // Change display button
+    $('#readyUp').addClass('hidden');
+    $('#cancelReadyUp').removeClass('hidden');
+    // Emit action to server
     socket.emit('readyUp', game.room);
 }
 
 const cancelReadyUp = () => {
+    // Reset all event listeners and pawns
+    initBox();
+    placePawns();
+    // Change display button
+    $('#readyUp').removeClass('hidden');
+    $('#cancelReadyUp').addClass('hidden');
+    // Emit action to server
     socket.emit('cancelReadyUp', game.room);
 }
 
@@ -711,6 +725,7 @@ const initBox = () => {
                             if(pawns.length == 40){
                                 console.log('placed all pawns');
                                 // Ready button appears
+                                $('#readyUp').removeClass('hidden');
                             }else if(pawns.length < 40){
                                 initBox();
                             }else{
@@ -752,10 +767,10 @@ const initNavigation = () => {
     $("#navigation").children().remove();
     $("#navigation").attr('data-team', player.team);
     if (player.setup){
-        // Add cancel button (TEMPORARY)
-        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(cancelReadyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Cancel');
         // Add ready button (TEMPORARY)
-        $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(readyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Ready');
+        $('<button id="readyUp"></button>').appendTo('#navigation').addClass('strategoBtn').click(readyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Ready');
+        // Add cancel button (TEMPORARY)
+        $('<button id="cancelReadyUp"></button>').appendTo('#navigation').addClass('strategoBtn hidden').click(cancelReadyUp).prepend('<i class="fa-solid fa-check"></i>').append('</br>Cancel');
         // Add randomise button
         $('<button></button>').appendTo('#navigation').addClass('strategoBtn').click(randomisePawns).prepend('<i class="fa-solid fa-dice"></i>').append('</br>Random');
         // Add reset button
