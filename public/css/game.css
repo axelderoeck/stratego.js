@@ -308,23 +308,32 @@
     position: absolute;
     z-index: 99999;
     width: 200px;
-}
-
-#hud_lower_right span {
     font-family: fredoka;
 }
 
 #hud_lower_right button {
+    border-radius: 3px;
+    text-align: right;
     width: 100%;
     border: 0;
-    padding: 5px 0;
+    padding: 5px 10px;
     margin: 1px 1px;
     transition: 0.5s;
-    font-size: 20px;
+    font-size: 15px;
+    font-family: fredoka;
+    position: relative;
+}
+
+#hud_lower_right button i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 #hud_lower_right button.readyButton {
-    background-color: #05b505;
+    border: 1px solid #008000;
+    background-color: rgba(5, 181, 5, 0.3);
     color: #ffffff;
     margin: 0 1px 15px 1px;
 }
@@ -337,6 +346,7 @@
 }
 
 #hud_lower_right button.cancelButton {
+    border: 1px solid #008000;
     background-color: #008000;
     color: #ffffff;
     margin: 0 1px 15px 1px;

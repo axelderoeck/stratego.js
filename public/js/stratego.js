@@ -768,13 +768,13 @@ const initNavigation = () => {
     //$("#navigation").attr('data-team', player.team);
     if (player.setup){
         // Add info span
-        $('<span>0/2 players ready</span>').appendTo('#hud_lower_right').append('<br>');
+        $('<span>' + readyCounter + '/2 players ready</span>').appendTo('#hud_lower_right').append('<br>');
         // Add ready button
         $('<button id="readyUp"></button>').appendTo('#hud_lower_right').addClass('readyButton').click(readyUp).prepend('<i class="fa-solid fa-check"></i> Ready');
         // Add cancel button
-        $('<button id="cancelReadyUp"></button>').appendTo('#hud_lower_right').addClass('cancelButton hidden').click(cancelReadyUp).prepend('<i class="fa-solid fa-check"></i> Cancel');
+        $('<button id="cancelReadyUp"></button>').appendTo('#hud_lower_right').addClass('cancelButton hidden').click(cancelReadyUp).prepend('<i class="fa-solid fa-xmark"></i> Cancel');
         // Add randomise button
-        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(randomisePawns).prepend('<i class="fa-solid fa-dice"></i> Random');
+        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(randomisePawns).prepend('<i class="fa-solid fa-shuffle"></i> Random');
         // Add reset button
         $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(resetPawns).prepend('<i class="fa-solid fa-arrow-rotate-left"></i> Reset');
     }
