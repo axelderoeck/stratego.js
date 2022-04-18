@@ -108,6 +108,16 @@ const getPawnId = (x, y, pawn, team) => {
     return null;
 }
 
+const getAmountPawnsInTeam = (team) => {
+    let counter = 0;
+    pawns.forEach(pawn => {
+        if (pawn[3] == team){
+            counter++;
+        }
+    });
+    return counter;
+}
+
 // CHECK FUNCTIONS
 // =========================
 
@@ -765,17 +775,25 @@ const init = (teamNumber) => {
 const initNavigation = () => {
     // Remove existing buttons
     $("#hud_lower_right").children().remove();
+    //$("#hud_upper_right").children().remove();
     //$("#navigation").attr('data-team', player.team);
     if (player.setup){
         // Add info span
-        $('<span>' + readyCounter + '/2 players ready</span>').appendTo('#hud_lower_right').append('<br>');
+        //$('<span>' + readyCounter + '/2 players ready</span>').appendTo('#hud_lower_right').append('<br>');
         // Add ready button
         $('<button id="readyUp"></button>').appendTo('#hud_lower_right').addClass('readyButton').click(readyUp).prepend('<i class="fa-solid fa-check"></i> Ready');
         // Add cancel button
-        $('<button id="cancelReadyUp"></button>').appendTo('#hud_lower_right').addClass('cancelButton hidden').click(cancelReadyUp).prepend('<i class="fa-solid fa-xmark"></i> Cancel');
+        $('<button id="cancelReadyUp"></button>').appendTo('#hud_lower_right').addClass('cancelButton hidden').click(cancelReadyUp).prepend('<i class="fa-solid fa-xmark"></i> Cancel Ready');
         // Add randomise button
-        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(randomisePawns).prepend('<i class="fa-solid fa-shuffle"></i> Random');
+        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(randomisePawns).prepend('<i class="fa-solid fa-shuffle"></i> Randomise');
         // Add reset button
-        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(resetPawns).prepend('<i class="fa-solid fa-arrow-rotate-left"></i> Reset');
+        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(resetPawns).prepend('<i class="fa-solid fa-arrow-rotate-left"></i> Reset Pawns');
+    }else{
+        // Add cancel move button
+        $('<button></button>').appendTo('#hud_lower_right').addClass('deleteButton').click().prepend('<i class="fa-solid fa-xmark"></i> Cancel Move');
+        // Add cemetery button
+        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click().prepend('<i class="fa-solid fa-cross"></i> View Cemetery');
+        // Add skip turn button
+        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click().prepend('<i class="fa-solid fa-forward"></i> Skip Turn');
     }
 }

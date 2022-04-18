@@ -302,6 +302,43 @@
     display: none;
 }
 
+#hud_upper_right {
+    top: 5px;
+    right: 5px;
+    position: absolute;
+    z-index: 99999;
+    width: 300px;
+    font-family: fredoka;
+}
+
+#hud_upper_right .profileImage {
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+    border: 1px solid blue;
+    color: #ffffff;
+    border-radius: 50%;
+}
+
+#hud_upper_right .profileImage img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+#hud_upper_right .profile {
+
+}
+
+#hud_upper_right .profile span {
+    background-color: #008000;
+    border-radius: 50%;
+    z-index: 99;
+    padding: 2.25px 5px 2.25px 5px;
+    z-index: 99;
+    color: #ffffff;
+}
+
 #hud_lower_right {
     bottom: 5px;
     right: 5px;
@@ -312,6 +349,7 @@
 }
 
 #hud_lower_right button {
+    color: #ffffff;
     border-radius: 3px;
     text-align: right;
     width: 100%;
@@ -334,7 +372,6 @@
 #hud_lower_right button.readyButton {
     border: 1px solid #008000;
     background-color: rgba(5, 181, 5, 0.3);
-    color: #ffffff;
     margin: 0 1px 15px 1px;
 }
 #hud_lower_right button.readyButton:hover {
@@ -348,17 +385,27 @@
 #hud_lower_right button.cancelButton {
     border: 1px solid #008000;
     background-color: #008000;
-    color: #ffffff;
     margin: 0 1px 15px 1px;
+}
+
+#hud_lower_right button.deleteButton {
+    border: 1px solid #ff0000;
+    background-color: rgba(255, 0, 0, 0.3);
+    color: #ffffff;
+}
+#hud_lower_right button.deleteButton:hover {
+    background-color: #ff0000;
+    transition: 0.5s;
+}
+#hud_lower_right button.deleteButton:disabled {
+    background-color: #6a6b6a;
 }
 
 #hud_lower_right button.standardButton {
     border: 1px solid #6da4f2;
     background-color: #6da4f2;
-    color: #ffffff;
 }
 #hud_lower_right button.standardButton:hover {
     border: 1px solid #2967ed;
     background-color: #2967ed;
-    color: #ffffff;
 }
