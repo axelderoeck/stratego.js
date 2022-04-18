@@ -309,12 +309,15 @@ const placePawns = () => {
                 .prepend('<span data-team=' + pawn[3] + '>' + pawnNumber + '</span>')
         }
         if(pawn[3] == player.team && player.turn == true || player.setup == true){
-            // Add event listener
-            tile.click(function() {
-                // Add highlight class
-                tile.addClass('legalMove selected');
-                movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
-            });
+            // Check for static pawns -> no click event on static pawns
+            if(pawn[2] != 0 && pawn[2] != 11 || player.setup == true){
+                // Add event listener
+                tile.click(function() {
+                    // Add highlight class
+                    tile.addClass('legalMove selected');
+                    movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
+                });
+            }
             tile.removeClass('notMoveable');
         }else if(pawn[3] == player.team && player.turn == false || pawn[3] != player.team && player.turn == true){
             tile.addClass('notMoveable');
@@ -452,6 +455,19 @@ const deletePawn = (pawn) => {
     }
 }
 
+const cancelSelect = () => {
+    // Remove classes from the tiles
+    $('#board div').removeClass('legalMove selected shineEffect');
+    // Delete all images with fighticon class
+    $("img").remove(".fightIcon");
+    // Remove event listener click from all tiles
+    $('#board div').off('click');
+    // Place pawns
+    placePawns();
+    // Hide the cancel select button again
+    $('#cancelSelect').addClass('hiddenBtn');
+}
+
 const endGame = (player) => {
     // Remove event listener click from all tiles
     $('#board div').off('click');
@@ -507,6 +523,8 @@ const movePawn = (old_x, old_y, pawn, team) => {
             }
         });
     }else{
+        // Show the cancel select button
+        $('#cancelSelect').removeClass('hiddenBtn');
         // Check for static pawn
         if(pawn == 11 || pawn == 0){
             // Cancel move
@@ -559,6 +577,8 @@ const movePawn = (old_x, old_y, pawn, team) => {
                     $('#board div').off('click');
                     // Place pawns
                     placePawns();
+                    // Hide the cancel select button again
+                    $('#cancelSelect').addClass('hiddenBtn');
                     // Update the array on server
                     socket.emit('updateBoard', game.room, pawns);
                 });
@@ -576,6 +596,8 @@ const movePawn = (old_x, old_y, pawn, team) => {
                     $('#board div').off('click');
                     // Place pawns
                     placePawns();
+                    // Hide the cancel select button again
+                    $('#cancelSelect').addClass('hiddenBtn');
                 });
             }
         });
@@ -583,7 +605,11 @@ const movePawn = (old_x, old_y, pawn, team) => {
         if(!atLeastOneLegalMove){
             // Remove classes from the tiles
             $('#board div').removeClass('selected');
-            return;
+            // Delete all images with fighticon class
+            $("img").remove(".fightIcon");
+            // Remove event listener click from all tiles
+            $('#board div').off('click');
+            //return;
         }
     }
 }
@@ -803,7 +829,7 @@ const initNavigation = () => {
         $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(resetPawns).prepend('<i class="fa-solid fa-arrow-rotate-left"></i> Reset Pawns');
     }else{
         // Add cancel move button
-        $('<button></button>').appendTo('#hud_lower_right').addClass('deleteButton').click().prepend('<i class="fa-solid fa-xmark"></i> Cancel Move');
+        $('<button id="cancelSelect"></button>').appendTo('#hud_lower_right').addClass('deleteButton hiddenBtn').click(cancelSelect).prepend('<i class="fa-solid fa-xmark"></i> Cancel Select');
         // Add cemetery button
         $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click().prepend('<i class="fa-solid fa-cross"></i> View Cemetery');
         // Add skip turn button

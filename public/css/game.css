@@ -416,3 +416,7 @@ button.deleteButton:hover {
 button.deleteButton:disabled {
     background-color: #6a6b6a;
 }
+
+.hiddenBtn {
+    transform: translateX(110%);
+}
