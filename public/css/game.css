@@ -378,9 +378,6 @@
     background-color: #008000;
     transition: 0.5s;
 }
-#hud_lower_right button.readyButton:disabled {
-    background-color: #6a6b6a;
-}
 
 #hud_lower_right button.cancelButton {
     border: 1px solid #008000;
@@ -395,6 +392,16 @@
 #hud_lower_right button.standardButton:hover {
     border: 1px solid #2967ed;
     background-color: #2967ed;
+}
+
+#hud_lower_right button:disabled {
+    color: #9f9f9f;
+    background-color: #6a6b6a;
+    border: 1px solid #6a6b6a;
+}
+#hud_lower_right button:disabled:hover {
+    background-color: #6a6b6a;
+    border: 1px solid #6a6b6a;
 }
 
 button.deleteButton {

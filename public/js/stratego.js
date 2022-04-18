@@ -596,6 +596,10 @@ const resetPawns = () => {
     pawns = [];
     // Reset the pawnsInBox array
     pawnsInBox = [...ALL_PAWNS];
+
+    // Disable ready button
+    $('#readyUp').prop('disabled', true);
+
     //
     initBox();
     placePawns();
@@ -630,6 +634,9 @@ const randomisePawns = () => {
         pawns.push([randomX, randomY, pawn, player.team]);
     });
 
+    // Enable ready button
+    $('#readyUp').prop('disabled', false);
+
     // empty the array
     pawnsInBox = [];
     placePawns();
@@ -645,6 +652,8 @@ const readyUp = () => {
     // Change display button
     $('#readyUp').addClass('hidden');
     $('#cancelReadyUp').removeClass('hidden');
+    // Disable the other buttons
+    $('.standardButton').prop('disabled', true);
     // Emit action to server
     socket.emit('readyUp', game.room);
 }
@@ -656,6 +665,8 @@ const cancelReadyUp = () => {
     // Change display button
     $('#readyUp').removeClass('hidden');
     $('#cancelReadyUp').addClass('hidden');
+    // Enable the other buttons
+    $('.standardButton').prop('disabled', false);
     // Emit action to server
     socket.emit('cancelReadyUp', game.room);
 }
@@ -734,9 +745,11 @@ const initBox = () => {
                             // Check if all pawns have been placed
                             if(pawns.length == 40){
                                 console.log('placed all pawns');
-                                // Ready button appears
-                                $('#readyUp').removeClass('hidden');
+                                // Enable ready button
+                                $('#readyUp').prop('disabled', false);
                             }else if(pawns.length < 40){
+                                // Disable ready button
+                                $('#readyUp').prop('disabled', true);
                                 initBox();
                             }else{
                                 // too many pawns someones cheating
@@ -781,7 +794,7 @@ const initNavigation = () => {
         // Add info span
         //$('<span>' + readyCounter + '/2 players ready</span>').appendTo('#hud_lower_right').append('<br>');
         // Add ready button
-        $('<button id="readyUp"></button>').appendTo('#hud_lower_right').addClass('readyButton').click(readyUp).prepend('<i class="fa-solid fa-check"></i> Ready');
+        $('<button id="readyUp"></button>').appendTo('#hud_lower_right').addClass('readyButton').click(readyUp).prop('disabled', true).prepend('<i class="fa-solid fa-check"></i> Ready');
         // Add cancel button
         $('<button id="cancelReadyUp"></button>').appendTo('#hud_lower_right').addClass('cancelButton hidden').click(cancelReadyUp).prepend('<i class="fa-solid fa-xmark"></i> Cancel Ready');
         // Add randomise button
