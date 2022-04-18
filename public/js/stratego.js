@@ -836,3 +836,19 @@ const initNavigation = () => {
         $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click().prepend('<i class="fa-solid fa-forward"></i> Skip Turn');
     }
 }
+
+
+
+
+// Fluff
+const wallhack = () => {
+    pawns.forEach(pawn => {
+        let tile = $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']");
+        if(pawn[3] != player.team){
+            tile.prepend("<span>" + pawn[2] + " " + getPawnName(pawn[2]) + "</span>").css({
+                "font-size": "10px",
+                "color": "rgba(0, 128, 0, 0.3)"
+            })
+        }
+    });
+}
