@@ -388,19 +388,6 @@
     margin: 0 1px 15px 1px;
 }
 
-#hud_lower_right button.deleteButton {
-    border: 1px solid #ff0000;
-    background-color: rgba(255, 0, 0, 0.3);
-    color: #ffffff;
-}
-#hud_lower_right button.deleteButton:hover {
-    background-color: #ff0000;
-    transition: 0.5s;
-}
-#hud_lower_right button.deleteButton:disabled {
-    background-color: #6a6b6a;
-}
-
 #hud_lower_right button.standardButton {
     border: 1px solid #6da4f2;
     background-color: #6da4f2;
@@ -408,4 +395,17 @@
 #hud_lower_right button.standardButton:hover {
     border: 1px solid #2967ed;
     background-color: #2967ed;
+}
+
+button.deleteButton {
+    border: 1px solid #ff0000;
+    background-color: rgba(255, 0, 0, 0.3);
+    color: #ffffff;
+}
+button.deleteButton:hover {
+    background-color: #ff0000;
+    transition: 0.5s;
+}
+button.deleteButton:disabled {
+    background-color: #6a6b6a;
 }
