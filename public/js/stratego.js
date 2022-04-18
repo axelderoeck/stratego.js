@@ -293,7 +293,7 @@ const placePawns = () => {
         tile.addClass('shineEffect');
         // Special pawn settings based on team
         if(pawn[3] != player.team){
-            tile.prepend('<img src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/unknown.png" />')
+            tile.prepend('<img draggable="false" src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/unknown.png" />')
         }else{
             // Check for flag or bomb pawn
             let pawnNumber;
@@ -305,7 +305,7 @@ const placePawns = () => {
                 pawnNumber = pawn[2];
             }
             // Place tile image and span
-            tile.prepend('<img src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
+            tile.prepend('<img draggable="false" src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
                 .prepend('<span data-team=' + pawn[3] + '>' + pawnNumber + '</span>')
         }
         if(pawn[3] == player.team && player.turn == true || player.setup == true){
@@ -701,7 +701,7 @@ const initBox = () => {
                 pawnNumber = i;
             }
             // Place pawn in box
-            $('<div id="pawn_' + i +'"><img src="./themes/' + decodeURI(game.theme) + '/' + player.team + '/' + i + '.png" /><span data-team="' + player.team + '">' + pawnNumber + '</span><span class="amount">' + amountPawnsAvailable + 'x</span></div>')
+            $('<div id="pawn_' + i +'"><img draggable="false" src="./themes/' + decodeURI(game.theme) + '/' + player.team + '/' + i + '.png" /><span data-team="' + player.team + '">' + pawnNumber + '</span><span class="amount">' + amountPawnsAvailable + 'x</span></div>')
             .appendTo('#box')
             .attr('data-pawn', i)
             .attr('data-remaining', amountPawnsAvailable)
