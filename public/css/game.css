@@ -307,7 +307,7 @@
     right: 5px;
     position: absolute;
     z-index: 99999;
-    width: 300px;
+    /* width: 300px; */
     font-family: fredoka;
 }
 
