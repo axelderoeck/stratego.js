@@ -38,6 +38,7 @@ let cemetery = [];
 // =========================
 
 let readyCounter = 0;
+let inviteUrl
 
 // Initialise player object
 let player = {
@@ -797,8 +798,11 @@ const init = (teamNumber) => {
 const initNavigation = () => {
     // Remove existing buttons
     $("#hud_lower_right").children().remove();
-    //$("#hud_upper_right").children().remove();
+    $("#hud_upper_right").children().remove();
+    $("#inviteModal").remove();
     if (player.setup){
+        // Create invite modal
+        $('<div id="inviteModal" class="hidden"></div>').appendTo('#fullboard').prepend('<span>Invite Player</span><br>Send this URL to the second player. <br><br><input id="url" value="' + inviteUrl + '"><button id="copyBtn" data-clipboard-target="#url">Copy URL</button>')
         // Add invite button
         $('<button></button>').appendTo('#hud_upper_right').addClass('standardButton').click(invitePlayer).prepend('<i class="fa-solid fa-envelope"></i> Invite Player');
         // Add ready button
