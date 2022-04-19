@@ -313,8 +313,10 @@ const placePawns = () => {
             if(pawn[2] != 0 && pawn[2] != 11 || player.setup == true){
                 // Add event listener
                 tile.click(function() {
+                    // Remove event listener click from all tiles before adding new ones to avoid conflict
+                    $('#board div').off('click');
                     // Add highlight class
-                    tile.addClass('legalMove selected');
+                    tile.addClass('selected');
                     movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
                 });
             }
