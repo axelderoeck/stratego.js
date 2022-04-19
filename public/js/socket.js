@@ -110,6 +110,35 @@ socket.on('playerJoined', () => {
     $('<button id="player2"></button>').appendTo('#hud_upper_right').addClass('userButton').prepend('<i class="fa-solid fa-user"></i> Player 2');
 })
 
+socket.on('endGame', () => {
+    // Remove event listener click from all tiles
+    $('#board div').off('click');
+    
+    // Delete old images and effects
+    $("#board div")
+        .removeClass('shineEffect')
+        .children()
+        .remove();
+
+    // Place pawns
+    pawns.forEach(pawn => {
+        // Create pawn
+        let tile = $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']");
+        // Check for flag or bomb pawn
+        let pawnNumber;
+        if(pawn[2] == 0){
+            pawnNumber = 'F';
+        }else if(pawn[2] == 11){
+            pawnNumber = 'B';
+        }else{
+            pawnNumber = pawn[2];
+        }
+        // Place tile image and span
+        tile.prepend('<img draggable="false" src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
+            .prepend('<span data-team=' + pawn[3] + '>' + pawnNumber + '</span>')
+    });
+})
+
 socket.on('gameNotFound', (room) => {
     //window.location.href = '/';
     console.error('Room: ' + room + ' not found.');

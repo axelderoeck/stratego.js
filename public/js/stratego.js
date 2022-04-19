@@ -414,12 +414,22 @@ const fight = (attackingPawn, defendingPawn) => {
             pawns[attackingPawnId][1] = defendingPawn[1];
             // Delete/kill the defending pawn
             deletePawn(defendingPawn);
+            // Check if game is over
+            if(getAmountNonStaticPawnsInTeam(defendingPawn[3]) == 0){
+                // Game is over all moveable pawns are dead
+                socket.emit('endingGame', game.room, attackingPawn[3]);
+            }
             break;
         case false:
             // Display fight result
             socket.emit('displayFight', game.room, attackingPawn, defendingPawn, defendingPawn[3]);
             // Delete/kill the attacking pawn
             deletePawn(attackingPawn);
+            // Check if game is over
+            if(getAmountNonStaticPawnsInTeam(attackingPawn[3]) == 0){
+                // Game is over all moveable pawns are dead
+                socket.emit('endingGame', game.room, defendingPawn[3]);
+            }
             break;
         case "stalemate":
             // Display fight result
@@ -427,6 +437,15 @@ const fight = (attackingPawn, defendingPawn) => {
             // Delete/kill both pawns
             deletePawn(attackingPawn);
             deletePawn(defendingPawn);
+            // Check if game is over
+            if(getAmountNonStaticPawnsInTeam(defendingPawn[3]) == 0){
+                // Game is over all moveable pawns are dead
+                socket.emit('endingGame', game.room, attackingPawn[3]);
+            }
+            if(getAmountNonStaticPawnsInTeam(attackingPawn[3]) == 0){
+                // Game is over all moveable pawns are dead
+                socket.emit('endingGame', game.room, defendingPawn[3]);
+            }
             break;
         case "win":
             // Set new coordinate values to pawn
@@ -434,7 +453,7 @@ const fight = (attackingPawn, defendingPawn) => {
             pawns[attackingPawnId][1] = defendingPawn[1];
             // Delete/kill the defending pawn
             deletePawn(defendingPawn);
-            endGame(attackingPawn[3]);
+            socket.emit('endingGame', game.room, attackingPawn[3]);
             break;
     }
 }
@@ -482,13 +501,6 @@ const cancelSelect = () => {
     placePawns();
     // Hide the cancel select button again
     $('#cancelSelect').addClass('hiddenBtn');
-}
-
-const endGame = (player) => {
-    // Remove event listener click from all tiles
-    $('#board div').off('click');
-    console.log("player: " + parseInt(player + 1) + " has won the game.");
-    console.log("The game has ended.");
 }
 
 const checkForEnemyContact = (new_x, new_y, team) => {

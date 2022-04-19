@@ -151,6 +151,11 @@ io.on('connection', (socket) => {
         io.in(roomCode).emit('playerJoined');
     })
 
+    socket.on('endingGame', (roomCode, winningTeam) => {
+        console.log("\x1b[36m%s\x1b[0m", "[stratego] player `" + parseInt(winningTeam + 1) + "` won the game in room `" + roomCode + "`.");
+        io.in(roomCode).emit('endGame');
+    });
+
     socket.on('disconnect', () => {
         console.log("\x1b[36m%s\x1b[0m", "[stratego] user `" + socket.id + "` disconnected.");
         console.log('[stratego] server connections: ' + io.engine.clientsCount);
