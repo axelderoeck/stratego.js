@@ -315,8 +315,8 @@ const placePawns = () => {
                 tile.click(function() {
                     // Remove event listener click from all tiles before adding new ones to avoid conflict
                     $('#board div').off('click');
-                    // Add highlight class
-                    tile.addClass('selected');
+                    // Add style to cancel select on pawn
+                    $('<div class="cancelSelectTile"><i class="fa-solid fa-xmark"></i></div>').appendTo(tile);
                     movePawn(pawn[0], pawn[1], pawn[2], pawn[3]);
                 });
             }
@@ -527,21 +527,10 @@ const movePawn = (old_x, old_y, pawn, team) => {
     }else{
         // Show the cancel select button
         $('#cancelSelect').removeClass('hiddenBtn');
-        // Check for static pawn
-        if(pawn == 11 || pawn == 0){
-            // Cancel move
-            return;
-        }
-        // Set defaults
-        let atLeastOneLegalMove = false;
         // Check all the tiles
         $("#board div").each(function(){
             // Check for legal tiles
             if(isLegalMove(old_x, old_y, $(this).data('x'), $(this).data('y'), pawn, team)){
-                // Turn checker on if isn't on already
-                if(!atLeastOneLegalMove){
-                    atLeastOneLegalMove = true;
-                }
                 // Add color to legal tile
                 $(this).addClass('legalMove shineEffect');
                 // Check if tile has an enemy
@@ -603,16 +592,6 @@ const movePawn = (old_x, old_y, pawn, team) => {
                 });
             }
         });
-        // Check if pawn has legal moves -> if none cancel
-        if(!atLeastOneLegalMove){
-            // Remove classes from the tiles
-            $('#board div').removeClass('selected');
-            // Delete all images with fighticon class
-            $("img").remove(".fightIcon");
-            // Remove event listener click from all tiles
-            $('#board div').off('click');
-            //return;
-        }
     }
 }
 

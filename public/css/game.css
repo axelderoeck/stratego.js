@@ -420,3 +420,19 @@ button.deleteButton:disabled {
 .hiddenBtn {
     transform: translateX(110%);
 }
+
+.cancelSelectTile {
+    position: absolute !important;
+    background-color: rgba(128, 0, 0, 0.3) !important;
+    top: 0;
+    left: 0;
+}
+
+.cancelSelectTile i {
+    position: absolute;
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%,-30%);
+    color: #ffffff;
+    font-size: 30px;
+}
