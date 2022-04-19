@@ -39,6 +39,7 @@ let cemetery = [];
 
 let readyCounter = 0;
 let inviteUrl;
+let allowReady = false;
 
 // Initialise player object
 let player = {
@@ -645,7 +646,9 @@ const randomisePawns = () => {
     });
 
     // Enable ready button
-    $('#readyUp').prop('disabled', false);
+    if(allowReady){
+        $('#readyUp').prop('disabled', false);
+    }
 
     // empty the array
     pawnsInBox = [];
@@ -756,7 +759,9 @@ const initBox = () => {
                             if(pawns.length == 40){
                                 console.log('placed all pawns');
                                 // Enable ready button
-                                $('#readyUp').prop('disabled', false);
+                                if(allowReady){
+                                    $('#readyUp').prop('disabled', false);
+                                }
                             }else if(pawns.length < 40){
                                 // Disable ready button
                                 $('#readyUp').prop('disabled', true);

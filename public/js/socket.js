@@ -104,6 +104,7 @@ socket.on('playerJoined', () => {
     // Remove the invite buttons
     $("#inviteModal").remove();
     $("#inviteButton").remove();
+    allowReady = true;
 })
 
 socket.on('gameNotFound', (room) => {
