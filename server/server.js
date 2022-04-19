@@ -147,6 +147,10 @@ io.on('connection', (socket) => {
         io.in(roomCode).emit('displayFight', attackingPawn, defendingPawn, winningTeam);
     });
 
+    socket.on('playerJoined', (roomCode) => {
+        io.in(roomCode).emit('playerJoined');
+    })
+
     socket.on('disconnect', () => {
         console.log("\x1b[36m%s\x1b[0m", "[stratego] user `" + socket.id + "` disconnected.");
         console.log('[stratego] server connections: ' + io.engine.clientsCount);

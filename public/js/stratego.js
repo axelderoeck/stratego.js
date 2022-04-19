@@ -38,7 +38,7 @@ let cemetery = [];
 // =========================
 
 let readyCounter = 0;
-let inviteUrl
+let inviteUrl;
 
 // Initialise player object
 let player = {
@@ -788,9 +788,10 @@ const init = (teamNumber) => {
     // Mirror the board if it's player 2
     if(player.team == 1){
         mirrorBoard();
+        // Notify player 1 about connected player 2
+        socket.emit('playerJoined', game.room);
     }
 
-    console.info('You are player '+ parseInt(player.team + 1));
     socket.emit('updatePawns', pawns);
     placePawns();
 }
@@ -804,7 +805,7 @@ const initNavigation = () => {
         // Create invite modal
         $('<div id="inviteModal" class="hidden"></div>').appendTo('#fullboard').prepend('<span>Invite Player</span><br>Send this URL to the second player. <br><br><input id="url" value="' + inviteUrl + '"><button id="copyBtn" data-clipboard-target="#url">Copy URL</button>')
         // Add invite button
-        $('<button></button>').appendTo('#hud_upper_right').addClass('standardButton').click(invitePlayer).prepend('<i class="fa-solid fa-envelope"></i> Invite Player');
+        $('<button id="inviteButton"></button>').appendTo('#hud_upper_right').addClass('standardButton').click(invitePlayer).prepend('<i class="fa-solid fa-envelope"></i> Invite Player');
         // Add ready button
         $('<button id="readyUp"></button>').appendTo('#hud_lower_right').addClass('readyButton').click(readyUp).prop('disabled', true).prepend('<i class="fa-solid fa-check"></i> Ready');
         // Add cancel button

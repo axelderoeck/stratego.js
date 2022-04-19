@@ -100,6 +100,12 @@ socket.on('displayFight', (attackingPawn, defendingPawn, winningTeam) => {
     }, TIME_FIGHT_DISPLAY * 1000);
 })
 
+socket.on('playerJoined', () => {
+    // Remove the invite buttons
+    $("#inviteModal").remove();
+    $("#inviteButton").remove();
+})
+
 socket.on('gameNotFound', (room) => {
     //window.location.href = '/';
     console.error('Room: ' + room + ' not found.');
