@@ -122,6 +122,16 @@ const getAmountPawnsInTeam = (team) => {
     return counter;
 }
 
+const getAmountNonStaticPawnsInTeam = (team) => {
+    let counter = 0;
+    pawns.forEach(pawn => {
+        if (pawn[3] == team && pawn[2] != 0 && pawn[2] != 11){
+            counter++;
+        }
+    });
+    return counter;
+}
+
 // CHECK FUNCTIONS
 // =========================
 
