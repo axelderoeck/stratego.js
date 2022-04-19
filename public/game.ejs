@@ -12,24 +12,18 @@
     <title>Document</title>
 </head>
 <body id="fullboard">
-    <!-- <div id="hud_upper_right">
-        <div class="profile">
-            <div class="profileImage">
-                <img src="themes/classic/0/10.png" alt="">
-            </div>
-            <span><i class="fa-solid fa-check"></i></span>
-        </div>
-        <div class="profile">
-            <div class="profileImage">
-                <img src="themes/classic/0/10.png" alt="">
-            </div>
-            <span><i class="fa-solid fa-check"></i></span>
-        </div>
-    </div> -->
+    <div id="inviteModal" class="hidden">
+        <span>Invite Player</span><br>
+        Send this URL to the second player. <br><br>
+        <input id="url" value="https://github.com/zenorocha/clipboard.js.git">
+        <button id="copyBtn" data-clipboard-target="#url">Copy URL</button>
+    </div>
+    <div id="hud_upper_right"></div>
     <div id="hud_lower_right"></div>
 
     <div id="board"></div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>    
     <script src="https://kit.fontawesome.com/90f9e5d42f.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
     <script src="themes/<%=theme%>/config.js"></script>

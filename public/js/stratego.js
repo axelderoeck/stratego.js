@@ -1,6 +1,8 @@
 // STRATEGO.JS
 // =========================
 
+new ClipboardJS('#copyBtn');
+
 // CONFIG
 // =========================
 
@@ -796,10 +798,9 @@ const initNavigation = () => {
     // Remove existing buttons
     $("#hud_lower_right").children().remove();
     //$("#hud_upper_right").children().remove();
-    //$("#navigation").attr('data-team', player.team);
     if (player.setup){
-        // Add info span
-        //$('<span>' + readyCounter + '/2 players ready</span>').appendTo('#hud_lower_right').append('<br>');
+        // Add invite button
+        $('<button></button>').appendTo('#hud_upper_right').addClass('standardButton').click(invitePlayer).prepend('<i class="fa-solid fa-envelope"></i> Invite Player');
         // Add ready button
         $('<button id="readyUp"></button>').appendTo('#hud_lower_right').addClass('readyButton').click(readyUp).prop('disabled', true).prepend('<i class="fa-solid fa-check"></i> Ready');
         // Add cancel button
@@ -816,6 +817,10 @@ const initNavigation = () => {
         // Add skip turn button
         $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click().prepend('<i class="fa-solid fa-forward"></i> Skip Turn');
     }
+}
+
+const invitePlayer = () => {
+    $('#inviteModal').toggleClass('hidden');
 }
 
 

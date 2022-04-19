@@ -299,7 +299,7 @@
 }
 
 .hidden{
-    display: none;
+    display: none !important;
 }
 
 #hud_upper_right {
@@ -307,36 +307,38 @@
     right: 5px;
     position: absolute;
     z-index: 99999;
-    /* width: 300px; */
+    width: 200px;
     font-family: fredoka;
 }
 
-#hud_upper_right .profileImage {
-    overflow: hidden;
-    width: 100px;
-    height: 100px;
-    border: 1px solid blue;
+#hud_upper_right button {
     color: #ffffff;
-    border-radius: 50%;
-}
-
-#hud_upper_right .profileImage img {
-    height: 100%;
+    border-radius: 3px;
+    text-align: right;
     width: 100%;
-    object-fit: cover;
+    border: 0;
+    padding: 5px 10px;
+    margin: 1px 1px;
+    transition: 0.5s;
+    font-size: 15px;
+    font-family: fredoka;
+    position: relative;
 }
 
-#hud_upper_right .profile {
-
+#hud_upper_right button i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-#hud_upper_right .profile span {
-    background-color: #008000;
-    border-radius: 50%;
-    z-index: 99;
-    padding: 2.25px 5px 2.25px 5px;
-    z-index: 99;
-    color: #ffffff;
+#hud_upper_right button.standardButton {
+    border: 1px solid #6da4f2;
+    background-color: #6da4f2;
+}
+#hud_upper_right button.standardButton:hover {
+    border: 1px solid #2967ed;
+    background-color: #2967ed;
 }
 
 #hud_lower_right {
@@ -435,4 +437,45 @@ button.deleteButton:disabled {
     transform: translate(-50%,-30%);
     color: #ffffff;
     font-size: 30px;
+}
+
+#inviteModal {
+    font-size: 14px;
+    font-family: fredoka;
+    display: block;
+    position: absolute;
+    right: 210px;
+    top: 6px;
+    border-radius: 3px;
+    padding: 5px;
+    width: 300px;
+    z-index: 99;
+    background-color: #6da4f2;
+    color: #ffffff;
+}
+
+#inviteModal:before {
+    content: ' ';
+    height: 0;
+    position: absolute;
+    width: 0;
+    left: 100%;
+    border: 5px solid transparent;
+    border-left-color: #6da4f2;
+}
+
+#inviteModal span {
+    font-size: 18px;
+}
+
+#inviteModal input {
+    border: 1px solid #ffffff;
+    border-radius: 3px;
+    width: 70%;
+}
+
+#inviteModal button {
+    border: 1px solid #ffffff;
+    background-color: #ffffff;
+    float: right;
 }
