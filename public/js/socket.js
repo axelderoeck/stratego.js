@@ -25,9 +25,8 @@ socket.on('createInvite', (theme, room) => {
 socket.on('readyUp', (teamNumber) => {
     if (player.team == teamNumber){
         player.ready = true;
-        console.log('You are ready');
     }else{
-        console.log('The other player is ready');
+        $('#player' + parseInt(teamNumber + 1)).addClass('readyBackground');
     }
     if(readyCounter < 2){
         readyCounter++;
@@ -39,9 +38,8 @@ socket.on('readyUp', (teamNumber) => {
 socket.on('cancelReadyUp', (teamNumber) => {
     if (player.team == teamNumber){
         player.ready = false;
-        console.log('You are no longer ready');
     }else{
-        console.log('The other player is no longer ready');
+        $('#player' + parseInt(teamNumber + 1)).removeClass('readyBackground');
     }
     if(readyCounter >= 1){
         readyCounter--;
@@ -63,6 +61,7 @@ socket.on('startGame', (array) => {
     }
     // Initialise the game
     init(player.team);
+    $('#hud_upper_right').remove();
 })
 
 socket.on('startTurn', () => {
@@ -104,7 +103,11 @@ socket.on('playerJoined', () => {
     // Remove the invite buttons
     $("#inviteModal").remove();
     $("#inviteButton").remove();
+    // Allow players to be ready now
     allowReady = true;
+    // Add players to hud
+    $('<button id="player1"></button>').appendTo('#hud_upper_right').addClass('userButton').prepend('<i class="fa-solid fa-user"></i> Player 1');
+    $('<button id="player2"></button>').appendTo('#hud_upper_right').addClass('userButton').prepend('<i class="fa-solid fa-user"></i> Player 2');
 })
 
 socket.on('gameNotFound', (room) => {

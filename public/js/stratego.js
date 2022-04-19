@@ -662,9 +662,10 @@ const readyUp = () => {
     // Remove event listener click from all tiles
     $('#board div').off('click');
     $('#box div').off('click');
-    // Change display button
+    // Change display
     $('#readyUp').addClass('hidden');
     $('#cancelReadyUp').removeClass('hidden');
+    $('#player' + parseInt(player.team + 1)).addClass('readyBackground');
     // Disable the other buttons
     $('.standardButton').prop('disabled', true);
     // Emit action to server
@@ -675,9 +676,10 @@ const cancelReadyUp = () => {
     // Reset all event listeners and pawns
     initBox();
     placePawns();
-    // Change display button
+    // Change display
     $('#readyUp').removeClass('hidden');
     $('#cancelReadyUp').addClass('hidden');
+    $('#player' + parseInt(player.team + 1)).removeClass('readyBackground');
     // Enable the other buttons
     $('.standardButton').prop('disabled', false);
     // Emit action to server
@@ -823,9 +825,9 @@ const initNavigation = () => {
         // Add cancel move button
         $('<button id="cancelSelect"></button>').appendTo('#hud_lower_right').addClass('deleteButton hiddenBtn').click(cancelSelect).prepend('<i class="fa-solid fa-xmark"></i> Cancel Select');
         // Add cemetery button
-        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click().prepend('<i class="fa-solid fa-cross"></i> View Cemetery');
+        //$('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click().prepend('<i class="fa-solid fa-cross"></i> View Cemetery');
         // Add skip turn button
-        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click().prepend('<i class="fa-solid fa-forward"></i> Skip Turn');
+        //$('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click().prepend('<i class="fa-solid fa-forward"></i> Skip Turn');
     }
 }
 

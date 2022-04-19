@@ -406,6 +406,16 @@
     border: 1px solid #6a6b6a;
 }
 
+#hud_upper_right button.userButton {
+    border: 1px solid #008000;
+    background-color: rgba(5, 181, 5, 0.3);
+}
+
+.readyBackground {
+    border: 1px solid #008000 !important;
+    background-color: #008000 !important;
+}
+
 button.deleteButton {
     border: 1px solid #ff0000;
     background-color: rgba(255, 0, 0, 0.3);
