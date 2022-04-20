@@ -346,9 +346,13 @@ module.exports = {
     getPawnByCoordinate,
     getPawnId,
     getPawnById,
+    getAmountPawnsInTeam,
+    getAmountNonStaticPawnsInTeam,
     getPawnName,
     getPawnNumber,
     isTileDisabled,
+    isTileInSpawnZone,
     isLegalMove,
-    fightOutcome
+    fightOutcome,
+    checkForEnemyContact
 };

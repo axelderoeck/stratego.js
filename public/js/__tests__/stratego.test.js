@@ -4,11 +4,15 @@ const {
     getPawnByCoordinate,
     getPawnId,
     getPawnById,
+    getAmountPawnsInTeam,
+    getAmountNonStaticPawnsInTeam,
     getPawnName,
     getPawnNumber,
     isTileDisabled,
+    isTileInSpawnZone,
     isLegalMove,
-    fightOutcome } = require('../stratego.js');
+    fightOutcome,
+    checkForEnemyContact } = require('../stratego.js');
 
 beforeAll(() => {
     addPawn(4, 4, 2, 0);
@@ -94,6 +98,10 @@ describe('getPawnNumber', () => {
     test('Flag returns F', () => {
         expect(getPawnNumber(0)).toBe('F');
     });
+
+    test('Bomb returns B', () => {
+        expect(getPawnNumber(11)).toBe('B');
+    });
     
     test('Normal pawn returns number', () => {
         expect(getPawnNumber(5)).toBe(5);
@@ -163,6 +171,18 @@ describe('isTileDisabled', () => {
 
     test('Negative tile is not disabled', () => {
         expect(isTileDisabled(-2, -4)).toBeFalsy();
+    });
+});
+
+describe('isTileInSpawnZone', () => {
+    test('Tile is in spawnzone', () => {
+        expect(isTileInSpawnZone(0, 8)).toBeTruthy();
+        expect(isTileInSpawnZone(1, 4)).toBeTruthy();
+    });
+
+    test('Tile is NOT in spawnzone', () => {
+        expect(isTileInSpawnZone(0, 3)).toBeFalsy();
+        expect(isTileInSpawnZone(1, 9)).toBeFalsy();
     });
 });
 
