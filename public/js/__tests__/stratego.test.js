@@ -11,6 +11,7 @@ const {
 
 beforeAll(() => {
     addPawn(4, 4, 2, 0);
+    addPawn(9, 9, 7, 1);
 });
 
 describe('getPawnByCoordinate', () => {
@@ -122,6 +123,80 @@ describe('isTileDisabled', () => {
 
     test('Negative tile is not disabled', () => {
         expect(isTileDisabled(-2, -4)).toBeFalsy();
+    });
+});
+
+describe('isLegalMove', () => {
+    test('Pawn can NOT walk diagonally', () => {
+        expect(isLegalMove(1, 1, 2, 2, 6, 0)).toBeFalsy();
+    });
+
+    test('Pawn can walk 1 tile vertically', () => {
+        expect(isLegalMove(1, 1, 1, 2, 6, 0)).toBeTruthy();
+    });
+
+    test('Pawn can walk 1 tile horizontally', () => {
+        expect(isLegalMove(1, 1, 2, 1, 6, 0)).toBeTruthy();
+    });
+
+    test('Normal pawn can NOT walk 2 tiles vertically', () => {
+        expect(isLegalMove(1, 1, 1, 3, 6, 0)).toBeFalsy();
+    });
+
+    test('Scout pawn can walk 2 tiles vertically', () => {
+        expect(isLegalMove(1, 1, 1, 3, 2, 0)).toBeTruthy();
+    });
+
+    test('Static pawn can NOT walk at all', () => {
+        expect(isLegalMove(1, 1, 1, 2, 11, 0)).toBeFalsy();
+    });
+
+    test('Pawn can NOT walk on existing team pawn', () => {
+        expect(isLegalMove(4, 3, 4, 4, 6, 0)).toBeFalsy();
+    });
+
+    test('Scout can NOT walk over existing team pawn', () => {
+        expect(isLegalMove(4, 3, 4, 5, 2, 0)).toBeFalsy();
+    });
+
+    test('Scout can NOT walk over existing enemy pawn vertically up', () => {
+        expect(isLegalMove(9, 1, 9, 10, 2, 0)).toBeFalsy();
+    });
+
+    test('Scout can NOT walk over existing enemy pawn vertically down', () => {
+        expect(isLegalMove(9, 10, 9, 1, 2, 0)).toBeFalsy();
+    });
+
+    test('Scout can NOT walk over existing enemy pawn horizontally right', () => {
+        expect(isLegalMove(1, 9, 10, 9, 2, 0)).toBeFalsy();
+    });
+
+    test('Scout can NOT walk over existing enemy pawn horizontally left', () => {
+        expect(isLegalMove(10, 9, 1, 9, 2, 0)).toBeFalsy();
+    });
+
+    test('Scout can NOT walk over disabled tiles vertically up', () => {
+        expect(isLegalMove(8, 4, 8, 7, 2, 0)).toBeFalsy();
+    });
+
+    test('Scout can NOT walk over disabled tiles vertically down', () => {
+        expect(isLegalMove(8, 7, 8, 4, 2, 0)).toBeFalsy();
+    });
+
+    test('Scout can NOT walk over disabled tiles horizontally right', () => {
+        expect(isLegalMove(6, 6, 9, 6, 2, 0)).toBeFalsy();
+    });
+
+    test('Scout can NOT walk over disabled tiles horizontally left', () => {
+        expect(isLegalMove(9, 6, 6, 6, 2, 0)).toBeFalsy();
+    });
+
+    test('Pawn can walk on enemy pawn (for a fight)', () => {
+        expect(isLegalMove(8, 9, 9, 9, 4, 0)).toBeTruthy();
+    });
+
+    test('Scout can jump on enemy pawn (for a fight)', () => {
+        expect(isLegalMove(1, 9, 9, 9, 2, 0)).toBeTruthy();
     });
 });
 
