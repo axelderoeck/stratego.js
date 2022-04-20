@@ -211,7 +211,39 @@ describe('isLegalMove', () => {
     });
 });
 
+describe('fightOutcome', () => {
+    test('Higher number wins fight', () => {
+        expect(fightOutcome(6, 3)).toBeTruthy();
+        expect(fightOutcome(10, 3)).toBeTruthy();
+        expect(fightOutcome(2, 1)).toBeTruthy();
+    });
 
+    test('Lower number loses fight', () => {
+        expect(fightOutcome(6, 7)).toBeFalsy();
+        expect(fightOutcome(2, 6)).toBeFalsy();
+    });
+
+    test('Spy always wins from Marshall', () => {
+        expect(fightOutcome(1, 10)).toBeTruthy();
+        expect(fightOutcome(10, 1)).toBeFalsy();
+    });
+
+    test('Always lose against bomb except the miner', () => {
+        expect(fightOutcome(6, 11)).toBeFalsy();
+        expect(fightOutcome(10, 11)).toBeFalsy();
+        expect(fightOutcome(3, 11)).toBeTruthy();
+    });
+
+    test('Same number is a stalemate', () => {
+        expect(fightOutcome(3, 3)).toBe('stalemate');
+        expect(fightOutcome(10, 10)).toBe('stalemate');
+    });
+
+    test('Fighting the flag is a win', () => {
+        expect(fightOutcome(5, 0)).toBe('win');
+        expect(fightOutcome(9, 0)).toBe('win');
+    });
+});
 
 /*
 describe('name', () => {
