@@ -187,16 +187,16 @@ describe('isTileInSpawnZone', () => {
 });
 
 describe('isLegalMove', () => {
+    test('Pawn can walk 1 tile', () => {
+        // Vertically
+        expect(isLegalMove(1, 1, 1, 2, 6, 0)).toBeTruthy();
+        // Horizontally
+        expect(isLegalMove(1, 1, 2, 1, 6, 0)).toBeTruthy();
+    });
+
     test('Pawn can NOT walk diagonally', () => {
         expect(isLegalMove(1, 1, 2, 2, 6, 0)).toBeFalsy();
-    });
-
-    test('Pawn can walk 1 tile vertically', () => {
-        expect(isLegalMove(1, 1, 1, 2, 6, 0)).toBeTruthy();
-    });
-
-    test('Pawn can walk 1 tile horizontally', () => {
-        expect(isLegalMove(1, 1, 2, 1, 6, 0)).toBeTruthy();
+        expect(isLegalMove(9, 9, 8, 8, 4, 0)).toBeFalsy();
     });
 
     test('Normal pawn can NOT walk 2 tiles vertically', () => {
@@ -209,45 +209,43 @@ describe('isLegalMove', () => {
 
     test('Static pawn can NOT walk at all', () => {
         expect(isLegalMove(1, 1, 1, 2, 11, 0)).toBeFalsy();
+        expect(isLegalMove(1, 1, 1, 2, 0, 0)).toBeFalsy();
     });
 
     test('Pawn can NOT walk on existing team pawn', () => {
         expect(isLegalMove(4, 3, 4, 4, 6, 0)).toBeFalsy();
     });
 
-    test('Scout can NOT walk over existing team pawn', () => {
+    test('Scout can NOT jump over existing team pawn', () => {
+        // Vertically up
         expect(isLegalMove(4, 3, 4, 5, 2, 0)).toBeFalsy();
+        // Vertically down
+        expect(isLegalMove(4, 5, 4, 3, 2, 0)).toBeFalsy();
+        // Horizontally right
+        expect(isLegalMove(3, 4, 5, 4, 2, 0)).toBeFalsy();
+        // Horizontally left
+        expect(isLegalMove(5, 3, 3, 5, 2, 0)).toBeFalsy();
     });
 
-    test('Scout can NOT walk over existing enemy pawn vertically up', () => {
+    test('Scout can NOT jump over existing enemy pawn', () => {
+        // Vertically up
         expect(isLegalMove(9, 1, 9, 10, 2, 0)).toBeFalsy();
-    });
-
-    test('Scout can NOT walk over existing enemy pawn vertically down', () => {
+        // Vertically down
         expect(isLegalMove(9, 10, 9, 1, 2, 0)).toBeFalsy();
-    });
-
-    test('Scout can NOT walk over existing enemy pawn horizontally right', () => {
+        // Horizontally right
         expect(isLegalMove(1, 9, 10, 9, 2, 0)).toBeFalsy();
-    });
-
-    test('Scout can NOT walk over existing enemy pawn horizontally left', () => {
+        // Horizontally left
         expect(isLegalMove(10, 9, 1, 9, 2, 0)).toBeFalsy();
     });
 
-    test('Scout can NOT walk over disabled tiles vertically up', () => {
+    test('Scout can NOT jump over disabled tiles', () => {
+        // Vertically up
         expect(isLegalMove(8, 4, 8, 7, 2, 0)).toBeFalsy();
-    });
-
-    test('Scout can NOT walk over disabled tiles vertically down', () => {
+        // Vertically down
         expect(isLegalMove(8, 7, 8, 4, 2, 0)).toBeFalsy();
-    });
-
-    test('Scout can NOT walk over disabled tiles horizontally right', () => {
+        // Horizontally right
         expect(isLegalMove(6, 6, 9, 6, 2, 0)).toBeFalsy();
-    });
-
-    test('Scout can NOT walk over disabled tiles horizontally left', () => {
+        // Horizontally left
         expect(isLegalMove(9, 6, 6, 6, 2, 0)).toBeFalsy();
     });
 
@@ -277,7 +275,7 @@ describe('fightOutcome', () => {
         expect(fightOutcome(10, 1)).toBeFalsy();
     });
 
-    test('Always lose against bomb except the miner', () => {
+    test('Everyone loses against the bomb except the miner', () => {
         expect(fightOutcome(6, 11)).toBeFalsy();
         expect(fightOutcome(10, 11)).toBeFalsy();
         expect(fightOutcome(3, 11)).toBeTruthy();
