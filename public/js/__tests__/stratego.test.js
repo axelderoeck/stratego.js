@@ -16,6 +16,7 @@ const {
 
 beforeAll(() => {
     addPawn(4, 4, 2, 0);
+    addPawn(8, 1, 11, 0);
     addPawn(9, 9, 7, 1);
 });
 
@@ -156,6 +157,28 @@ describe('getPawnById', () => {
     });
 });
 
+describe('getAmountPawnsInTeam', () => {
+    test('Get team count', () => {
+        expect(getAmountPawnsInTeam(0)).toBe(2);
+        expect(getAmountPawnsInTeam(1)).toBe(1);
+    });
+
+    test('Get team count from not existing team', () => {
+        expect(getAmountPawnsInTeam(3)).toBe(0);
+    });
+});
+
+describe('getAmountNonStaticPawnsInTeam', () => {
+    test('Get team count', () => {
+        expect(getAmountNonStaticPawnsInTeam(0)).toBe(1);
+        expect(getAmountNonStaticPawnsInTeam(1)).toBe(1);
+    });
+
+    test('Get team count from not existing team', () => {
+        expect(getAmountNonStaticPawnsInTeam(3)).toBe(0);
+    });
+});
+
 describe('isTileDisabled', () => {
     test('Tile is disabled', () => {
         expect(isTileDisabled(3, 6)).toBeTruthy();
@@ -289,6 +312,16 @@ describe('fightOutcome', () => {
     test('Fighting the flag is a win', () => {
         expect(fightOutcome(5, 0)).toBe('win');
         expect(fightOutcome(9, 0)).toBe('win');
+    });
+});
+
+describe('checkForEnemyContact', () => {
+    test('No enemy on coordinates', () => {
+        expect(checkForEnemyContact(1, 1, 0)).toBeFalsy();
+    });
+
+    test('Enemy on coordinates', () => {
+        expect(checkForEnemyContact(9, 9, 0)).toBeTruthy();
     });
 });
 
