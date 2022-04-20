@@ -124,18 +124,9 @@ socket.on('endGame', () => {
     pawns.forEach(pawn => {
         // Create pawn
         let tile = $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']");
-        // Check for flag or bomb pawn
-        let pawnNumber;
-        if(pawn[2] == 0){
-            pawnNumber = 'F';
-        }else if(pawn[2] == 11){
-            pawnNumber = 'B';
-        }else{
-            pawnNumber = pawn[2];
-        }
         // Place tile image and span
         tile.prepend('<img draggable="false" src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
-            .prepend('<span data-team=' + pawn[3] + '>' + pawnNumber + '</span>')
+            .prepend('<span data-team=' + pawn[3] + '>' + getPawnNumber(pawn[2]) + '</span>')
     });
 })
 
