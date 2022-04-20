@@ -1,5 +1,6 @@
 const { 
     addPawn,
+    deletePawn,
     getPawnByCoordinate,
     getPawnId,
     getPawnById,
@@ -12,6 +13,34 @@ const {
 beforeAll(() => {
     addPawn(4, 4, 2, 0);
     addPawn(9, 9, 7, 1);
+});
+
+describe('addPawn', () => {
+    test('Adding pawn to occupied coordinates throws error', () => {
+        expect(() => {
+            addPawn(4, 4, 6, 0);
+        }).toThrow('Unable to add pawn because a pawn already exists on these coordinates!');
+    });
+
+    test('Adding pawn to unused coordinates does not throw error', () => {
+        expect(() => {
+            addPawn(3, 3, 7, 0);
+        }).not.toThrow();
+    });
+});
+
+describe('deletePawn', () => {
+    test('Deleting pawn that does not exist throws error', () => {
+        expect(() => {
+            deletePawn([7, 9, 3, 0]);
+        }).toThrow('Pawn does not exist!');
+    });
+    
+    test('Deleting existing pawn does not throw error', () => {
+        expect(() => {
+            deletePawn([3, 3, 7, 0]);
+        }).not.toThrow();
+    });
 });
 
 describe('getPawnByCoordinate', () => {

@@ -490,11 +490,8 @@ const mirrorBoard = () => {
 const addPawn = (x, y, pawn, team) => {
     if(getPawnByCoordinate(x, y) == null){
         pawns.push([x, y, pawn, team]);
-        //placePawns();
-        return true;
     }else{
-        console.error("Failed to execute addPawn() \n Pawn already exists on x:" + x + " y:" + y + ".");
-        return false;
+        throw `Unable to add pawn because a pawn already exists on these coordinates!`;
     }
 }
 
@@ -505,12 +502,8 @@ const deletePawn = (pawn) => {
         pawns.splice(id, 1);
         // Add pawn to cemetery array
         cemetery.push([pawn[2], pawn[3]]);
-        // Place all pawns
-        placePawns();
-        return true;
     }else{
-        console.log("pawn: " + pawn + " does not exist.");
-        return false;
+        throw `Pawn does not exist!`;
     }
 }
 
@@ -890,6 +883,7 @@ const wallhack = () => {
 
 module.exports = {
     addPawn,
+    deletePawn,
     getPawnByCoordinate,
     getPawnId,
     getPawnById,
