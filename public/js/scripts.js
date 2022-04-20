@@ -26,3 +26,5 @@ const log = (message) => {
       log.remove();
   }, 6000);
 }
+
+new ClipboardJS('#copyBtn');

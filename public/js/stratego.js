@@ -1,8 +1,6 @@
 // STRATEGO.JS
 // =========================
 
-new ClipboardJS('#copyBtn');
-
 // CONFIG
 // =========================
 
@@ -496,7 +494,7 @@ const mirrorBoard = () => {
 const addPawn = (x, y, pawn, team) => {
     if(getPawnByCoordinate(x, y) == null){
         pawns.push([x, y, pawn, team]);
-        placePawns();
+        //placePawns();
         return true;
     }else{
         console.error("Failed to execute addPawn() \n Pawn already exists on x:" + x + " y:" + y + ".");
@@ -893,3 +891,15 @@ const wallhack = () => {
         }
     });
 }
+
+module.exports = {
+    addPawn,
+    getPawnByCoordinate,
+    getPawnId,
+    getPawnById,
+    getPawnName,
+    getPawnNumber,
+    isTileDisabled,
+    isLegalMove,
+    fightOutcome
+};
