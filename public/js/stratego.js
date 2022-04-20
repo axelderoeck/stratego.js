@@ -408,12 +408,8 @@ const fightOutcome = (attackingPawn, defendingPawn) => {
     if(defendingPawn == 0){
         return "win";
     }else if(attackingPawn < defendingPawn){
-        // If the defending pawn is a marshal (10) and the attacking pawn is a spy (1)
-        if(defendingPawn == 10 && attackingPawn == 1){
-            return true;
-        }
-        // If the defending pawn is a bomb (11) and the attacking pawn is a miner (3)
-        if(defendingPawn == 11 && attackingPawn == 3){
+        // If the defending pawn is a marshal (10) and the attacking pawn is a spy (1) OR the defending pawn is a bomb (11) and the attacking pawn is a miner (3)
+        if(defendingPawn == 10 && attackingPawn == 1 || defendingPawn == 11 && attackingPawn == 3){
             return true;
         }
         return false;
