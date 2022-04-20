@@ -9,6 +9,34 @@ new ClipboardJS('#copyBtn');
 const ROOMCODE_LENGTH = 6; // Length of roomcode (in characters)
 const TIME_FIGHT_DISPLAY = 5; // Amount of time the fight display stays on screen (in seconds)
 const PLAYER_FIRST_MOVE = 0; // Player that gets the first move (0 = Blue, 1 = Red)
+const BOARD_SIZE = 10; // Size of both sides of the board, size 10 = 100 tiles
+const DISABLED_TILES = [ // Coordinates of disabled tiles
+    // X, Y
+    // Left square
+    [3, 5],
+    [4, 5],
+    [3, 6],
+    [4, 6],
+    // Right square
+    [7, 5],
+    [8, 5],
+    [7, 6],
+    [8, 6]
+]
+const ALL_PAWNS = [ // All existing pawns of 1 team
+    0,                  // 1x Flag
+    1,                  // 1x Spy
+    2,2,2,2,2,2,2,2,    // 8x Scout
+    3,3,3,3,3,          // 5x Miner
+    4,4,4,4,            // 4x Sergeant
+    5,5,5,5,            // 4x Lieutenant
+    6,6,6,6,            // 4x Captain
+    7,7,7,              // 3x Major
+    8,8,                // 2x Colonel
+    9,                  // 1x General
+    10,                 // 1x Marshall
+    11,11,11,11,11,11   // 6x Bomb
+];
 
 // ARRAYS SETUP
 // =========================
