@@ -38,7 +38,18 @@ describe('getPawnName', () => {
     });
     
     test('Existing pawn returns name', () => {
+        expect(getPawnName(0)).toBe('Flag');
+        expect(getPawnName(1)).toBe('Spy');
         expect(getPawnName(2)).toBe('Scout');
+        expect(getPawnName(3)).toBe('Miner');
+        expect(getPawnName(4)).toBe('Sergeant');
+        expect(getPawnName(5)).toBe('Lieutenant');
+        expect(getPawnName(6)).toBe('Captain');
+        expect(getPawnName(7)).toBe('Major');
+        expect(getPawnName(8)).toBe('Colonel');
+        expect(getPawnName(9)).toBe('General');
+        expect(getPawnName(10)).toBe('Marshall');
+        expect(getPawnName(11)).toBe('Bomb');
     });
     
     test('String pawn returns null', () => {
@@ -199,6 +210,8 @@ describe('isLegalMove', () => {
         expect(isLegalMove(1, 9, 9, 9, 2, 0)).toBeTruthy();
     });
 });
+
+
 
 /*
 describe('name', () => {
