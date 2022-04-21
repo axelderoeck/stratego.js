@@ -44,3 +44,11 @@
       transform: translateX(0) rotate(0deg);
     }
 }
+
+.swoopInLeft {
+  animation: swoopInLeft 0.5s both ease-out; 
+}
+
+.swoopInRight {
+  animation: swoopInRight 0.5s both ease-out; 
+}

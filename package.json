@@ -4,8 +4,9 @@
   "description": "",
   "main": "stratego.js",
   "scripts": {
-    "start": "node server/server.js",
-    "sass": "sass ./public/scss/style.scss:./public/css/style.css ./public/scss/game.scss:./public/css/game.css",
+    "start": "sass ./public/scss/style.scss:./public/css/style.css ./public/scss/game.scss:./public/css/game.css && node server/server.js",
+    "dev": "nodemon server/server.js & sass --watch ./public/scss/style.scss:./public/css/style.css ./public/scss/game.scss:./public/css/game.css",
+    "compile-sass": "sass ./public/scss/style.scss:./public/css/style.css ./public/scss/game.scss:./public/css/game.css",
     "test": "jest"
   },
   "repository": {
@@ -24,6 +25,8 @@
     "socket.io": "^4.4.1"
   },
   "devDependencies": {
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "sass": "^1.50.1"
   }
 }

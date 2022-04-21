@@ -1,3 +1,94 @@
+#visualFight {
+    position: absolute;
+    display: block;
+    width: 60%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    height: 200px;
+    z-index: 999;
+}
+
+#visualFight span {
+    font-family: seagram;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 0px 5px 5px rgba(0,0,0,0.1),
+                 10px 5px 5px rgba(0,0,0,0.05),
+                 -10px 5px 5px rgba(0,0,0,0.05);
+}
+
+#visualFight span.versus {
+    font-size: 40px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1000;
+    position: absolute;
+}
+
+#visualFight span.result {
+    font-size: 40px;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%,-50%);
+    z-index: 1000;
+    position: absolute;
+}
+
+#visualFight div.swords {
+    position: absolute;
+    width: 50%;
+    height: 80%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#visualFight div.swords img {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    object-fit: contain;
+    height: 100%;
+}
+
+#visualFight #left img,
+#visualFight #right img{
+    height: 80%;
+    object-fit: contain;
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%,-50%);
+}
+
+#visualFight #left span,
+#visualFight #right span {
+    z-index: 1000;
+    position: absolute;
+    font-size: 20px;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%,-50%);
+}
+
+#visualFight #left,
+#visualFight #right {
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
+
+#visualFight #left {
+    float: left;
+}
+
+#visualFight #right {
+    float: right;
+}
+
 #hud_upper_right {
     top: 5px;
     right: 5px;
@@ -14,4 +105,45 @@
     z-index: 99999;
     width: 200px;
     font-family: fredoka;
+}
+
+#inviteModal {
+    font-size: 14px;
+    font-family: fredoka;
+    display: block;
+    position: absolute;
+    right: 210px;
+    top: 6px;
+    border-radius: 3px;
+    padding: 5px;
+    width: 300px;
+    z-index: 99;
+    background-color: #6da4f2;
+    color: #ffffff;
+}
+
+#inviteModal:before {
+    content: ' ';
+    height: 0;
+    position: absolute;
+    width: 0;
+    left: 100%;
+    border: 5px solid transparent;
+    border-left-color: #6da4f2;
+}
+
+#inviteModal span {
+    font-size: 18px;
+}
+
+#inviteModal input {
+    border: 1px solid #ffffff;
+    border-radius: 3px;
+    width: 70%;
+}
+
+#inviteModal button {
+    border: 1px solid #ffffff;
+    background-color: #ffffff;
+    float: right;
 }

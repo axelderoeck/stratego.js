@@ -26,6 +26,15 @@
     gap: 1px;
 }
 
+#board div,
+#box div {
+    background-color: rgba(255,255,255,0.4);
+    opacity: 0.7;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
 
 #board div span,
 #box div span {
@@ -108,4 +117,102 @@
     -khtml-user-select: none;
     -webkit-user-select: none;
     -o-user-select: none;
+}
+
+
+.legalMove {
+    opacity: 1;
+    background-color: rgba(241, 239, 100, 0.4) !important;
+    -webkit-box-shadow:inset 0px 0px 0px 1px #e6fd17;
+    -moz-box-shadow:inset 0px 0px 0px 1px #e6fd17;
+    box-shadow:inset 0px 0px 0px 1px #e6fd17;
+}
+
+.selected {
+    opacity: 1 !important;
+}
+
+.mirror {
+    -moz-transform: scale(-1, -1);
+    -webkit-transform: scale(-1, -1);
+    -o-transform: scale(-1, -1);
+    -ms-transform: scale(-1, -1);
+    transform: scale(-1, -1);
+}
+
+.shineEffect {
+    background-repeat: no-repeat;
+    background-position: -120px -120px, 0 0;   
+    background-image: -webkit-linear-gradient(top left,rgba(255, 255, 255, 0.2) 0%,rgba(255, 255, 255, 0.2) 37%,rgba(255, 255, 255, 0.8) 45%,rgba(255, 255, 255, 0.0) 50%);
+    background-image: -moz-linear-gradient(0 0,rgba(255, 255, 255, 0.2) 0%,rgba(255, 255, 255, 0.2) 37%,rgba(255, 255, 255, 0.8) 45%,rgba(255, 255, 255, 0.0) 50%);    
+    background-image: -o-linear-gradient(0 0,rgba(255, 255, 255, 0.2) 0%,rgba(255, 255, 255, 0.2) 37%,rgba(255, 255, 255, 0.8) 45%,rgba(255, 255, 255, 0.0) 50%);
+    background-image: linear-gradient(0 0,rgba(255, 255, 255, 0.2) 0%,rgba(255, 255, 255, 0.2) 37%,rgba(255, 255, 255, 0.8) 45%,rgba(255, 255, 255, 0.0) 50%);
+    -moz-background-size: 250% 250%, 100% 100%;
+    background-size: 250% 250%, 100% 100%;
+    -webkit-transition: background-position 0s ease;
+    -moz-transition: background-position 0s ease;       
+    -o-transition: background-position 0s ease;
+    transition: background-position 0s ease;
+}
+  
+.shineEffect:hover {
+    transition: 0.5s;
+    background-position: 0 0, 0 0;
+    -webkit-transition-duration: 0.5s;
+    -moz-transition-duration: 0.5s;
+    transition-duration: 0.5s;
+}
+
+.forceShine {
+    opacity: 0.5;
+    background-position: 0 0, 0 0;
+    -webkit-transition-duration: 1s;
+    -moz-transition-duration: 1s;
+    transition-duration: 1s;
+}
+
+.scale {
+    animation: opacity 1s both ease-out;
+}
+
+
+#box {
+    top: 0;
+    left: 0;
+    padding: 0;
+    width: 20%;
+    height: 100%;
+    background-color: rgba(0,0,0,0);
+    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 1px;
+}
+
+#box div.disabled {
+    background-color: rgba(0,0,0,0);
+    visibility: hidden;
+    opacity: 0;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+.cancelSelectTile {
+    position: absolute !important;
+    background-color: rgba(128, 0, 0, 0.3) !important;
+    top: 0;
+    left: 0;
+}
+
+.cancelSelectTile i {
+    position: absolute;
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%,-30%);
+    color: #ffffff;
+    font-size: 30px;
 }
