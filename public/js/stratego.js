@@ -296,6 +296,11 @@ const deletePawn = (pawn) => {
     }
 }
 
+const relocatePawn = (id, x, y) => {
+    pawns[id][0] = x;
+    pawns[id][1] = y;
+}
+
 const resetPawns = () => {
     // Empty the pawns array
     pawns = [];
@@ -378,5 +383,6 @@ module.exports = {
     fightOutcome,
     checkForEnemyContact,
     resetPawns,
-    randomisePawns
+    randomisePawns,
+    relocatePawn
 };

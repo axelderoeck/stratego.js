@@ -190,12 +190,10 @@ const movePawn = (old_x, old_y, pawn, team) => {
                         // Get other pawn id
                         selectedPawnId = getPawnId(selectedTile[0], selectedTile[1], selectedTile[2], player.team);
                         // Move other pawn to current tile
-                        pawns[selectedPawnId][0] = old_x;
-                        pawns[selectedPawnId][1] = old_y;
+                        relocatePawn(selectedPawnId, old_x, old_y);
                     }
                     // Move original selected pawn to selected tile
-                    pawns[pawnId][0] = $(this).data('x');
-                    pawns[pawnId][1] = $(this).data('y');
+                    relocatePawn(pawnId, $(this).data('x'), $(this).data('y'));
                     // Remove highlight class
                     $('#board div').removeClass('legalMove selected');
                     // Remove event listener click from all tiles

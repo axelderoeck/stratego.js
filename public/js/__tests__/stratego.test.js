@@ -1,3 +1,4 @@
+const res = require('express/lib/response');
 const { 
     addPawn,
     deletePawn,
@@ -15,7 +16,8 @@ const {
     fightOutcome,
     checkForEnemyContact,
     resetPawns,
-    randomisePawns } = require('../stratego.js');
+    randomisePawns,
+    relocatePawn } = require('../stratego.js');
 
 beforeAll(() => {
     addPawn(4, 4, 2, 0);
@@ -34,6 +36,15 @@ describe('addPawn', () => {
         expect(() => {
             addPawn(3, 3, 7, 0);
         }).not.toThrow();
+    });
+});
+
+describe('relocatePawn', () => {
+    test('relocated pawn should be findable on new coordinates', () => {
+        relocatePawn(0, 7, 7);
+        expect(getPawnByCoordinate(7, 7)).toStrictEqual([7, 7, 2, 0]);
+        relocatePawn(0, 4, 4);
+        expect(getPawnByCoordinate(4, 4)).toStrictEqual([4, 4, 2, 0]);
     });
 });
 
