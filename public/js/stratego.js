@@ -303,6 +303,36 @@ const resetPawns = () => {
     }
 }
 
+const randomisePawns = (team) => {
+    // Set random Y coordinate based on player
+    if (team == 0){
+        maxY = 10;
+        minY = 7;
+    }else{
+        maxY = 4;
+        minY = 1;
+    }
+
+    // If we already have a full set
+    if(pawnsInBox.length == 0){
+        resetPawns();
+    }
+
+    // For every pawn available
+    pawnsInBox.forEach(pawn => {
+        // Generate random values
+        let randomX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+        let randomY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
+        while(getPawnByCoordinate(randomX, randomY) != null){
+            // Generate random values
+            randomX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+            randomY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
+        }
+        // Add pawn
+        pawns.push([randomX, randomY, pawn, team]);
+    });
+}
+
 // OTHER
 // =========================
 

@@ -291,34 +291,9 @@ const reset = () => {
     placePawns();
 }
 
-const randomisePawns = () => {
-    // Set random Y coordinate based on player
-    if (player.team == 0){
-        maxY = 10;
-        minY = 7;
-    }else{
-        maxY = 4;
-        minY = 1;
-    }
-
-    // If we already have a full set
-    if(pawnsInBox.length == 0){
-        resetPawns();
-    }
-
-    // For every pawn available
-    pawnsInBox.forEach(pawn => {
-        // Generate random values
-        let randomX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
-        let randomY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
-        while(getPawnByCoordinate(randomX, randomY) != null){
-            // Generate random values
-            randomX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
-            randomY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
-        }
-        // Add pawn
-        pawns.push([randomX, randomY, pawn, player.team]);
-    });
+const randomise = () => {
+    // Randomly fill up the entire spawn zone
+    randomisePawns(player.team);
 
     // Enable ready button
     if(allowReady){
@@ -484,7 +459,7 @@ const initNavigation = () => {
         // Add cancel button
         $('<button id="cancelReadyUp"></button>').appendTo('#hud_lower_right').addClass('cancelButton hidden').click(cancelReadyUp).prepend('<i class="fa-solid fa-xmark"></i> Cancel Ready');
         // Add randomise button
-        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(randomisePawns).prepend('<i class="fa-solid fa-shuffle"></i> Randomise');
+        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(randomise).prepend('<i class="fa-solid fa-shuffle"></i> Randomise');
         // Add reset button
         $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(reset).prepend('<i class="fa-solid fa-arrow-rotate-left"></i> Reset Pawns');
     }else{
