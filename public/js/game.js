@@ -97,7 +97,7 @@ const initBoard = () => {
 
 const fight = (attackingPawn, defendingPawn) => {
     // Get id from attacking pawn
-    attackingPawnId = getPawnId(attackingPawn[0], attackingPawn[1], attackingPawn[2], attackingPawn[3]);
+    attackingPawnId = getPawnId(attackingPawn);
     // Check for fight result
     switch (fightOutcome(attackingPawn[2], defendingPawn[2])){
         case true:
@@ -180,13 +180,13 @@ const movePawn = (old_x, old_y, pawn, team) => {
                 // Add click event to the tile that will move our previously selected pawn to the new tile
                 $(this).on("click", function(){
                     // Get our previously selected pawn id
-                    pawnId = getPawnId(old_x, old_y, pawn, player.team);
+                    pawnId = getPawnId([old_x, old_y, pawn, player.team]);
                     // Get selected tile's pawn (if exists)
                     selectedTile = getPawnByCoordinate($(this).data('x'), $(this).data('y'));
                     // Check if the selected tile already has a pawn or not (yes -> swap place)
                     if(selectedTile != null){
                         // Get other pawn id
-                        selectedPawnId = getPawnId(selectedTile[0], selectedTile[1], selectedTile[2], player.team);
+                        selectedPawnId = getPawnId(selectedTile);
                         // Move other pawn to current tile
                         relocatePawn(selectedPawnId, old_x, old_y);
                     }
@@ -222,7 +222,7 @@ const movePawn = (old_x, old_y, pawn, team) => {
                     // Delete all images with fighticon class
                     $("img").remove(".fightIcon");
                     // Get pawn ID from array
-                    pawnId = getPawnId(old_x, old_y, pawn, team);
+                    pawnId = getPawnId([old_x, old_y, pawn, team]);
                     // Check if there is an enemy on the new tile
                     if (checkForEnemyContact($(this).data("x"), $(this).data("y"), team)){
                         // Get full pawn object of both parties

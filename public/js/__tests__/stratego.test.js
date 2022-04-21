@@ -1,4 +1,3 @@
-const res = require('express/lib/response');
 const { 
     addPawn,
     deletePawn,
@@ -131,24 +130,24 @@ describe('getPawnNumber', () => {
 
 describe('getPawnId', () => {
     test('Existing pawn returns correct id', () => {
-        expect(getPawnId(4, 4, 2, 0)).toBe(0);
+        expect(getPawnId([4, 4, 2, 0])).toBe(0);
     });
 
     test('Not existing pawn throws error', () => {
         expect(() => {
-            getPawnId(2, 8, 7, 0);
+            getPawnId([2, 8, 7, 0]);
         }).toThrow('Pawn not found.');
     });
 
     test('Negative numbers pawn throws error', () => {
         expect(() => {
-            getPawnId(-2, -8, -7, -1);
+            getPawnId([-2, -8, -7, -1]);
         }).toThrow('Pawn not found.');
     });
 
     test('String pawn throws error', () => {
         expect(() => {
-            getPawnId('2', '8', '7', '1');
+            getPawnId(['2', '8', '7', '1']);
         }).toThrow('Pawn not found.');
     });
 });

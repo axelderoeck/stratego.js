@@ -121,10 +121,10 @@ const getSizePawns = () => {
     return pawns.length;
 }
 
-const getPawnId = (x, y, pawn, team) => {
+const getPawnId = (pawn) => {
     // Loop through all pawns
     for (var i = 0; i < pawns.length; i++) {
-        if (pawns[i][0] == x && pawns[i][1] == y && pawns[i][2] == pawn && pawns[i][3] == team){
+        if (pawns[i][0] == pawn[0] && pawns[i][1] == pawn[1] && pawns[i][2] == pawn[2] && pawns[i][3] == pawn[3]){
             // Pawn found -> return id
             return i;
         }
@@ -286,7 +286,7 @@ const addPawn = (x, y, pawn, team) => {
 
 const deletePawn = (pawn) => {
     try {
-        id = getPawnId(pawn[0], pawn[1], pawn[2], pawn[3]);
+        id = getPawnId(pawn);
         // Remove pawn from array
         pawns.splice(id, 1);
         // Add pawn to cemetery array
