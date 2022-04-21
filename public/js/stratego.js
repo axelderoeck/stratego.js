@@ -4,10 +4,6 @@
 // CONFIG
 // =========================
 
-const ROOMCODE_LENGTH = 6; // Length of roomcode (in characters)
-const TIME_FIGHT_DISPLAY = 5; // Amount of time the fight display stays on screen (in seconds)
-const PLAYER_FIRST_MOVE = 0; // Player that gets the first move (0 = Blue, 1 = Red)
-const BOARD_SIZE = 10; // Size of both sides of the board, size 10 = 100 tiles
 const DISABLED_TILES = [ // Coordinates of disabled tiles
     // X, Y
     // Left square
@@ -59,21 +55,6 @@ let pawns = [];
 **/
 
 let cemetery = [];
-
-// SET DEFAULTS
-// =========================
-
-let readyCounter = 0;
-let inviteUrl;
-let allowReady = false;
-
-// Initialise player object
-let player = {
-    team: 0,
-    ready: false,
-    turn: false,
-    setup: true
-};
 
 // GET DATA FUNCTIONS
 // =========================
