@@ -279,16 +279,14 @@ const movePawn = (old_x, old_y, pawn, team) => {
 // SETUP PHASE FUNCTIONS
 // =========================
 
-const resetPawns = () => {
-    // Empty the setup
-    pawns = [];
-    // Reset the pawnsInBox array
-    pawnsInBox = [...ALL_PAWNS];
+const reset = () => {
+    // Reset the pawns
+    resetPawns();
 
     // Disable ready button
     $('#readyUp').prop('disabled', true);
 
-    //
+    // Init again
     initBox();
     placePawns();
 }
@@ -488,7 +486,7 @@ const initNavigation = () => {
         // Add randomise button
         $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(randomisePawns).prepend('<i class="fa-solid fa-shuffle"></i> Randomise');
         // Add reset button
-        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(resetPawns).prepend('<i class="fa-solid fa-arrow-rotate-left"></i> Reset Pawns');
+        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(reset).prepend('<i class="fa-solid fa-arrow-rotate-left"></i> Reset Pawns');
     }else{
         // Add cancel move button
         $('<button id="cancelSelect"></button>').appendTo('#hud_lower_right').addClass('deleteButton hiddenBtn').click(cancelSelect).prepend('<i class="fa-solid fa-xmark"></i> Cancel Select');

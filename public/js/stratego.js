@@ -288,7 +288,18 @@ const deletePawn = (pawn) => {
         // Add pawn to cemetery array
         cemetery.push([pawn[2], pawn[3]]);
     }catch (error){
-        throw error;
+        throw 'Unable to delete pawn: ' + error;
+    }
+}
+
+const resetPawns = () => {
+    try {
+        // Empty the pawns array
+        pawns = [];
+        // Reset the pawnsInBox array
+        pawnsInBox = [...ALL_PAWNS];
+    }catch (error){
+        throw 'Could not restore pawns: ' + error;
     }
 }
 
