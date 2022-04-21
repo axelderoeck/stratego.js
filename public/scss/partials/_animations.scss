@@ -45,6 +45,10 @@
     }
 }
 
+.scale {
+  animation: opacity 1s both ease-out;
+}
+
 .swoopInLeft {
   animation: swoopInLeft 0.5s both ease-out; 
 }

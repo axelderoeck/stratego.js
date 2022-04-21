@@ -55,37 +55,26 @@
             border: 1px solid $color-disabled-dark;
         }
     }
-}
-
-// TODO vanaf hier
-#hud_lower_right button {
-    .cancelButton {
-        border: 1px solid #008000;
-        background-color: #008000;
+    &.cancelButton {
+        border: 1px solid $color-ready-dark;
+        background-color: $color-ready-dark;
         margin: 0 1px 15px 1px;
     }
-
-    .userButton {
-        border: 1px solid #008000;
-        background-color: rgba(5, 181, 5, 0.3);
+    &.userButton {
+        border: 1px solid $color-ready-dark;
+        background-color: $color-ready;
     }
-}
-
-.readyBackground {
-    border: 1px solid #008000 !important;
-    background-color: #008000 !important;
-}
-
-button.deleteButton {
-    border: 1px solid #ff0000;
-    background-color: rgba(255, 0, 0, 0.3);
-    color: #ffffff;
-    &:hover {
-        background-color: #ff0000;
-        transition: 0.5s;
-    }
-    &:disabled {
-        background-color: #6a6b6a;
+    &.deleteButton {
+        border: 1px solid $color-player-2-dark;
+        background-color: $color-player-2;
+        color: $color-white;
+        &:hover {
+            background-color: $color-player-2-dark;
+            transition: 0.5s;
+        }
+        &:disabled {
+            background-color: $color-disabled-dark
+        }
     }
 }
 

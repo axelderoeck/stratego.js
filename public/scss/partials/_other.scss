@@ -1,3 +1,8 @@
 .hidden {
     display: none !important;
 }
+
+.readyBackground {
+    border: 1px solid $color-ready-dark !important;
+    background-color: $color-ready-dark !important;
+}
