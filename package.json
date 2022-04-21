@@ -5,6 +5,7 @@
   "main": "stratego.js",
   "scripts": {
     "start": "node server/server.js",
+    "sass": "sass ./public/scss/style.scss:./public/css/style.css ./public/scss/game.scss:./public/css/game.css",
     "test": "jest"
   },
   "repository": {

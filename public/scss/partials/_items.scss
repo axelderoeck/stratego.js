@@ -1,0 +1,17 @@
+#hud_upper_right {
+    top: 5px;
+    right: 5px;
+    position: absolute;
+    z-index: 99999;
+    width: 200px;
+    font-family: fredoka;
+}
+
+#hud_lower_right {
+    bottom: 5px;
+    right: 5px;
+    position: absolute;
+    z-index: 99999;
+    width: 200px;
+    font-family: fredoka;
+}

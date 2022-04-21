@@ -13,6 +13,13 @@
 # Windows
 Thumbs.db
 
+# Ignore compiled css
+css/
+
+# Sass
+.sass-cache/
+*.css.map
+
 # Jest testing coverage
 coverage/
 

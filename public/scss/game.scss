@@ -1,3 +1,12 @@
+// @import 'partials/fonts';
+// @import 'partials/variables';
+// @import 'partials/other';
+// @import 'partials/animations';
+// @import 'partials/board';
+// @import 'partials/items';
+// @import 'partials/buttons';
+// @import 'partials/mobile';
+
 #fullboard {
     width: 100%;
     height: 100%;
@@ -18,7 +27,7 @@
 #board {
     margin: 0 auto;
     padding: 0;
-    width: 45%;
+    width: 700px;
     height: 100%;
     display: grid;
     grid-template-columns: repeat(10, 1fr);

@@ -1,0 +1,94 @@
+.hud button {
+    color: $color-white;
+    border-radius: 3px;
+    text-align: right;
+    width: 100%;
+    border: 0;
+    padding: 5px 10px;
+    margin: 1px 1px;
+    transition: 0.5s;
+    font-size: 15px;
+    font-family: $font-standard;
+    position: relative;
+    // Button icon
+    i {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    // Button color player 1
+    &[data-team='0']{
+        border: 1px solid $color-player-1;
+        background-color: $color-player-1;
+        &:hover{
+            border: 1px solid $color-player-1-dark;
+            background-color: $color-player-1-dark;
+        }
+    }
+    // Button color player 2
+    &[data-team='1']{
+        border: 1px solid $color-player-2;
+        background-color: $color-player-2;
+        &:hover{
+            border: 1px solid $color-player-2-dark;
+            background-color: $color-player-2-dark;
+        }
+    }
+    // Button ready
+    &.readyButton {
+        border: 1px solid $color-ready-dark;
+        background-color: $color-ready;
+        margin: 0 1px 15px 1px;
+        &:hover {
+            background-color: $color-ready-dark;
+            transition: 0.5s;
+        }
+    }
+    // Button disabled
+    &:disabled {
+        color: $color-disabled;
+        background-color: $color-disabled-dark;
+        border: 1px solid $color-disabled-dark;
+        &:hover {
+            background-color: $color-disabled-dark;
+            border: 1px solid $color-disabled-dark;
+        }
+    }
+}
+
+// TODO vanaf hier
+#hud_lower_right button {
+    .cancelButton {
+        border: 1px solid #008000;
+        background-color: #008000;
+        margin: 0 1px 15px 1px;
+    }
+
+    .userButton {
+        border: 1px solid #008000;
+        background-color: rgba(5, 181, 5, 0.3);
+    }
+}
+
+.readyBackground {
+    border: 1px solid #008000 !important;
+    background-color: #008000 !important;
+}
+
+button.deleteButton {
+    border: 1px solid #ff0000;
+    background-color: rgba(255, 0, 0, 0.3);
+    color: #ffffff;
+    &:hover {
+        background-color: #ff0000;
+        transition: 0.5s;
+    }
+    &:disabled {
+        background-color: #6a6b6a;
+    }
+}
+
+.hiddenBtn {
+    transform: translateX(110%);
+}

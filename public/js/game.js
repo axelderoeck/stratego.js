@@ -441,17 +441,17 @@ const initNavigation = () => {
     $("#inviteModal").remove();
     if (player.setup){
         // Create invite modal
-        $('<div id="inviteModal" class="hidden"></div>').appendTo('#fullboard').prepend('<span>Invite Player</span><br>Send this URL to the second player. <br><br><input id="url" value="' + inviteUrl + '"><button id="copyBtn" data-clipboard-target="#url">Copy URL</button>')
+        $('<div data-team="'+ player.team +'" id="inviteModal" class="hidden"></div>').appendTo('#fullboard').prepend('<span>Invite Player</span><br>Send this URL to the second player. <br><br><input id="url" value="' + inviteUrl + '"><button id="copyBtn" data-clipboard-target="#url">Copy URL</button>');
         // Add invite button
-        $('<button id="inviteButton"></button>').appendTo('#hud_upper_right').addClass('standardButton').click(invitePlayer).prepend('<i class="fa-solid fa-envelope"></i> Invite Player');
+        $('<button data-team="'+ player.team +'" id="inviteButton"></button>').appendTo('#hud_upper_right').addClass('standardButton').click(invitePlayer).prepend('<i class="fa-solid fa-envelope"></i> Invite Player');
         // Add ready button
         $('<button id="readyUp"></button>').appendTo('#hud_lower_right').addClass('readyButton').click(readyUp).prop('disabled', true).prepend('<i class="fa-solid fa-check"></i> Ready');
         // Add cancel button
         $('<button id="cancelReadyUp"></button>').appendTo('#hud_lower_right').addClass('cancelButton hidden').click(cancelReadyUp).prepend('<i class="fa-solid fa-xmark"></i> Cancel Ready');
         // Add randomise button
-        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(randomise).prepend('<i class="fa-solid fa-shuffle"></i> Randomise');
+        $('<button data-team="'+ player.team +'"></button>').appendTo('#hud_lower_right').addClass('standardButton').click(randomise).prepend('<i class="fa-solid fa-shuffle"></i> Randomise');
         // Add reset button
-        $('<button></button>').appendTo('#hud_lower_right').addClass('standardButton').click(reset).prepend('<i class="fa-solid fa-arrow-rotate-left"></i> Reset Pawns');
+        $('<button data-team="'+ player.team +'"></button>').appendTo('#hud_lower_right').addClass('standardButton').click(reset).prepend('<i class="fa-solid fa-arrow-rotate-left"></i> Reset Pawns');
     }else{
         // Add cancel move button
         $('<button id="cancelSelect"></button>').appendTo('#hud_lower_right').addClass('deleteButton hiddenBtn').click(cancelSelect).prepend('<i class="fa-solid fa-xmark"></i> Cancel Select');

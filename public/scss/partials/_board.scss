@@ -1,0 +1,111 @@
+#fullboard {
+    width: 100%;
+    height: 100%;
+    background-color: #90ee90;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+#fullboard span.log {
+    color: rgba(204, 28, 28, 1);
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    animation: slideOut 5s both ease-out;
+}
+
+#board {
+    margin: 0 auto;
+    padding: 0;
+    width: 700px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 1px;
+}
+
+
+#board div span,
+#box div span {
+    position: absolute;
+    font-family: fredoka;
+    font-size: 100%;
+}
+
+#box div span.amount {
+    bottom: 0;
+    right: 0;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+#board div span[data-team='0'],
+#box div span[data-team='0']{
+    top: 0;
+    left: 0;
+    color: blue;
+}
+
+#board div span[data-team='1'],
+#box div span[data-team='1']{
+    top: 0;
+    left: 0;
+    color: red;
+}
+
+#board div img,
+#box div img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: 1s;
+    z-index: 50;
+}
+
+.notMoveable img {
+    opacity: 0.5;
+}
+
+#board div img.fightIcon {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    opacity: 1;
+}
+
+#board div img.swordLeft {
+    animation: swoopInLeft 0.5s both ease-out;   
+}
+
+#board div img.swordRight {
+    animation: swoopInRight 0.5s both ease-out;   
+}
+
+#board div:hover,
+#box div:hover {
+    opacity: 1;
+}
+
+#board div.disabled {
+    background-color: rgba(0,0,0,0);
+    visibility: hidden;
+    opacity: 0;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+#board div.nospawn {
+    background-color: rgba(0,0,0,0.8);
+    opacity: 0.2;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
