@@ -38,7 +38,7 @@ describe('deletePawn', () => {
     test('Deleting pawn that does not exist throws error', () => {
         expect(() => {
             deletePawn([7, 9, 3, 0]);
-        }).toThrow('Pawn does not exist!');
+        }).toThrow('Pawn not found.');
     });
     
     test('Deleting existing pawn does not throw error', () => {
@@ -108,16 +108,10 @@ describe('getPawnNumber', () => {
         expect(getPawnNumber(5)).toBe(5);
     });
     
-    test('Non existant pawn returns null', () => {
-        expect(getPawnNumber(15)).toBeNull();
-    });
-    
-    test('Negative number pawn returns null', () => {
-        expect(getPawnNumber(-6)).toBeNull();
-    });
-    
-    test('String pawn returns null', () => {
-        expect(getPawnNumber('4')).toBeNull();
+    test('Any other input returns itself', () => {
+        expect(getPawnNumber(15)).toBe(15);
+        expect(getPawnNumber(-6)).toBe(-6);
+        expect(getPawnNumber('4')).toBe('4');
     });
 });
 
@@ -126,16 +120,22 @@ describe('getPawnId', () => {
         expect(getPawnId(4, 4, 2, 0)).toBe(0);
     });
 
-    test('Non existant pawn returns null', () => {
-        expect(getPawnId(2, 8, 7, 0)).toBeNull();
+    test('Not existing pawn throws error', () => {
+        expect(() => {
+            getPawnId(2, 8, 7, 0);
+        }).toThrow('Pawn not found.');
     });
 
-    test('Negative numbers pawn returns null', () => {
-        expect(getPawnId(-2, -8, -7, -1)).toBeNull();
+    test('Negative numbers pawn throws error', () => {
+        expect(() => {
+            getPawnId(-2, -8, -7, -1);
+        }).toThrow('Pawn not found.');
     });
 
-    test('String pawn returns null', () => {
-        expect(getPawnId('2', '8', '7', '1')).toBeNull();
+    test('String pawn throws error', () => {
+        expect(() => {
+            getPawnId('2', '8', '7', '1');
+        }).toThrow('Pawn not found.');
     });
 });
 
@@ -144,16 +144,22 @@ describe('getPawnById', () => {
         expect(getPawnById(0)).toStrictEqual([4, 4, 2, 0]);
     });
 
-    test('Not existing pawn id returns null', () => {
-        expect(getPawnById(14)).toBeNull();
+    test('Not existing pawn id throws error', () => {
+        expect(() => {
+            getPawnById(14);
+        }).toThrow('No pawn exists with given ID.');
     });
 
-    test('String pawn id returns null', () => {
-        expect(getPawnById('3')).toBeNull();
+    test('String pawn id throws error', () => {
+        expect(() => {
+            getPawnById('3');
+        }).toThrow('No pawn exists with given ID.');
     });
 
-    test('Negative pawn id returns null', () => {
-        expect(getPawnById(-4)).toBeNull();
+    test('Negative pawn id throws error', () => {
+        expect(() => {
+            getPawnById(-4);
+        }).toThrow('No pawn exists with given ID.');
     });
 });
 

@@ -78,10 +78,6 @@ let player = {
 // GET DATA FUNCTIONS
 // =========================
 
-const getUpdatedArray = (array) => {
-    return array;
-}
-
 const getPawnName = (pawn) => {
     switch (pawn){
         case 0:
@@ -134,7 +130,10 @@ const getPawnByCoordinate = (x, y) => {
 }
 
 const getPawnById = (id) => {
-    return pawns[id]
+    if(pawns[id] != null){
+        return pawns[id];
+    }
+    throw `No pawn exists with given ID.`;
 }
 
 const getPawnId = (x, y, pawn, team) => {
@@ -145,8 +144,7 @@ const getPawnId = (x, y, pawn, team) => {
             return i;
         }
     }
-    // Nothing found -> return null
-    return null;
+    throw `Pawn not found.`;
 }
 
 const getAmountPawnsInTeam = (team) => {
@@ -317,27 +315,25 @@ const addPawn = (x, y, pawn, team) => {
 }
 
 const deletePawn = (pawn) => {
-    id = getPawnId(pawn[0], pawn[1], pawn[2], pawn[3]);
-    if(id != null){
+    try {
+        id = getPawnId(pawn[0], pawn[1], pawn[2], pawn[3]);
         // Remove pawn from array
         pawns.splice(id, 1);
         // Add pawn to cemetery array
         cemetery.push([pawn[2], pawn[3]]);
-    }else{
-        throw `Pawn does not exist!`;
+    }catch (error){
+        throw error;
     }
 }
 
 const checkForEnemyContact = (new_x, new_y, team) => {
     // Get pawn by coordinate
     pawn = getPawnByCoordinate(new_x, new_y);
-
     // Check if pawn exists and is not on same team
     if (pawn != null && pawn[3] != team) {
         return true;
-    }else{
-        return false;
     }
+    return false;
 }
 
 module.exports = {
