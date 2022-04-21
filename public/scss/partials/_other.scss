@@ -6,3 +6,11 @@
     border: 1px solid $color-ready-dark !important;
     background-color: $color-ready-dark !important;
 }
+
+.selected {
+    opacity: 1 !important;
+}
+
+.notMoveable img {
+    opacity: 0.5;
+}
