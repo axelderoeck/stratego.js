@@ -104,8 +104,7 @@ const fight = (attackingPawn, defendingPawn) => {
             // Display fight result
             socket.emit('displayFight', game.room, attackingPawn, defendingPawn, attackingPawn[3]);
             // Set new coordinate values to pawn
-            pawns[attackingPawnId][0] = defendingPawn[0];
-            pawns[attackingPawnId][1] = defendingPawn[1];
+            relocatePawn(attackingPawnId, defendingPawn[0], defendingPawn[1]);
             // Delete/kill the defending pawn
             deletePawn(defendingPawn);
             // Check if game is over
@@ -143,8 +142,7 @@ const fight = (attackingPawn, defendingPawn) => {
             break;
         case "win":
             // Set new coordinate values to pawn
-            pawns[attackingPawnId][0] = defendingPawn[0];
-            pawns[attackingPawnId][1] = defendingPawn[1];
+            relocatePawn(attackingPawnId, defendingPawn[0], defendingPawn[1]);
             // Delete/kill the defending pawn
             deletePawn(defendingPawn);
             socket.emit('endingGame', game.room, attackingPawn[3]);
@@ -223,22 +221,18 @@ const movePawn = (old_x, old_y, pawn, team) => {
                     $('#board div').removeClass('legalMove selected shineEffect');
                     // Delete all images with fighticon class
                     $("img").remove(".fightIcon");
-                    // Get values from selected tile
-                    new_x = $(this).data("x");
-                    new_y = $(this).data("y");
                     // Get pawn ID from array
                     pawnId = getPawnId(old_x, old_y, pawn, team);
-                    // Check if there has to be a fight
-                    if (checkForEnemyContact(new_x, new_y, team)){
+                    // Check if there is an enemy on the new tile
+                    if (checkForEnemyContact($(this).data("x"), $(this).data("y"), team)){
                         // Get full pawn object of both parties
                         attackingPawn = getPawnById(pawnId);
-                        defendingPawn = getPawnByCoordinate(new_x, new_y);
+                        defendingPawn = getPawnByCoordinate($(this).data("x"), $(this).data("y"));
                         // Execute the fight
                         fight(attackingPawn, defendingPawn);
                     }else{
                         // Set new coordinate values to pawn
-                        pawns[pawnId][0] = new_x;
-                        pawns[pawnId][1] = new_y;
+                        relocatePawn(pawnId, $(this).data("x"), $(this).data("y"));
                     }
                     // End our turn
                     socket.emit('endTurn', game.room);
@@ -302,8 +296,6 @@ const randomise = () => {
     pawnsInBox = [];
     placePawns();
     initBox();
-
-    return pawns;
 }
 
 const readyUp = () => {
