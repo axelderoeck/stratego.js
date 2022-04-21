@@ -14,3 +14,21 @@
 .notMoveable img {
     opacity: 0.5;
 }
+
+.mirror {
+    -moz-transform: scale(-1, -1);
+    -webkit-transform: scale(-1, -1);
+    -o-transform: scale(-1, -1);
+    -ms-transform: scale(-1, -1);
+    transform: scale(-1, -1);
+}
+
+// Default data colors
+span {
+    &[data-team='0']{
+        color: $color-player-1-dark;
+    }
+    &[data-team='1']{
+        color: $color-player-2-dark;
+    }
+}
