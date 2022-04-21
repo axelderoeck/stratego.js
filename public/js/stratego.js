@@ -259,11 +259,41 @@ const isLegalMove = (old_x, old_y, new_x, new_y, pawn, team) => {
     }
 }
 
-/* This function is written in favor of the attacker.
-*
-* return true = attacker wins.
-* 
-**/
+const checkForEnemyContact = (new_x, new_y, team) => {
+    // Get pawn by coordinate
+    pawn = getPawnByCoordinate(new_x, new_y);
+    // Check if pawn exists and is not on same team
+    if (pawn != null && pawn[3] != team) {
+        return true;
+    }
+    return false;
+}
+
+// MANAGE PAWNS
+// =========================
+
+const addPawn = (x, y, pawn, team) => {
+    if(getPawnByCoordinate(x, y) == null){
+        pawns.push([x, y, pawn, team]);
+    }else{
+        throw `Unable to add pawn because a pawn already exists on these coordinates!`;
+    }
+}
+
+const deletePawn = (pawn) => {
+    try {
+        id = getPawnId(pawn[0], pawn[1], pawn[2], pawn[3]);
+        // Remove pawn from array
+        pawns.splice(id, 1);
+        // Add pawn to cemetery array
+        cemetery.push([pawn[2], pawn[3]]);
+    }catch (error){
+        throw error;
+    }
+}
+
+// OTHER
+// =========================
 
 const fightOutcome = (attackingPawn, defendingPawn) => {
     // If the defending pawn is the flag
@@ -287,35 +317,8 @@ const fightOutcome = (attackingPawn, defendingPawn) => {
     }
 }
 
-const addPawn = (x, y, pawn, team) => {
-    if(getPawnByCoordinate(x, y) == null){
-        pawns.push([x, y, pawn, team]);
-    }else{
-        throw `Unable to add pawn because a pawn already exists on these coordinates!`;
-    }
-}
-
-const deletePawn = (pawn) => {
-    try {
-        id = getPawnId(pawn[0], pawn[1], pawn[2], pawn[3]);
-        // Remove pawn from array
-        pawns.splice(id, 1);
-        // Add pawn to cemetery array
-        cemetery.push([pawn[2], pawn[3]]);
-    }catch (error){
-        throw error;
-    }
-}
-
-const checkForEnemyContact = (new_x, new_y, team) => {
-    // Get pawn by coordinate
-    pawn = getPawnByCoordinate(new_x, new_y);
-    // Check if pawn exists and is not on same team
-    if (pawn != null && pawn[3] != team) {
-        return true;
-    }
-    return false;
-}
+// EXPORT FOR TESTING
+// =========================
 
 module.exports = {
     addPawn,
