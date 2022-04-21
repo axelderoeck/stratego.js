@@ -1,8 +1,5 @@
 ~*
 
-# Jest testing coverage
-coverage/
-
 # Editors
 .vscode/
 .idea/
@@ -15,6 +12,9 @@ coverage/
 
 # Windows
 Thumbs.db
+
+# Jest testing coverage
+coverage/
 
 # ignore node/grunt dependency directories
 node_modules/
