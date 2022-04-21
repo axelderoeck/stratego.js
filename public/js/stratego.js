@@ -117,6 +117,10 @@ const getPawnById = (id) => {
     throw `No pawn exists with given ID.`;
 }
 
+const getSizePawns = () => {
+    return pawns.length;
+}
+
 const getPawnId = (x, y, pawn, team) => {
     // Loop through all pawns
     for (var i = 0; i < pawns.length; i++) {
@@ -293,14 +297,10 @@ const deletePawn = (pawn) => {
 }
 
 const resetPawns = () => {
-    try {
-        // Empty the pawns array
-        pawns = [];
-        // Reset the pawnsInBox array
-        pawnsInBox = [...ALL_PAWNS];
-    }catch (error){
-        throw 'Could not restore pawns: ' + error;
-    }
+    // Empty the pawns array
+    pawns = [];
+    // Reset the pawnsInBox array
+    pawnsInBox = [...ALL_PAWNS];
 }
 
 const randomisePawns = (team) => {
@@ -314,7 +314,7 @@ const randomisePawns = (team) => {
     }
 
     // If we already have a full set
-    if(pawnsInBox.length == 0){
+    if(pawns.length == 40){
         resetPawns();
     }
 
@@ -367,6 +367,7 @@ module.exports = {
     getPawnByCoordinate,
     getPawnId,
     getPawnById,
+    getSizePawns,
     getAmountPawnsInTeam,
     getAmountNonStaticPawnsInTeam,
     getPawnName,
@@ -375,5 +376,7 @@ module.exports = {
     isTileInSpawnZone,
     isLegalMove,
     fightOutcome,
-    checkForEnemyContact
+    checkForEnemyContact,
+    resetPawns,
+    randomisePawns
 };

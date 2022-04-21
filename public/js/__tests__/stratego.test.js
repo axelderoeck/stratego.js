@@ -4,6 +4,7 @@ const {
     getPawnByCoordinate,
     getPawnId,
     getPawnById,
+    getSizePawns,
     getAmountPawnsInTeam,
     getAmountNonStaticPawnsInTeam,
     getPawnName,
@@ -12,7 +13,9 @@ const {
     isTileInSpawnZone,
     isLegalMove,
     fightOutcome,
-    checkForEnemyContact } = require('../stratego.js');
+    checkForEnemyContact,
+    resetPawns,
+    randomisePawns } = require('../stratego.js');
 
 beforeAll(() => {
     addPawn(4, 4, 2, 0);
@@ -328,6 +331,39 @@ describe('checkForEnemyContact', () => {
 
     test('Enemy on coordinates', () => {
         expect(checkForEnemyContact(9, 9, 0)).toBeTruthy();
+    });
+});
+
+describe('resetPawns', () => {
+    test('resetting pawns should not throw error', () => {
+        expect(() => {
+            resetPawns();
+        }).not.toThrow();
+    });
+
+    test('reset should make array empty', () => {
+        resetPawns();
+        expect(getSizePawns()).toBe(0);
+    });
+});
+
+describe('randomisePawns', () => {
+    test('adding random pawns should not throw error', () => {
+        expect(() => {
+            randomisePawns(0);
+        }).not.toThrow();
+        expect(() => {
+            randomisePawns(1);
+        }).not.toThrow();
+    });
+
+    test('randomising should keep on working', () => {
+        randomisePawns(0);
+        randomisePawns(0);
+        randomisePawns(0);
+        randomisePawns(0);
+        randomisePawns(0);
+        expect(getSizePawns()).toBe(40);
     });
 });
 
