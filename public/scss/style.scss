@@ -15,12 +15,18 @@ body {
 }
 
 .container {
-    background-color: $color-almost-invisible;
+    position: absolute;
+    background-color: #e9df9a;
+    border-radius: 10px;
     margin: 0 auto;
-    width: 50%;
-    height: 100%;
+    width: 500px;
+    height: 80%;
     text-align: center;
     overflow: hidden;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     h2 {
         color: $color-white;
         font-size: 30px;
