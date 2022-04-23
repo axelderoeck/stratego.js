@@ -141,12 +141,13 @@ const fight = (attackingPawn, defendingPawn) => {
             }
             break;
         case "win":
+            // Display fight result
+            socket.emit('displayFight', game.room, attackingPawn, defendingPawn, attackingPawn[3]);
             // Set new coordinate values to pawn
             relocatePawn(attackingPawnId, defendingPawn[0], defendingPawn[1]);
             // Delete/kill the defending pawn
             deletePawn(defendingPawn);
-            socket.emit('endingGame', game.room, attackingPawn[3]);
-            break;
+            return 'win';
     }
 }
 
@@ -229,7 +230,10 @@ const movePawn = (old_x, old_y, pawn, team) => {
                         attackingPawn = getPawnById(pawnId);
                         defendingPawn = getPawnByCoordinate($(this).data("x"), $(this).data("y"));
                         // Execute the fight
-                        fight(attackingPawn, defendingPawn);
+                        if (fight(attackingPawn, defendingPawn) == 'win'){
+                            socket.emit('endingGame', game.room, attackingPawn[3]);
+                            return;
+                        }
                     }else{
                         // Set new coordinate values to pawn
                         relocatePawn(pawnId, $(this).data("x"), $(this).data("y"));
@@ -637,12 +641,14 @@ socket.on('playerJoined', () => {
 })
 
 socket.on('endGame', () => {
+    // Delete hud buttons
+    $('.hud').children().remove();
     // Remove event listener click from all tiles
     $('#board div').off('click');
     
     // Delete old images and effects
     $("#board div")
-        .removeClass('shineEffect')
+        .removeClass('shineEffect notMoveable')
         .children()
         .remove();
 
@@ -652,7 +658,7 @@ socket.on('endGame', () => {
         let tile = $("div[data-x='" + pawn[0] + "'][data-y='" + pawn[1] + "']");
         // Place tile image and span
         tile.prepend('<img draggable="false" src="./themes/' + decodeURI(game.theme) + '/' + pawn[3] + '/' + pawn[2] + '.png" />')
-            .prepend('<span data-team=' + pawn[3] + '>' + getPawnNumber(pawn[2]) + '</span>')
+            .prepend('<span data-team=' + pawn[3] + '>' + getPawnNumber(pawn[2]) + '</span>');
     });
 })
 
