@@ -4,9 +4,9 @@
   "description": "A multiplayer webgame based on the board game 'Stratego', made with Node.js and Socket.io.",
   "main": "stratego.js",
   "scripts": {
-    "start": "sass ./public/scss/style.scss:./public/css/style.css ./public/scss/game.scss:./public/css/game.css && node server/server.js",
+    "start": "node server/server.js",
     "dev": "nodemon server/server.js & sass --watch ./public/scss/style.scss:./public/css/style.css ./public/scss/game.scss:./public/css/game.css",
-    "compile-sass": "sass ./public/scss/style.scss:./public/css/style.css ./public/scss/game.scss:./public/css/game.css",
+    "compile": "sass ./public/scss/style.scss:./public/css/style.css ./public/scss/game.scss:./public/css/game.css",
     "test": "jest"
   },
   "repository": {
